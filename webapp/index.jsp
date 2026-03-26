@@ -9,7 +9,7 @@
     <body>
         <h1>Chào anh em, có giá thì mời vào đấu!</h1>
         <div id="display-items">
-
+            <h3> Cho em xin 10 diem</h3>
         </div>
     </body>
 </html>
