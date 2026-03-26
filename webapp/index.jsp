@@ -8,7 +8,6 @@
     </head>
     <body>
         <h1>Chào anh em, có giá thì mời vào đấu!</h1>
-        <h2>FB88</h2>
         <div id="display-items">
 
         </div>
