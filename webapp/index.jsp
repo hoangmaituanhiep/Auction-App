@@ -4,7 +4,7 @@
     <head>
         <link rel="icon" href="assets/icon.ico" type="image/x-icon">
         <link rel="stylesheet" href="style.css">
-        <title>i8bet</title>
+        <title>Aution App</title>
     </head>
     <body>
         <h1>Chào anh em, có giá thì mời vào đấu!</h1>
