@@ -4,7 +4,7 @@
     <head>
         <link rel="icon" href="assets/icon.ico" type="image/x-icon">
         <link rel="stylesheet" href="style.css">
-        <title>Aution</title>
+        <title>i8bet</title>
     </head>
     <body></body>
 </html>
