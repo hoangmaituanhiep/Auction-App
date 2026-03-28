@@ -7,7 +7,7 @@ import java.nio.file.*;;
 public class clientHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        Path indexPath = Paths.get("../webapp/index.jsp");
+        Path indexPath = Paths.get(System.getProperty("user.home"), "Documents", "Aution-App", "webapp", "index.html");
 
         String response = "";
         int statusCode = 200;
@@ -15,14 +15,14 @@ public class clientHandler implements HttpHandler {
         try {
             String indexContent = Files.readString(indexPath);
 
-            String newDiv = "<div id="testSite">"
+            String newDiv = "<div id=\"testSite\">"
                           + "<h2>Server testing...</h2>";
             
-            response = indexContent.replace("<div id="testSite">", newDiv);
+            response = indexContent.replace("<div id=\"testSite\">", newDiv);
         }
         catch (IOException e){
             statusCode = 404;
-            response = "<html><body><h1>404 - Cannot find index.jsp file</h1></body></html>";
+            response = "<html><body><h1>404 - Cannot find index.html file</h1></body></html>";
             System.out.println("Error reading file: "+e.getMessage());
         }
 
