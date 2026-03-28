@@ -35,5 +35,5 @@ replay_pid*
 *.log.*
 *.sig
 
-src/build/
-*.class
+/src/build/
+*.java
