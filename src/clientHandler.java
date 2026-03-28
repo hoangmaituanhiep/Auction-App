@@ -1,7 +1,5 @@
 import com.sun.net.httpserver.*;
 import java.io.*;
-import java.net.*;
-import java.util.*;
 import java.nio.file.*;;
 
 public class clientHandler implements HttpHandler {
