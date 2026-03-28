@@ -5,7 +5,7 @@ import java.nio.file.*;;
 public class clientHandler implements HttpHandler {
     @Override
     public void handle(HttpExchange exchange) throws IOException {
-        Path indexPath = Paths.get(System.getProperty("user.home"), "Documents", "Aution-App", "webapp", "index.html");
+        Path indexPath = Paths.get("../webapp/index.html");
 
         String response = "";
         int statusCode = 200;
