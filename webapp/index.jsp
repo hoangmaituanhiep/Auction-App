@@ -10,7 +10,6 @@
         <h1>Chào anh em, có giá thì mời vào đấu!</h1>
         <div id="display-items">
             
-            <div id="testSite">
 
             </div>
         </div>

@@ -1,32 +1,31 @@
-import com.sun.net.httpserver.*;
 import java.io.*;
-import java.nio.file.*;;
+import java.net.Socket;
 
-public class clientHandler implements HttpHandler {
+public class clientHandler implements Runnable {
+    private Socket clientSocket;
+
+    public clientHandler(Socket socket) {
+        clientSocket = socket;
+    }
+
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
-        Path indexPath = Paths.get("../webapp/index.html");
-
-        String response = "";
-        int statusCode = 200;
-
+    public void run() {
         try {
-            String indexContent = Files.readString(indexPath);
+            InputStream is = clientSocket.getInputStream();
+            OutputStream os = clientSocket.getOutputStream();
 
-            String newDiv = "<div id=\"testSite\">"
-                          + "<h2>Server testing...</h2>";
-            
-            response = indexContent.replace("<div id=\"testSite\">", newDiv);
-        }
-        catch (IOException e){
-            statusCode = 404;
-            response = "<html><body><h1>404 - Cannot find index.html file</h1></body></html>";
-            System.out.println("Error reading file: "+e.getMessage());
-        }
+            try(BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+                PrintWriter writer = new PrintWriter(os, true)) {
+                    String line;
 
-        exchange.sendResponseHeaders(statusCode, response.getBytes().length);
-        OutputStream os = exchange.getResponseBody();
-        os.write(response.getBytes());
-        os.close();
+                    while ((line = reader.readLine()) != null) {
+                        System.out.println("Testing: " + line);
+                        writer.println("Echo: " + line);
+                    }
+                } 
+        }
+        catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 }
