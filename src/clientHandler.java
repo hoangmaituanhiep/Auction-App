@@ -1,6 +1,6 @@
 import com.sun.net.httpserver.*;
 import java.io.*;
-import java.nio.file.*;;
+import java.nio.file.*;
 
 public class clientHandler implements HttpHandler {
     @Override
