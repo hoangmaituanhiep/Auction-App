@@ -1,3 +1,5 @@
+#Visual Code environment settings
+.vscode/
 
 # Log file
 *.log
