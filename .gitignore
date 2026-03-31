@@ -4,6 +4,7 @@
 #Specific folders
 lib/
 bin/
+target/
 
 # Log file
 *.log
