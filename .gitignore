@@ -1,3 +1,10 @@
+#Visual Code environment settings
+.vscode/
+
+#Specific folders
+lib/
+bin/
+target/
 
 # Log file
 *.log
