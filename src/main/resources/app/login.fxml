@@ -1,0 +1,21 @@
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox alignment="CENTER" spacing="10" xmlns="https://javafx.com/javafx/11.0.1"
+    xmlns:fx="https://javafx.com/fxml/1" fx:controller="Aution-App.models.loginController">
+
+    <padding>
+        <Insets top="25" right="25" bottom="25" left="25" />
+    </padding>
+
+    <Label text="Username: " />
+    <TextField fx:id="getUsetName" promptText="User name" />
+
+    <Label text="Password: " />
+    <PasswordField fx:id="getPassword" promptText="Enter your password: " />
+
+    <Button text="Login" onAction="#handleLogin" />
+    <Label fx:id="status"/>
+
+</VBox>
