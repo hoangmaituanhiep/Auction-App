@@ -1,13 +1,23 @@
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
+<?xml version="1.0" encoding="UTF-8"?>
 
-<VBox alignment="CENTER" spacing="10" xmlns="https://javafx.com/javafx/11.0.1"
-    xmlns:fx="https://javafx.com/fxml/1" fx:controller="Aution-App.models.loginController">
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="479.0" prefWidth="409.0" spacing="10" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Aution-App.models.loginController">
 
     <padding>
-        <Insets top="25" right="25" bottom="25" left="25" />
+        <Insets bottom="25" left="25" right="25" top="25" />
     </padding>
+   <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="86.0" prefWidth="151.0" text="AUCTION" textOverrun="WORD_ELLIPSIS">
+      <font>
+         <Font name="Gabriola" size="38.0" />
+      </font>
+   </Label>
 
     <Label text="Username: " />
     <TextField fx:id="getUsetName" promptText="User name" />
@@ -15,7 +25,8 @@
     <Label text="Password: " />
     <PasswordField fx:id="getPassword" promptText="Enter your password: " />
 
-    <Button text="Login" onAction="#handleLogin" />
-    <Label fx:id="status"/>
+    <Button onAction="#handleLogin" text="Login" />
+   <TextField alignment="CENTER" disable="true" prefHeight="26.0" prefWidth="334.0" promptText="Forgot your login details?" />
+    <Label fx:id="status" />
 
 </VBox>
