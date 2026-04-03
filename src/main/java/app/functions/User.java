@@ -32,7 +32,7 @@ class Bidder extends User {
             } else () {} // tham gia vào server
         }
     }
-
+    public void Autioned()
 }
 class Admin extends User {
     User admin = new Admin();

@@ -1,11 +1,9 @@
 package app.functions;
 public abstract class Item extends Entity {
     private String name;
-    private final double StartingPrice;
     private double current_Price;
     private String detail = "Seller is too lazy to write anything here.";
-    Item(double StartingPrice, String name) { //Giá khởi điểm
-        this.StartingPrice = StartingPrice;
+    Item(String name) { //Giá khởi điểm
         this.name = name;
     }
     public void setNewPrice(double NewPrice){ //Giá hiện tại
@@ -17,8 +15,21 @@ public abstract class Item extends Entity {
     }
     public void writeDetail (String detail) {this.detail = detail;}
 
-    public double getStartingPrice() {return StartingPrice;}
     public double getCurrent_Price() {return current_Price;}
     public String getDetail() {return detail;}
 }
-class 
+class Electronics extends Item{
+    private String company;
+    public void setCompany(String company) {this.company = company;}
+    public String getCompany() {return company;}
+}
+class Art extends Item {
+    private String artist_name;
+    public void setArtist_name(String artist) {this.artist_name = artist;}
+    public String getArtist_name() {return artist_name;}
+}
+class Vehicle extends Item {
+    private String company;
+    public void setCompany(String company) {this.company = company;}
+    public String getCompany() {return company;}
+}
