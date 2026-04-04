@@ -20,7 +20,7 @@ public class MainApp {
             System.exit(1);
         }
 
-        server svr = server.getInstance(port);
-        svr.listen();
+        Server server = Server.getInstance(port);
+        server.listen();
     }
 }
