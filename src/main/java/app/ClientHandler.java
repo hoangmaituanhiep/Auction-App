@@ -3,10 +3,10 @@ package app;
 import java.io.*;
 import java.net.Socket;
 
-public class clientHandler implements Runnable {
+public class ClientHandler implements Runnable {
     private Socket clientSocket;
 
-    public clientHandler(Socket socket) {
+    public ClientHandler(Socket socket) {
         clientSocket = socket;
     }
 

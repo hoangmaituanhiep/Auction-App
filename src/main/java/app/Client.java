@@ -4,13 +4,13 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class client {
+public class Client {
     private InetSocketAddress socketAddress;
     private ArrayList<Integer> registeredAutions;
     private int highBidNumbers;
     private Socket socket;
 
-    client (Socket socket) {
+    Client (Socket socket) {
         this.socket=socket;
         this.socketAddress=new InetSocketAddress(socket.getInetAddress(), socket.getPort());
 

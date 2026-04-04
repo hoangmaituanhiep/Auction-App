@@ -19,5 +19,8 @@ public class MainApp {
             System.err.println("Too many arguments given.");//Only need one port
             System.exit(1);
         }
+
+        server svr = server.getInstance(port);
+        svr.listen();
     }
 }
