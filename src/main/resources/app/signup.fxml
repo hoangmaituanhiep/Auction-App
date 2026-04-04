@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="409.0" spacing="30.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="409.0" spacing="30.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.ConnectionController">
    <children>
       <Label prefHeight="85.0" prefWidth="134.0" text="Sign Up">
          <font>
@@ -23,7 +23,7 @@
       <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Email" />
       <PasswordField fx:id="getPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Enter your password" />
       <PasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Confirm password" />
-      <Button onAction="#handleSignUp" mnemonicParsing="false" stylesheets="@style.css" text="Sign up" />
+      <Button fx:id="signUpButton" onAction="#handleSignUp" mnemonicParsing="false" stylesheets="@style.css" text="Sign up" />
    </children>
    <padding>
       <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />

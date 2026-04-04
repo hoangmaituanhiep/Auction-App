@@ -1,26 +1,39 @@
 package app;
 
 import java.io.IOException;
+import javafx.application.Application;
 
-public class MainApp {
+public class MainApp extends Application {
+    private static int port = 0;
+
+    @Override
+    public void start(Stage primaryStage) {
+
+        Thread serverThread = new Thread(() -> {
+            Server server = Server.getInstance(port);
+            server.listen();
+        });
+        serverThread.setDaemon(true);
+        serverThread.start();
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/signup.fxml"));
+        Parent root = loader.load();
+
+        Scene scene = new Scene(root, 409, 478); //preheight and prewidth in signup pages
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Aution App");
+        primaryStage.show();
+    }
     public static void main(String[] args) throws IOException {
-        int port = 0;//default
-
         if (args.length > 0) {
             try {
-                port = Integer.parseInt(args[0]);//Initiate a port on running
+                port = Integer.parseInt(args[0]);
             }
-            catch(NumberFormatException e) {
-                System.err.println("Cannot format argument:" + args[0]);
-                System.exit(1);
+            catch (NumberFormatException e) {
+                System.err.println("Invalid port");
             }
         }
-        else if (args.length > 1) {
-            System.err.println("Too many arguments given.");//Only need one port
-            System.exit(1);
-        }
-
-        Server server = Server.getInstance(port);
-        server.listen();
+        Application.launch(args);
     }
 }

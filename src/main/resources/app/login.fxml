@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="479.0" prefWidth="409.0" spacing="10" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Aution-App.models.loginController">
+<VBox alignment="CENTER" prefHeight="479.0" prefWidth="409.0" spacing="10" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.ConnectionController">
 
     <padding>
         <Insets bottom="25" left="25" right="25" top="25" />
@@ -32,7 +32,7 @@
          <Reflection bottomOpacity="0.23" />
       </effect></PasswordField>
 
-    <Button onAction="#handleLogin" stylesheets="@style.css" text="Login" />
+    <Button fx:id="signInButton" onAction="#handleLogin" stylesheets="@style.css" text="Login" />
    <TextField alignment="CENTER" disable="true" prefHeight="26.0" prefWidth="334.0" promptText="Forgot your login details?" />
     <Label fx:id="status" />
 
