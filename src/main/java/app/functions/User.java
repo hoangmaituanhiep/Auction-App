@@ -14,11 +14,10 @@ abstract class User extends Entity {
 }
 
 class Bidder extends User {
-    User new_bidder = new Bidder();
     public void register(String userName, String passWord) {
-        if (new_bidder.getUserName() == null && new_bidder.getPassword() == null) {
-            new_bidder.setUserName(userName);
-            new_bidder.setPassword(passWord);
+        if (super.getUserName() == null && super.getPassword() == null) {
+            super.setUserName(userName);
+            super.setPassword(passWord);
         } else if ( ) {// Nếu tên tài khoản đã sử dụng ở trong database
             System.out.println("Please use other UserName.");
         }
@@ -27,19 +26,26 @@ class Bidder extends User {
         if () { // có tài khoản trong database chưa
             System.out.println("Account does not exist. Please register first.");
         } else {
-            if (new_bidder.getPassword() != passWord) {
+            if (super.getPassword() != passWord) {
                 System.out.println("Incorrect password.");
             } else () {} // tham gia vào server
         }
     }
-    public void Autioned()
+    public <T extends Item> String getItem_Info(T item) {
+        return item.toString;
+    }
+    public <T extends Item> void Autioned(T item, double newPrice) {
+        if (newPrice > item.getCurrent_Price) {
+            item.setNewPrice(newPrice);
+            System.out.println("Done!!!");
+        } else { System.out.println("Absolutely failure.")}
+    }
 }
 class Admin extends User {
-    User admin = new Admin();
     public void register(String userName, String passWord) {
-        if (admin.getUserName() == null && admin.getPassword() == null) {
-            admin.setUserName(userName);
-            admin.setPassword(passWord);
+        if (super.getUserName() == null && super.getPassword() == null) {
+            super.setUserName(userName);
+            super.setPassword(passWord);
         } else if ( ) {// Nếu tên tài khoản đã sử dụng ở trong database
             System.out.println("Please use other UserName.");
         }
@@ -48,7 +54,7 @@ class Admin extends User {
         if () { // có tài khoản trong database chưa
             System.out.println("Account does not exist. Please register first.");
         } else {
-            if (admin.getPassword() != passWord) {
+            if (super.getPassword() != passWord) {
                 System.out.println("Incorrect password.");
             } else () {} // tham gia vào server
         }
@@ -56,11 +62,10 @@ class Admin extends User {
 
 }
 class Seller extends User {
-    User seller = new Seller();
     public void register(String userName, String passWord) {
-        if (seller.getUserName() == null && seller.getPassword() == null) {
-            seller.setUserName(userName);
-            seller.setPassword(passWord);
+        if (super.getUserName() == null && super.getPassword() == null) {
+            super.setUserName(userName);
+            super.setPassword(passWord);
         } else if ( ) {// Nếu tên tài khoản đã sử dụng ở trong database
             System.out.println("Please use other UserName.");
         }
@@ -69,7 +74,7 @@ class Seller extends User {
         if () { // có tài khoản trong database chưa
             System.out.println("Account does not exist. Please register first.");
         } else {
-            if (seller.getPassword() != passWord) {
+            if (super.getPassword() != passWord) {
                 System.out.println("Incorrect password.");
             } else () {} // tham gia vào server
         }

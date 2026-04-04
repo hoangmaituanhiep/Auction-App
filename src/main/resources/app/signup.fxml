@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="409.0" spacing="30.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label prefHeight="85.0" prefWidth="134.0" text="Sign Up">
+         <font>
+            <Font name="Arial Bold" size="35.0" />
+         </font>
+      </Label>
+      <TextField fx:id="getUserName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="User name">
+         <effect>
+            <Reflection />
+         </effect></TextField>
+      <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Email" />
+      <PasswordField fx:id="getPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Enter your password" />
+      <PasswordField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Confirm password" />
+      <Button mnemonicParsing="false" stylesheets="@style.css" text="Sign up" />
+   </children>
+   <padding>
+      <Insets bottom="25.0" left="25.0" right="25.0" top="25.0" />
+   </padding>
+</VBox>

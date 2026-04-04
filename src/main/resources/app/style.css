@@ -1,0 +1,18 @@
+/* Áp dụng cho tất cả Button */
+.button {
+    -fx-background-color: #007bff;   /* xanh dương */
+    -fx-text-fill: white;            /* chữ trắng */
+    -fx-font-weight: bold;           /* chữ đậm */
+    -fx-background-radius: 5;        /* bo góc */
+    -fx-padding: 8 16 8 16;          /* khoảng cách trong nút */
+}
+
+/* Khi rê chuột vào */
+.button:hover {
+    -fx-background-color: #0056b3;   /* xanh đậm hơn */
+}
+
+/* Khi nhấn nút */
+.button:pressed {
+    -fx-background-color: #003f7f;   /* xanh tối */
+}
