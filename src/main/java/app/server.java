@@ -32,4 +32,10 @@ public class server {
         }
         return server;
     }
+    public server getInstance(int port) {
+        if (server == null) {
+            server = new server(port);
+        }
+        return server;
+    }
 }
