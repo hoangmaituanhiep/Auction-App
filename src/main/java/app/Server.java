@@ -5,14 +5,15 @@ import java.net.ServerSocket;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 
-public class server {
-    private static Map<Integer, clientHandler> clientHandlers;
+public class Server {
+    private static Map<Integer, ClientHandler> clientHandlers;
     private static boolean isListening;
     private static boolean isAutioning;
     private static ExecutorService executors = new Executors.newFixedThreadPool(10);
     private static ServerSocket serverSocket;
+    private static Server server;
 
-    server() {
+    Server() {
         isAutioning=false;
         isListening=false;
 
@@ -26,16 +27,27 @@ public class server {
         clientHandlers = new HashMap<Integer, clientHandler>();
     }
 
-    public server getInstance() {
+    public static Server getInstance() {
         if (server == null) {
             server = new server();
         }
         return server;
     }
-    public server getInstance(int port) {
+    public static Server getInstance(int port) {
         if (server == null) {
             server = new server(port);
         }
         return server;
+    }
+
+    public void listen() throws IOException{
+        isListening = true;
+        isAutioning = true;
+
+        while(isListening) {
+            Socket clientSocket = serverSocket.accept();
+            Client client = new Client(serverSocket);
+            ClientHandlers clientThread = new ClientHandler(clnt);
+        }
     }
 }
