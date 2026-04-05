@@ -23,7 +23,10 @@ public abstract class Item extends Entity {
 }
 class Electronics extends Item{
     private String company;
-    public void setCompany(String company) {this.company = company;}
+    public Electronics(String name, String company) {
+        super(name);
+        this.company=company;
+    }
     public String getCompany() {return company;}
     
     public String toString() {
@@ -35,7 +38,10 @@ class Electronics extends Item{
 }
 class Art extends Item {
     private String artist_name;
-    public void setArtist_name(String artist) {this.artist_name = artist;}
+    public Art(String name, String artist_name) {
+        super(artist_name);
+        this.artist_name=artist_name;
+    }
     public String getArtist_name() {return artist_name;}
     
     public String toString() {
@@ -47,7 +53,10 @@ class Art extends Item {
 }
 class Vehicle extends Item {
     private String company;
-    public void setCompany(String company) {this.company = company;}
+    public Vehicle(String name, String company) {
+        super(name);
+        this.company=company;
+    } 
     public String getCompany() {return company;}
 
     public toString() {
