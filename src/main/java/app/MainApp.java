@@ -11,11 +11,15 @@ public class MainApp extends Application {
     private static int port = 0;//default port
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException{
 
         Thread serverThread = new Thread(() -> {
             Server server = Server.getInstance(port);
-            server.listen();
+            try {
+                server.listen();
+            } catch (IOException e) {
+                System.err.println("Failed to start server: " + e.getMessage());
+            }
         });
         //Must mark a thread daemon before start, only daemon threads run when VTM start
         serverThread.setDaemon(true);//VTM exists when all threads running are deamon threads

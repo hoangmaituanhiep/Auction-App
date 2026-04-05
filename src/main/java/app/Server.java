@@ -2,14 +2,17 @@ package app;
 
 import java.io.IOException;
 import java.net.ServerSocket;
+import java.net.Socket;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Server {
     private static Map<Integer, ClientHandler> clientHandlers;
     private static boolean isListening;
     private static boolean isAutioning;
-    private static ExecutorService executors = new Executors.newFixedThreadPool(10);
+    private static ExecutorService executors = Executors.newFixedThreadPool(10);
     private static ServerSocket serverSocket;
     private static Server server;
 
@@ -24,18 +27,31 @@ public class Server {
             e.printStackTrace();
         }
 
-        clientHandlers = new HashMap<Integer, clientHandler>();
+        clientHandlers = new HashMap<Integer, ClientHandler>();
+    }
+    Server(int port) {
+        isAutioning=false;
+        isListening=false;
+
+        try {
+            serverSocket = new ServerSocket(port);
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+
+        clientHandlers = new HashMap<Integer, ClientHandler>();
     }
 
     public static Server getInstance() {
         if (server == null) {
-            server = new server();
+            server = new Server();
         }
         return server;
     }
     public static Server getInstance(int port) {
         if (server == null) {
-            server = new server(port);
+            server = new Server(port);
         }
         return server;
     }
@@ -46,8 +62,8 @@ public class Server {
 
         while(isListening) {
             Socket clientSocket = serverSocket.accept();
-            Client client = new Client(serverSocket);
-            ClientHandlers clientThread = new ClientHandler(client);
+            Client client = new Client(clientSocket);
+            ClientHandler clientThread = new ClientHandler(client);
         }
     }
 }

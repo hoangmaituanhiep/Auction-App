@@ -1,4 +1,4 @@
-package app.functions;
+package app;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
