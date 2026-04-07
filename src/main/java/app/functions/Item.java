@@ -60,7 +60,7 @@ class Vehicle extends Item {
     } 
     public String getCompany() {return company;}
 
-    public toString() {
+    public String toString() {
         return "Name: " + super.getName() +
                 "\nCompany: " + company +
                 "\nDescribe: " + super.getDetail() +
