@@ -17,16 +17,14 @@ public class Auction {
     private String status;
     private List<BidTransaction> bidHistory;
 
-    public Auction(String auctionId, Item item, Seller seller, double startingPrice, double step,
+    public Auction(String auctionId, Item item, Seller seller, double step,
             LocalDateTime starTime, LocalDateTime endTime) {
         this.auctionId = auctionId;
         this.item = item;
         this.seller = seller;
-        this.startingPrice = startingPrice;
         this.step = step;
         this.startTime = starTime;
         this.endTime = endTime;
-        this.currentHighestPrice = startingPrice;
         this.currentWinner = null;
         this.status = "PENDING";
         this.bidHistory = new ArrayList<>();
@@ -53,11 +51,11 @@ public class Auction {
     }
 
     public double getStartingPrice() {
-        return startingPrice;
+        return item.getStartingPrice();
     }
 
     public void setStartingPrice(double startingPrice) {
-        this.startingPrice = startingPrice;
+        item.setStartingPrice(price);
     }
 
     public double getStep() {
@@ -69,11 +67,13 @@ public class Auction {
     }
 
     public double getCurrentHighestPrice() {
-        return currentHighestPrice;
+        return item.getCurent_Price();
     }
 
-    public void setCurrentHighestPrice(double currentHighestPrice) {
-        this.currentHighestPrice = currentHighestPrice;
+    public void setCurrentHighestPrice(double newPrice) {
+        if (newPrice > currentHighestPrice) {
+            item.setNewPrice(newPrice);
+        }
     }
 
     public Bidder getCurrentWinner() {

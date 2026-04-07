@@ -1,23 +1,24 @@
 package app.functions;
 public abstract class Item extends Entity {
     private String name;
+    private double startingPrice;
     private double current_Price;
     private String detail = "Seller is too lazy to write anything here.";
     Item(String name) { //Giá khởi điểm
         this.name = name;
     }
+    public void setStartingPrice(double price) {this.startingPrice = startingPrice;}
     public void setNewPrice(double NewPrice){ //Giá hiện tại
-        if (NewPrice > current_Price) {
-            this.current_Price = NewPrice;
-        } else {
-            System.out.println("Hahaha Sucker.");
-        }
+        this.current_Price = current_Price;
     }
     public void writeDetail (String detail) {this.detail = detail;}
     
+    public double getStartingPrice() {return startingPrice;}
     public String getName() {return name;}
     public double getCurrent_Price() {return current_Price;}
-    public String getDetail() {return detail;}
+    public String getDetail() {return detail +
+            "\nStrating price: " + startingPrice +
+            "\nCurrent highest price: " + current_Price;}
     
     public abstract String toString();
 }
