@@ -55,7 +55,7 @@ public class Auction {
     }
 
     public void setStartingPrice(double startingPrice) {
-        item.setStartingPrice(price);
+        item.setStartingPrice(startingPrice);
     }
 
     public double getStep() {
@@ -67,7 +67,7 @@ public class Auction {
     }
 
     public double getCurrentHighestPrice() {
-        return item.getCurent_Price();
+        return item.getCurrent_Price();
     }
 
     public void setCurrentHighestPrice(double newPrice) {
