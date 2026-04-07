@@ -1,4 +1,4 @@
-# Aution-App
+# Auction-App
 A big project.
 
 To run project using terminal: 

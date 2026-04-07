@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.sceen.control.PasswordField;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -39,7 +39,7 @@ public class ConnectionController {
         if (service.authenticate(getUserName.getText(), getPassword.getText(), confirmPassword.getText())) {
             status.setText("Successfull!");
             try {
-                FXMLLoader loader = new FXMLLoader.getResource("/app/login.fxml");
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/login.fxml"));
                 Scene loginScene = new Scene(loader.load());
                 Stage stage = (Stage) signUpButton.getScene().getWindow();
                 stage.setScene(loginScene);
