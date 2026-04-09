@@ -11,7 +11,7 @@
    <children>
       <Label alignment="CENTER" prefHeight="115.0" prefWidth="134.0" text="Sign Up">
          <font>
-            <Font name="Gabriola" size="50.0" />
+            <Font name="Gabriola" size="38.0" />
          </font>
       </Label>
       <TextField fx:id="getUserName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="User name" />
