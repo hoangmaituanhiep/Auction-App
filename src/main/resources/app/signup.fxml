@@ -6,13 +6,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.geometry.Insets?>
 
 <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="409.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label prefHeight="108.0" prefWidth="134.0" text="Sign Up">
+      <Label alignment="CENTER" prefHeight="115.0" prefWidth="134.0" text="Sign Up">
          <font>
-            <Font name="Arial Bold" size="35.0" />
+            <Font name="Gabriola" size="50.0" />
          </font>
       </Label>
       <TextField fx:id="getUserName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="User name" />
@@ -21,7 +20,7 @@
       <Label />
       <PasswordField fx:id="getPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Enter your password" />
       <Label />
-      <PasswordField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Confirm password" />
+      <PasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Confirm password" />
       <Label />
       <Button mnemonicParsing="false" text="Sign up" />
    </children>
