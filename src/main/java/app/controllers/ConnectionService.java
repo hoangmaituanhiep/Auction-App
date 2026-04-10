@@ -3,7 +3,7 @@ package app.controllers;
 import java.sql.*;
 
 public class ConnectionService {
-    private final String databaseUrl = "jdbc:sqlite::resources:database/users.db";
+    private final String databaseUrl = "jdbc:sqlite:database/users.db";
 
     public boolean authenticate(String username, String password) {
         String query = "SELECT password FROM users WHERE username = ?";
@@ -28,11 +28,11 @@ public class ConnectionService {
     public boolean authenticate(String username, String password, String confirmPassword) {
         if (password.equals(confirmPassword)) {
             String createTable = "CREATE TABLE IF NOT EXISTS users (" + 
-            "id INTERGER PRIMARY KEY AUTOINCREMENT, " + 
+            "id INTEGER PRIMARY KEY AUTOINCREMENT, " + 
             "username TEXT UNIQUE NOT NULL, " +
             "password TEXT NOT NULL)";
             
-            String insertSql = "INSERT INTO users(username, password) VALUE(?, ?)";
+            String insertSql = "INSERT INTO users(username, password) VALUES(?, ?)";
 
             try (Connection connection = DriverManager.getConnection(databaseUrl);
                 Statement status = connection.createStatement()) {
