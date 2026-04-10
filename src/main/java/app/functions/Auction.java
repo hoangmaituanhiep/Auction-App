@@ -5,7 +5,7 @@ import java.util.*;
 
 public class Auction {
     private final String auctionId;
-    private Seller<Item> seller;
+    private Seller seller;
     private double step;
     private double currentHighestPrice;
     private Bidder currentWinner;
@@ -14,7 +14,7 @@ public class Auction {
     private String status;
     private Map<String, Item> auctionItem;
 
-    public Auction(String auctionId, Seller<Item> seller, double step,
+    public Auction(String auctionId, Seller seller, double step,
             LocalDateTime starTime, LocalDateTime endTime) {
         this.auctionId = auctionId;
         this.seller = seller;
@@ -34,11 +34,11 @@ public class Auction {
         return auctionId;
     }
 
-    public Seller<Item> getSeller() {
+    public Seller getSeller() {
         return seller;
     }
 
-    public void setSeller(Seller<Item> seller) {
+    public void setSeller(Seller seller) {
         this.seller = seller;
     }
 
