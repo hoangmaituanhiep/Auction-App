@@ -7,7 +7,6 @@ public class Auction {
     private final String auctionId;
     private Seller seller;
     private double step;
-    private double currentHighestPrice;
     private Bidder currentWinner;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
@@ -54,10 +53,12 @@ public class Auction {
         return getItem(id).getCurrent_Price();
     }
 
-    public void setCurrentHighestPrice(String id, double newPrice) {
-        if (newPrice > currentHighestPrice) {
+    public boolean setCurrentHighestPrice(String id, double newPrice) {
+        if (newPrice > getItem(id).getCurrent_Price()) {
             getItem(id).setNewPrice(newPrice);
+            return true;
         }
+        return false;
     }
 
     public Bidder getCurrentWinner() {
@@ -96,5 +97,7 @@ public class Auction {
         auctionItem.put(id, item);
     }
 
-    public
+    public void getAll(Map<String, Item> list_item) {
+        auctionItem.putAll(list_item);
+    }
 }
