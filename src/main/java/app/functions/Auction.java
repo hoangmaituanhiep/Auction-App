@@ -5,25 +5,30 @@ import java.util.*;
 
 public class Auction {
     private final String auctionId;
-    private Seller seller;
     private double step;
-    private double currentHighestPrice;
-    private Bidder currentWinner;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private String status;
     private Map<String, Item> auctionItem;
+    private Map<String, User> onlineUser;
 
     public Auction(String auctionId, Seller seller, double step,
             LocalDateTime starTime, LocalDateTime endTime) {
         this.auctionId = auctionId;
-        this.seller = seller;
         this.step = step;
         this.startTime = starTime;
         this.endTime = endTime;
-        this.currentWinner = null;
         this.status = "PENDING";
         this.auctionItem = new HashMap<String, Item>();
+        this.onlineUser = new HashMap<>();
+    }
+
+    public void setAuctionItem(Map<String, Item> auctionItem) {
+        this.auctionItem = auctionItem;
+    }
+
+    public Map<String, User> getOnlineUser() {
+        return onlineUser;
     }
 
     public Item getItem(String id) {
@@ -32,14 +37,6 @@ public class Auction {
 
     public String getAuctionId() {
         return auctionId;
-    }
-
-    public Seller getSeller() {
-        return seller;
-    }
-
-    public void setSeller(Seller seller) {
-        this.seller = seller;
     }
 
     public double getStep() {
@@ -52,20 +49,6 @@ public class Auction {
 
     public double getCurrentHighestPrice(String id) {
         return getItem(id).getCurrent_Price();
-    }
-
-    public void setCurrentHighestPrice(String id, double newPrice) {
-        if (newPrice > currentHighestPrice) {
-            getItem(id).setNewPrice(newPrice);
-        }
-    }
-
-    public Bidder getCurrentWinner() {
-        return currentWinner;
-    }
-
-    public void setCurrentWinner(Bidder currentWinner) {
-        this.currentWinner = currentWinner;
     }
 
     public LocalDateTime getStartTime() {

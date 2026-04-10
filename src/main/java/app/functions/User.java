@@ -29,6 +29,15 @@ class Admin extends User {
         this.userName = userName;
         listUser = new HashMap<>();
     }
+    Admin(String username, Map<String, User> listUser) {
+        this.userName=username;
+        if (listUser.isEmpty()) {
+            this.listUser = new HashMap<>();
+        }
+        else {
+            this.listUser = listUser;
+        }
+    }
 
     public Map<String, User> getListUser(){
         return listUser;
