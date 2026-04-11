@@ -5,9 +5,11 @@ import java.util.Map;
 
 abstract class User extends Entity {
     protected String userName;
+    protected Auction auction;
 
     public String getUserName() {return userName;}
     public void setUserName(String userName) {this.userName = userName;}
+    public void participate(Auction auction) {this.auction = auction;}
 }
 
 class Bidder extends User {
