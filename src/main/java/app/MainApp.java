@@ -26,10 +26,10 @@ public class MainApp extends Application {
         serverThread.start();
 
         //Get the FXML file to load on screen
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/signup.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
         Parent root = loader.load();//Load the scene into ram
 
-        Scene scene = new Scene(root, 409, 478); //preheight and prewidth in signup pages
+        Scene scene = new Scene(root, 1280, 720); //preheight and prewidth in MainWeb pages
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aution App");
