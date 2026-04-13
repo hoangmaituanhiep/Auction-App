@@ -1,18 +1,45 @@
-/* Áp dụng cho tất cả Button */
+/* Tổng thể nền của ứng dụng */
+.root {
+    -fx-background-color: #fdfafa; /* Màu tối giống nền Scene Builder của bạn */
+}
+
+/* Thẻ VBox chứa form (màu trắng ở giữa) */
+.form-container {
+    -fx-background-color: white;
+    -fx-padding: 40;
+    -fx-background-radius: 10;
+    -fx-alignment: center;
+    -fx-spacing: 15;
+}
+
+/* Định dạng các nhãn Label */
+.label {
+    -fx-text-fill: #444444;
+}
+
+/* Định dạng các ô nhập liệu TextField và PasswordField */
+.text-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0 0 1 0; /* Chỉ để lại đường gạch chân dưới */
+    -fx-prompt-text-fill: #aaaaaa;
+    -fx-transition: 0.3s;
+}
+
+.text-field:focused {
+    -fx-border-color: #0078D7; /* Màu xanh khi click vào */
+    -fx-border-width: 0 0 2 0;
+}
+
+/* Định dạng nút bấm */
 .button {
-    -fx-background-color: #007bff;   /* xanh dương */
-    -fx-text-fill: white;            /* chữ trắng */
-    -fx-font-weight: bold;           /* chữ đậm */
-    -fx-background-radius: 5;        /* bo góc */
-    -fx-padding: 8 16 8 16;          /* khoảng cách trong nút */
+    -fx-background-color: #0078D7;
+    -fx-font-weight: bold;
+    -fx-padding: 10 30;
+    -fx-background-radius: 5;
+    -fx-cursor: hand;
 }
 
-/* Khi rê chuột vào */
 .button:hover {
-    -fx-background-color: #0056b3;   /* xanh đậm hơn */
-}
-
-/* Khi nhấn nút */
-.button:pressed {
-    -fx-background-color: #003f7f;   /* xanh tối */
+    -fx-background-color: #005a9e; /* Đậm hơn khi di chuột qua */
 }

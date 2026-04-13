@@ -4,25 +4,38 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:controller="app.controllers.ConnectionController" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="520.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.ConnectionController">
    <children>
       <Label alignment="CENTER" prefHeight="115.0" prefWidth="134.0" text="Sign Up">
          <font>
             <Font name="Gabriola" size="38.0" />
          </font>
       </Label>
-      <TextField fx:id="getUserName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="User name" />
+      <TextField fx:id="getUserName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="User name">
+         <effect>
+            <Reflection />
+         </effect></TextField>
       <Label />
-      <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Email" />
+      <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Email">
+         <effect>
+            <Reflection />
+         </effect></TextField>
       <Label />
-      <PasswordField fx:id="getPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Enter your password" />
+      <PasswordField fx:id="getPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Enter your password">
+         <effect>
+            <Reflection />
+         </effect></PasswordField>
       <Label />
-      <PasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Confirm password" />
-      <Label />
-      <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#handleSignUp" text="Sign up" />
-      <Label fx:id = "status" />
+      <PasswordField fx:id="confirmPassword" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Confirm password">
+         <effect>
+            <Reflection />
+         </effect></PasswordField>
+      <Label prefHeight="34.0" prefWidth="0.0" />
+      <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#handleSignUp" stylesheets="@style.css" text="Sign up" />
+      <Label fx:id="status" />
    </children>
 </VBox>

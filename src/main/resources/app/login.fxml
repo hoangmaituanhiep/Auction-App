@@ -20,20 +20,27 @@
       </font>
    </Label>
 
-    <Label text="Username: " />
-    <TextField fx:id="getUserName" promptText="User name">
+    <Label text="Username: ">
+      <font>
+         <Font name="System Bold" size="16.0" />
+      </font></Label>
+    <TextField fx:id="getUserName" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="User name">
       <effect>
          <Reflection bottomOpacity="0.22" fraction="0.74" topOpacity="0.73" />
       </effect></TextField>
 
-    <Label text="Password: " />
-    <PasswordField fx:id="getPassword" promptText="Enter your password: ">
+    <Label text="Password: ">
+      <font>
+         <Font name="System Bold" size="16.0" />
+      </font></Label>
+    <PasswordField fx:id="getPassword" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Enter your password: ">
       <effect>
          <Reflection bottomOpacity="0.23" />
       </effect></PasswordField>
+   <Label />
 
     <Button fx:id="signInButton" onAction="#handleLogin" stylesheets="@style.css" text="Login" />
-   <TextField fx:id="forgotPassword" alignment="CENTER" disable="true" prefHeight="26.0" prefWidth="334.0" promptText="Forgot your login details?" />
+   <TextField fx:id="forgotPassword" alignment="CENTER" disable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Forgot your login details?" />
     <Label fx:id="status" />
 
 </VBox>
