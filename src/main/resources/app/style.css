@@ -1,6 +1,6 @@
 /* Tổng thể nền của ứng dụng */
 .root {
-    -fx-background-color: #fdfafa; /* Màu tối giống nền Scene Builder của bạn */
+    -fx-background-color: #fefefe; 
 }
 
 /* Thẻ VBox chứa form (màu trắng ở giữa) */
@@ -38,6 +38,7 @@
     -fx-padding: 10 30;
     -fx-background-radius: 5;
     -fx-cursor: hand;
+    -fx-text-fill: #FFFF
 }
 
 .button:hover {
