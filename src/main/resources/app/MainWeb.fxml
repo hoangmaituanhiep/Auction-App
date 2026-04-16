@@ -37,7 +37,7 @@
                   <Insets top="36.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="logIn" mnemonicParsing="false" prefHeight="42.0" prefWidth="69.0" style="-fx-background-color: #00000000; -fx-text-fill: #000000;" text="LOG IN">
+            <Button fx:id="logIn" mnemonicParsing="false" onAction="#handleLogIn" prefHeight="42.0" prefWidth="69.0" style="-fx-background-color: #00000000; -fx-text-fill: #000000;" text="LOG IN">
                <HBox.margin>
                   <Insets left="30.0" top="30.0" />
                </HBox.margin>
