@@ -8,9 +8,9 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainWebController">
    <top>
-      <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fitHeight="85.0" fitWidth="124.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -20,7 +20,7 @@
                   <Insets left="15.0" right="15.0" top="10.0" />
                </HBox.margin>
             </ImageView>
-            <TextField alignment="CENTER" prefHeight="31.0" prefWidth="245.0" promptText="Search items...">
+            <TextField fx:id="searchItems" alignment="CENTER" prefHeight="31.0" prefWidth="245.0" promptText="Search items...">
                <HBox.margin>
                   <Insets top="30.0" />
                </HBox.margin>
@@ -37,12 +37,12 @@
                   <Insets top="30.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" style="-fx-background-color: #00000000; -fx-text-fill: #000000;" text="LOG IN">
+            <Button fx:id="logIn" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" style="-fx-background-color: #00000000; -fx-text-fill: #000000;" text="LOG IN">
                <HBox.margin>
                   <Insets left="15.0" top="30.0" />
                </HBox.margin>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="JOIN">
+            <Button fx:id="join" mnemonicParsing="false" prefHeight="31.0" prefWidth="62.0" text="JOIN">
                <HBox.margin>
                   <Insets left="20.0" top="30.0" />
                </HBox.margin>
