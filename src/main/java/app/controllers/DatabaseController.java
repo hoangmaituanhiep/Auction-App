@@ -5,22 +5,11 @@ import app.functions.*;
 import java.sql.*;
 
 public class DatabaseController {
-    private final String itemsPath = "jdbc:sqlite:database/items.db";
+    private static final String itemsPath = "jdbc:sqlite:database/items.db";
 
-    private String createTable = "CREATE TABLE IF NOT EXIST items (name, startingPrice REAL NOT NULL, detail)";
-    private String insertSql = "INSERT INTO items(name, startingPrice, detail) VALUES(?, ?, ?)";
+    private static String insertSql = "INSERT INTO items(name, startingPrice, detail) VALUES(?, ?, ?)";
 
-    DatabaseController() {
-        try (Connection connection = DriverManager.getConnection(itemsPath); 
-            Statement status = connection.createStatement()) {
-                status.execute(createTable);
-            }
-        catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean insertDB(Item item) {
+    public static boolean insertDB(Item item) {
         try (Connection connection = DriverManager.getConnection(itemsPath);
             PreparedStatement add = connection.prepareStatement(insertSql)) {
                 String itemName = item.getName();

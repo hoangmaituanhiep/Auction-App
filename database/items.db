@@ -1,0 +1,5 @@
+CREATE TABLE items (
+    name TEXT,
+    startingPrice REAL NOT NULL,
+    detail TEXT
+);
