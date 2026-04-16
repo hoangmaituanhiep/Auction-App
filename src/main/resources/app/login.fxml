@@ -51,6 +51,7 @@
    <HBox alignment="CENTER" prefHeight="32.0" prefWidth="470.0">
       <children>
          <TextField alignment="CENTER" promptText="Don't have an account?" style="-fx-border-width: 1 0 0 0;" />
+         <Hyperlink text="Sign up" />
       </children>
    </HBox>
     <Label fx:id="status" />
