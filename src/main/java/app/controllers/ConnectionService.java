@@ -4,7 +4,7 @@ import java.io.File;
 import java.sql.*;
 
 public class ConnectionService {
-    private final String databaseUrl = "jdbc:sqlite:database/users.db";
+    private final String databaseUrl = "jdbc:sqlite:src/main/resources/database/users.db";
 
     public boolean authenticate(String username, String password) {
         String query = "SELECT password FROM users WHERE username = ?";
