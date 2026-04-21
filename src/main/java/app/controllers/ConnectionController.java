@@ -6,6 +6,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -21,6 +22,9 @@ public class ConnectionController {
     @FXML private Label status;
     @FXML private PasswordField confirmPassword;
     @FXML private Button signUpButton;
+    @FXML private Hyperlink signUpLink;
+    @FXML private Button signInButton;
+
 
     private final ConnectionService service = new ConnectionService();
 
@@ -28,6 +32,16 @@ public class ConnectionController {
     public void handleLogin() {
         if(service.authenticate(getUserName.getText(), getPassword.getText())) {
             status.setText("Successfull!");
+            try {
+                FXMLLoader mainAppLoader = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
+                Scene mainScene = new Scene(mainAppLoader.load());
+                Stage mainStage = (Stage) signInButton.getScene().getWindow();
+                mainStage.setScene(mainScene);
+            }
+            catch (IOException e) {
+                status.setText("Cannot navigate to the Main page. Come again next time!");
+                e.printStackTrace();
+            }
         }
         else {
             status.setText("Failed to login.");
@@ -53,4 +67,17 @@ public class ConnectionController {
             status.setText("Failed to register.");
         }
     }
+    @FXML
+    public void callSignUp() {
+        try {
+            FXMLLoader signUpLoader = new FXMLLoader(getClass().getResource("/app/signup.fxml"));
+            Scene signUpScene = new Scene(signUpLoader.load());
+            Stage signUpStage = (Stage) signUpLink.getScene().getWindow();
+            signUpStage.setScene(signUpScene);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
+
