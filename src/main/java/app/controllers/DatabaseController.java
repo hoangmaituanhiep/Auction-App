@@ -6,6 +6,22 @@ import java.sql.*;
 
 public class DatabaseController {
     private static final String itemsPath = "jdbc:sqlite:database/items.db";
+    
+    public static void initialize() {
+        String createTable = "CREATE TABLE IF NOT EXISTS (id TEXT KEY, name TEXT NOT NULL, startingPrice REAL NOT NULL, detail TEXT)";
+
+        try (Connection connection = DriverManager.getConnection(itemsPath);
+            Statement statement = connection.createStatement();) {
+                statement.execute(createTable);
+                System.out.println("Database ready");
+            }
+        catch (SQLTimeoutException e) {
+            e.printStackTrace();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     private static String insertSql = "INSERT INTO items(name, startingPrice, detail) VALUES(?, ?, ?)";
 

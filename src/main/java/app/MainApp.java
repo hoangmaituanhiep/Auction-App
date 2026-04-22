@@ -1,6 +1,8 @@
 package app;
 
 import java.io.IOException;
+
+import app.controllers.DatabaseController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -24,6 +26,9 @@ public class MainApp extends Application {
         //Must mark a thread daemon before start, only daemon threads run when VTM start
         serverThread.setDaemon(true);//VTM exists when all threads running are deamon threads
         serverThread.start();
+
+        //Initial the database
+        DatabaseController.initialize();
 
         //Get the FXML file to load on screen
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
