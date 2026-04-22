@@ -5,7 +5,7 @@ import app.functions.*;
 import java.sql.*;
 
 public class DatabaseController {
-    private static final String itemsPath = "jdbc:sqlite:database/items.db";
+    private static final String itemsPath = "jdbc:sqlite:src/main/resources/database/items.db";
     
     public static void initialize() {
         String createTable = "CREATE TABLE IF NOT EXISTS (id TEXT KEY, name TEXT NOT NULL, startingPrice REAL NOT NULL, detail TEXT)";
