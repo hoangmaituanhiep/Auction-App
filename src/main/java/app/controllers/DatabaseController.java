@@ -8,7 +8,7 @@ public class DatabaseController {
     private static final String itemsPath = "jdbc:sqlite:src/main/resources/database/items.db";
     
     public static void initialize() {
-        String createTable = "CREATE TABLE IF NOT EXISTS (id TEXT KEY, name TEXT NOT NULL, startingPrice REAL NOT NULL, detail TEXT)";
+        String createTable = "CREATE TABLE IF NOT EXISTS items (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, startingPrice REAL NOT NULL, detail TEXT)";
 
         try (Connection connection = DriverManager.getConnection(itemsPath);
             Statement statement = connection.createStatement();) {
