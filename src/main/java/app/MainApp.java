@@ -40,9 +40,6 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(root, 1280, 720); // preheight and prewidth in MainWeb pages
 
-        Image icon = new Image(getClass().getResourceAsStream("/app/images/logo.png"));
-
-        primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aution App");
         primaryStage.show();
