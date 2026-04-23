@@ -7,6 +7,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import javax.swing.text.html.ImageView;
@@ -36,11 +37,11 @@ public class MainApp extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
         Parent root = loader.load();//Load the scene into ram
 
-        Scene scene = new Scene(root, 1280, 720); //preheight and prewidth in MainWeb pages
+        Scene scene = new Scene(root, 1280, 720); //preheight and prewidth in MainWeb pages 
 
-        Image icon = new Image("/app/icon.ico");
+        Image icon = new Image(getClass().getResourceAsStream("/app/icon.ico"));
 
-        primaryStage.setIcon(icon);
+        primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aution App");
         primaryStage.show();
