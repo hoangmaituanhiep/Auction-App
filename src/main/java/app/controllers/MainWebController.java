@@ -21,9 +21,11 @@ public class MainWebController {
             Stage loginStage = new Stage();
             loginStage.setScene(loginScene);
             loginStage.show();
+            logIn.setManaged(false);
         }
         catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 }
