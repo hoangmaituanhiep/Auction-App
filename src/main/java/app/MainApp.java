@@ -13,10 +13,10 @@ import javafx.stage.Stage;
 import javax.swing.text.html.ImageView;
 
 public class MainApp extends Application {
-    private static int port = 0;//default port
+    private static int port = 0;// default port
 
     @Override
-    public void start(Stage primaryStage) throws IOException{
+    public void start(Stage primaryStage) throws IOException {
 
         Thread serverThread = new Thread(() -> {
             Server server = Server.getInstance(port);
@@ -26,36 +26,37 @@ public class MainApp extends Application {
                 System.err.println("Failed to start server: " + e.getMessage());
             }
         });
-        //Must mark a thread daemon before start, only daemon threads run when VTM start
-        serverThread.setDaemon(true);//VTM exists when all threads running are deamon threads
+        // Must mark a thread daemon before start, only daemon threads run when VTM
+        // start
+        serverThread.setDaemon(true);// VTM exists when all threads running are deamon threads
         serverThread.start();
 
-        //Initial the database
+        // Initial the database
         DatabaseController.initialize();
 
-        //Get the FXML file to load on screen
+        // Get the FXML file to load on screen
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
-        Parent root = loader.load();//Load the scene into ram
+        Parent root = loader.load();// Load the scene into ram
 
-        Scene scene = new Scene(root, 1280, 720); //preheight and prewidth in MainWeb pages 
+        Scene scene = new Scene(root, 1280, 720); // preheight and prewidth in MainWeb pages
 
-        Image icon = new Image(getClass().getResourceAsStream("/app/icon.ico"));
+        Image icon = new Image(getClass().getResourceAsStream("/app/images/logo.png"));
 
         primaryStage.getIcons().add(icon);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aution App");
         primaryStage.show();
     }
+
     public static void main(String[] args) throws IOException {
-        //get port
+        // get port
         if (args.length > 0) {
             try {
                 port = Integer.parseInt(args[0]);
-            }
-            catch (NumberFormatException e) {
+            } catch (NumberFormatException e) {
                 System.err.println("Invalid port");
             }
         }
-        Application.launch(args);//call start and pass port indirectly
+        Application.launch(args);// call start and pass port indirectly
     }
 }
