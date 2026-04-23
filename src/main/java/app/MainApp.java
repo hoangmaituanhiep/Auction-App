@@ -9,6 +9,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.swing.text.html.ImageView;
+
 public class MainApp extends Application {
     private static int port = 0;//default port
 
@@ -36,6 +38,9 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(root, 1280, 720); //preheight and prewidth in MainWeb pages
 
+        Image icon = new Image("/app/icon.ico");
+
+        primaryStage.setIcon(icon);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Aution App");
         primaryStage.show();
