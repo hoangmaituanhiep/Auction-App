@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import app.functions.User;
+import app.dao.*;
 
 
 public class ConnectionController {
@@ -26,9 +27,6 @@ public class ConnectionController {
 
     private final ConnectionService service = new ConnectionService();
 
-    interface loginListener{
-        void loginSucceeded(String username);
-    }
     private loginListener listener;
     public void setLoginListener(loginListener listener) {this.listener=listener;}
 
