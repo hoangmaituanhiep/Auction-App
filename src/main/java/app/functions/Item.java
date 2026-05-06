@@ -71,66 +71,49 @@ public abstract class Item extends Entity {
     public void setImage(Image image) {
         this.image = image;
     }
+    
+    public int getDuration() {
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(now, endTime);
+        return (int) duration.toHours();
+    }
 
     public abstract String toString();
 }
 
 class Electronics extends Item {
-    private String company;
 
     public Electronics(String name, String company) {
         super(name);
-        this.company = company;
-    }
-
-    public String getCompany() {
-        return company;
     }
 
     @Override
     public String toString() {
         return "Name: " + super.getName() +
-                "\nCompany: " + company +
                 "\nDescribe: " + super.getDetail() +
                 "\nPrice: " + super.getCurrent_Price();
     }
 }
 
 class Art extends Item {
-    private String artist_name;
-
     public Art(String name, String artist_name) {
         super(name);
-        this.artist_name = artist_name;
-    }
-
-    public String getArtist_name() {
-        return artist_name;
     }
 
     public String toString() {
         return "Name: " + super.getName() +
-                "\nArtist: : " + artist_name +
                 "\nDescribe: " + super.getDetail() +
                 "\nPrice: " + super.getCurrent_Price();
     }
 }
 
 class Vehicle extends Item {
-    private String company;
-
     public Vehicle(String name, String company) {
         super(name);
-        this.company = company;
-    }
-
-    public String getCompany() {
-        return company;
     }
 
     public String toString() {
         return "Name: " + super.getName() +
-                "\nCompany: " + company +
                 "\nDescribe: " + super.getDetail() +
                 "\nPrice: " + super.getCurrent_Price();
     }
