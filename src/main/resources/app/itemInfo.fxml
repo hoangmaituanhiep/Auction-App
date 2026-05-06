@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
@@ -63,5 +64,10 @@
             <TextField prefHeight="56.0" prefWidth="390.0" promptText="Enter time (in minutes)" />
          </children>
       </HBox>
+      <Button fx:id="sellItem" minWidth="-Infinity" mnemonicParsing="false" onAction="#addSellingItem" prefWidth="100.0" text="Sell">
+         <VBox.margin>
+            <Insets left="250.0" />
+         </VBox.margin>
+      </Button>
    </children>
 </VBox>
