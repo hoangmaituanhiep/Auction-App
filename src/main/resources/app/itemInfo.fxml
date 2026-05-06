@@ -24,7 +24,7 @@
                <HBox.margin>
                   <Insets left="50.0" right="15.0" />
                </HBox.margin></Label>
-            <TextField prefHeight="40.0" prefWidth="386.0" promptText="Enter name..." style="-fx-border-width: 0 0 1 0; -fx-border-color: #cccccc;">
+            <TextField fx:id="getItemName" prefHeight="40.0" prefWidth="386.0" promptText="Enter name..." style="-fx-border-width: 0 0 1 0; -fx-border-color: #cccccc;">
                <HBox.margin>
                   <Insets right="20.0" />
                </HBox.margin>
@@ -43,25 +43,25 @@
       <HBox prefHeight="58.0" prefWidth="600.0">
          <children>
             <Label alignment="CENTER" prefHeight="58.0" prefWidth="150.0" text="Company:" />
-            <TextField prefHeight="50.0" prefWidth="382.0" promptText="Enter company..." />
+            <TextField fx:id="getCompany" prefHeight="50.0" prefWidth="382.0" promptText="Enter company..." />
          </children>
       </HBox>
       <HBox prefHeight="57.0" prefWidth="600.0">
          <children>
             <Label alignment="CENTER" prefHeight="54.0" prefWidth="152.0" text="Details:" />
-            <TextField prefHeight="50.0" prefWidth="378.0" promptText="Write details..." />
+            <TextField fx:id="getDetails" prefHeight="50.0" prefWidth="378.0" promptText="Write details..." />
          </children>
       </HBox>
       <HBox prefHeight="66.0" prefWidth="600.0">
          <children>
             <Label alignment="CENTER" prefHeight="65.0" prefWidth="145.0" text="Starting Price:" />
-            <TextField prefHeight="64.0" prefWidth="390.0" promptText="Enter Starting Price..." />
+            <TextField fx:id="getStrartingPrice" prefHeight="64.0" prefWidth="390.0" promptText="Enter Starting Price..." />
          </children>
       </HBox>
       <HBox prefHeight="100.0" prefWidth="200.0">
          <children>
             <Label alignment="CENTER" prefHeight="60.0" prefWidth="149.0" text="Duration" />
-            <TextField prefHeight="56.0" prefWidth="390.0" promptText="Enter time (in minutes)" />
+            <TextField fx:id="getDuration" prefHeight="56.0" prefWidth="390.0" promptText="Enter time (in minutes)" />
          </children>
       </HBox>
       <Button fx:id="sellItem" minWidth="-Infinity" mnemonicParsing="false" onAction="#addSellingItem" prefWidth="100.0" text="Sell">
