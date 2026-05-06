@@ -31,7 +31,7 @@ public class ConnectionService {
     if (userDAO.userExists(username)) {
       String storedPassword = userDAO.getPassword(username);
 
-      return storedPassword == password;
+      return password.equals(storedPassword);
     }
     return false;
   }
