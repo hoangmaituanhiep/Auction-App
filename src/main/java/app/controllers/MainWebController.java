@@ -32,6 +32,8 @@ public class MainWebController {
   @FXML
   private TextField searchItems;
   @FXML
+  private TextField serverIp;
+  @FXML
   private Button logIn;
   @FXML
   private Button join;
@@ -93,7 +95,7 @@ public class MainWebController {
     logger.debug("DEBUG: Connecting to server...");
     networkClient = NetworkClient.getInstance();
     try {
-      networkClient.connect("127.0.0.1", MainApp.getPort());
+      networkClient.connect(serverIp.getText(), MainApp.getPort());
       logger.info("INFO: Connected successfully at: " + MainApp.getPort());
       enterAuction.setVisible(false);
       enterAuction.setManaged(false);
@@ -104,7 +106,7 @@ public class MainWebController {
       }
     }
     catch (IOException e) {
-      logger.error("ERROR: Cannot connect to server. " + e.getMessage());
+      logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
     }
     catch (ClassNotFoundException e) {
       logger.error("ERROR: " + e.getMessage());
