@@ -71,6 +71,12 @@ public abstract class Item extends Entity {
     public void setImage(Image image) {
         this.image = image;
     }
+    
+    public int getDuration() {
+        LocalDateTime now = LocalDateTime.now();
+        Duration duration = Duration.between(now, endTime);
+        return (int) duration.toHours();
+    }
 
     public abstract String toString();
 }
