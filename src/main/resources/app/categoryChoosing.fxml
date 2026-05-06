@@ -8,7 +8,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="607.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Label fx:id="electronicCategory" alignment="CENTER" prefHeight="153.0" prefWidth="600.0" text="Auction Item">
@@ -25,10 +24,10 @@
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="358.0" prefWidth="582.0">
                <children>
-                  <Button fx:id="electronic" layoutX="195.0" layoutY="14.0" mnemonicParsing="false" prefHeight="62.0" prefWidth="166.0" text="Electronic" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="15.0" />
-                  <Button fx:id="artCategory" layoutX="200.0" layoutY="91.0" mnemonicParsing="false" prefHeight="59.0" prefWidth="165.0" text="Art" />
-                  <Button fx:id="vehicleCategory" layoutX="202.0" layoutY="164.0" mnemonicParsing="false" prefHeight="57.0" prefWidth="162.0" text="Vehicle" />
-                  <Button fx:id="otherCategory" layoutX="202.0" layoutY="236.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="159.0" text="Other" />
+                  <Button fx:id="electronic" layoutX="195.0" layoutY="14.0" mnemonicParsing="false" onAction="#electronicChoosing" prefHeight="62.0" prefWidth="166.0" text="Electronic" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="15.0" />
+                  <Button fx:id="artCategory" layoutX="200.0" layoutY="91.0" mnemonicParsing="false" onAction="#artChoosing" prefHeight="59.0" prefWidth="165.0" text="Art" />
+                  <Button fx:id="vehicleCategory" layoutX="202.0" layoutY="164.0" mnemonicParsing="false" onAction="#vehicleChoosing" prefHeight="57.0" prefWidth="162.0" text="Vehicle" />
+                  <Button fx:id="otherCategory" layoutX="202.0" layoutY="236.0" mnemonicParsing="false" onAction="#otherChoosing" prefHeight="50.0" prefWidth="159.0" text="Other" />
                </children>
                <effect>
                   <DropShadow />
