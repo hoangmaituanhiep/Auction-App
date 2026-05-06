@@ -43,7 +43,6 @@ public class ItemDAO{
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert)) {
           preStatement.setString(1, item.getName());
-          preStatement.setString(2, item.getCompany());
           preStatement.setString(3, item.getDetail());
           preStatement.setDouble(4, item.getStartingPrice());
           preStatement.setInt(5, item.getDuration());
