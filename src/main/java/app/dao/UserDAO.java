@@ -40,7 +40,10 @@ public class UserDAO {
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getUsersUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert)) {
           preStatement.setString(1, username);
-          preStatement.setString(2, password);
+          preStatement.setString(2, "null");
+          preStatement.setString(3, password);
+          
+          preStatement.executeUpdate();
           
           logger.info("INFO: Successfully created new user.");
           return true;
