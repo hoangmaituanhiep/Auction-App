@@ -9,6 +9,7 @@ public abstract class User extends Entity {
     private static User instance;
     protected String userName;
     protected Auction auction;
+    protected String email;
 
     public static User getInstance() {
         // Just need one user object for each guys access the app
@@ -25,6 +26,13 @@ public abstract class User extends Entity {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void participate(Auction auction) {
