@@ -80,8 +80,8 @@ public class MainWebController {
       loginStage.setScene(loginScene);
       loginStage.show();
 
-      join.setVisible(false);
-      join.setManaged(false);
+      logIn.setVisible(false);
+      logIn.setManaged(false);
     } catch (IOException e) {
       e.printStackTrace();
     }
