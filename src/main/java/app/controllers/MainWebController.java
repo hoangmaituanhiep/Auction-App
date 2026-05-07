@@ -7,8 +7,10 @@ import org.slf4j.LoggerFactory;
 import app.MainApp;
 import app.NetworkClient;
 import app.dao.ItemDAO;
+import app.dao.UserDAO;
 import app.packets.Message;
 import app.packets.PacketMessage;
+import app.services.ConnectionService;
 import app.services.ItemsService;
 
 import org.slf4j.Logger;
@@ -26,6 +28,7 @@ public class MainWebController {
 
   private NetworkClient networkClient;
   private ItemsService itemsService;
+  private ConnectionService connectionService;
 
   @FXML
   private BorderPane mainPane;
@@ -44,13 +47,19 @@ public class MainWebController {
   @FXML
   private Label logInLabel;
   @FXML
+  private Label connectServerLabel;
+  @FXML
   private TilePane auctionPane;
 
   public MainWebController() {
     ItemDAO itemDAO = new ItemDAO();
+    UserDAO userDAO = new UserDAO();
+
     this.itemsService = new ItemsService(itemDAO);
+    this.connectionService = new ConnectionService(userDAO);
 
     this.itemsService.setupDatabase();
+    this.connectionService.setupDatabase();
   }
 
   private static MainWebController instance;
@@ -70,6 +79,9 @@ public class MainWebController {
       Stage loginStage = new Stage();
       loginStage.setScene(loginScene);
       loginStage.show();
+
+      join.setVisible(false);
+      join.setManaged(false);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -98,7 +110,12 @@ public class MainWebController {
       networkClient.connect(serverIp.getText(), MainApp.getPort());
       logger.info("INFO: Connected successfully at: " + MainApp.getPort());
       enterAuction.setVisible(false);
+      connectServerLabel.setVisible(false);
+      serverIp.setVisible(false);
+
       enterAuction.setManaged(false);
+      connectServerLabel.setManaged(false);
+      serverIp.setVisible(false);
 
       PacketMessage welcomePacket = networkClient.receivePacket();
       if (welcomePacket != null && welcomePacket.getType() == Message.WELCOME) {

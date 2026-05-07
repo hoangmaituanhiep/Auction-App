@@ -67,7 +67,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" contentDisplay="CENTER" text="Enter the Server's IP to enter the Auction (Ex: 192.168.0.1)" textAlignment="CENTER">
+            <Label fx:id="connectServerLabel" alignment="CENTER" contentDisplay="CENTER" text="Enter the Server's IP to enter the Auction (Ex: 192.168.0.1)" textAlignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>

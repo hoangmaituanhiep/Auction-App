@@ -2,15 +2,12 @@ package app;
 
 import java.io.IOException;
 
-import app.controllers.DatabaseController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
-import javax.swing.text.html.ImageView;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,15 +21,9 @@ public class MainApp extends Application {
     return port;
   }
 
-  private NetworkClient networkClient;
 
   @Override
   public void start(Stage primaryStage) throws IOException {
-    networkClient = NetworkClient.getInstance();
-
-    // Initial the database
-    DatabaseController.initialize();
-
     // Get the FXML file to load on screen
     FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
     Parent root = loader.load();// Load the scene into ram
