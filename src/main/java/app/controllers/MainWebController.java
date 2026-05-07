@@ -52,7 +52,7 @@ public class MainWebController {
   @FXML
   private TilePane auctionPane;
   @FXML
-  private static ScrollPane auctionScrollPane = new ScrollPane(new HBox(10));
+  private ScrollPane auctionScrollPane;
 
   public MainWebController() {
     ItemDAO itemDAO = new ItemDAO();
@@ -67,6 +67,14 @@ public class MainWebController {
   }
 
   public ScrollPane getScrollPane() {
+    if (auctionScrollPane == null) {
+      HBox hBox = new HBox(10);
+      hBox.setStyle("-fx-border-color: red; -fx-min-width: 50; -fx-min-height: 50;");
+      auctionScrollPane = new ScrollPane();
+      auctionScrollPane.setContent(hBox);
+      auctionScrollPane.setFitToHeight(true);
+      auctionScrollPane.setFitToWidth(true);
+    }
     return auctionScrollPane;
   }
 
