@@ -11,7 +11,6 @@ import app.dao.UserDAO;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
-import app.services.ConnectionService;
 import app.services.ItemsService;
 
 import org.slf4j.Logger;
@@ -29,9 +28,7 @@ public class MainWebController {
 
   private NetworkClient networkClient;
   private ItemsService itemsService;
-  private ConnectionService connectionService;
   private User user;
-  private boolean logedIn;
 
   @FXML
   private BorderPane mainPane;
@@ -58,8 +55,6 @@ public class MainWebController {
     ItemDAO itemDAO = new ItemDAO();
     this.itemsService = new ItemsService(itemDAO);
     this.itemsService.setupDatabase();
-
-    logedIn = false;
   }
 
   private static MainWebController instance;
@@ -68,10 +63,7 @@ public class MainWebController {
     return instance;
   }
 
-  public boolean getLogedIn() {return this.logedIn;}
   public void toggleLogedin() {
-    logedIn = true;
-
     logIn.setVisible(false);
     logIn.setManaged(false);
     join.setDisable(false);
