@@ -61,7 +61,6 @@ public class MainWebController {
     this.itemsService.setupDatabase();
     this.connectionService.setupDatabase();
 
-    searchItems.setDisable(true);
     join.setDisable(true);
     sell.setDisable(true);
     logIn.setDisable(true);
@@ -90,7 +89,6 @@ public class MainWebController {
 
       join.setDisable(false);
       sell.setDisable(false);
-      searchItems.setDisable(false);
     } catch (IOException e) {
       e.printStackTrace();
     }
