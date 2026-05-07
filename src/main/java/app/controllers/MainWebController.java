@@ -8,6 +8,7 @@ import app.MainApp;
 import app.NetworkClient;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
+import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.services.ConnectionService;
@@ -29,6 +30,8 @@ public class MainWebController {
   private NetworkClient networkClient;
   private ItemsService itemsService;
   private ConnectionService connectionService;
+  private User user;
+  private boolean logedIn;
 
   @FXML
   private BorderPane mainPane;
@@ -53,47 +56,51 @@ public class MainWebController {
 
   public MainWebController() {
     ItemDAO itemDAO = new ItemDAO();
-    UserDAO userDAO = new UserDAO();
-
     this.itemsService = new ItemsService(itemDAO);
-    this.connectionService = new ConnectionService(userDAO);
-
     this.itemsService.setupDatabase();
-    this.connectionService.setupDatabase();
+
+    logedIn = false;
   }
 
   private static MainWebController instance;
 
   public static MainWebController getInstance() {
-    if (instance == null) {
-      instance = new MainWebController();
-    }
     return instance;
+  }
+
+  public boolean getLogedIn() {return this.logedIn;}
+  public void toggleLogedin() {
+    logedIn = true;
+
+    logIn.setVisible(false);
+    logIn.setManaged(false);
+    join.setDisable(false);
+    sell.setDisable(false);
+    searchItems.setDisable(false);
+    logInLabel.setText("Hi "+ user.getUserName());
   }
 
   @FXML
   public void initialize() {
+    instance = this;
+
     searchItems.setDisable(true);
     join.setDisable(true);
     sell.setDisable(true);
     logIn.setDisable(true);
+
+    user = User.getInstance();
   }
 
   @FXML
   public void callLogIn() {
+    logger.debug("DEBUG: Processing Login");
     try {
       FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("/app/login.fxml"));
       Scene loginScene = new Scene(loginLoader.load());
       Stage loginStage = new Stage();
       loginStage.setScene(loginScene);
-      loginStage.show();
-
-      logIn.setVisible(false);
-      logIn.setManaged(false);
-
-      join.setDisable(false);
-      sell.setDisable(false);
-      searchItems.setDisable(false);
+      loginStage.show();    
     } catch (IOException e) {
       e.printStackTrace();
     }

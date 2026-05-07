@@ -36,7 +36,7 @@ public class ConnectionService {
     return false;
   }
 
-  public boolean authenticate(String username, String password, String confirmPassword) {
+  public boolean authenticate(String username, String password, String confirmPassword, String email) {
     logger.debug("DEBUG: Registering...");
 
     if (userDAO.userExists(username)){
@@ -49,7 +49,7 @@ public class ConnectionService {
       return false;
     }
 
-    userDAO.insertUser(username, confirmPassword);
+    userDAO.insertUser(username, confirmPassword, email);
 
     logger.info("INFO: Successfully created new user");
     return true;

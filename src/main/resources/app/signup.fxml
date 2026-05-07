@@ -20,7 +20,7 @@
             <Reflection />
          </effect></TextField>
       <Label />
-      <TextField maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Email">
+      <TextField fx:id="getEmail" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="26.0" prefWidth="360.0" promptText="Email">
          <effect>
             <Reflection />
          </effect></TextField>

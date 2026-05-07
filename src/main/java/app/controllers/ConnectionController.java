@@ -22,6 +22,8 @@ public class ConnectionController {
   @FXML
   private TextField getUserName;
   @FXML
+  private TextField getEmail;
+  @FXML
   private PasswordField getPassword;
   @FXML
   private Label status;
@@ -37,12 +39,15 @@ public class ConnectionController {
   private static final Logger logger = LoggerFactory.getLogger(ConnectionController.class);
 
   private ConnectionService service;
+  private MainWebController mainWebController;
   
   public ConnectionController() {
     UserDAO userDAO = new UserDAO();
     this.service = new ConnectionService(userDAO);
 
     service.setupDatabase();
+
+    mainWebController = MainWebController.getInstance();
   }
 
   @FXML
@@ -56,6 +61,8 @@ public class ConnectionController {
       logger.info("INFO: Login succeeded. Closing window ...");
       Stage thisStage = (Stage) signInButton.getScene().getWindow();
       thisStage.close();
+
+      mainWebController.toggleLogedin();
     } else {
       logger.error("ERROR: Authentication failed!");
     }
@@ -65,7 +72,7 @@ public class ConnectionController {
   public void handleSignUp() {
     logger.debug("DEBUG: Signing up...");
 
-    if (service.authenticate(getUserName.getText(), getPassword.getText(), confirmPassword.getText())) {
+    if (service.authenticate(getUserName.getText(), getPassword.getText(), confirmPassword.getText(), getEmail.getText())) {
       
       logger.info("INFO: Signup succeeded. Navigating to login...");
 

@@ -16,6 +16,12 @@ import app.functions.User;
 public class UserDAO {
   private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
 
+  private User user;
+
+  public UserDAO() {
+    user = User.getInstance();
+  }
+
   public void createTable() {
     logger.debug("DEBUG: Initializing user table database...");
 
@@ -32,7 +38,7 @@ public class UserDAO {
     }
   }
 
-  public boolean insertUser(String username, String password) {
+  public boolean insertUser(String username, String password, String email) {
     logger.debug("DEBUG: Inserting new user");
 
     String insert = "INSERT INTO user(username, email, password) VALUES(?, ?, ?)";
@@ -40,12 +46,16 @@ public class UserDAO {
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getUsersUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert)) {
           preStatement.setString(1, username);
-          preStatement.setString(2, "null");
+          preStatement.setString(2, email);
           preStatement.setString(3, password);
           
           preStatement.executeUpdate();
           
           logger.info("INFO: Successfully created new user.");
+
+          user.setUserName(username);
+          user.setEmail(email);
+          
           return true;
         }
     catch (SQLException e) {
