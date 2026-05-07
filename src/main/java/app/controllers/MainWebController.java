@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
+import javafx.scene.layout.HBox;
 
 
 public class MainWebController {
@@ -51,7 +52,7 @@ public class MainWebController {
   @FXML
   private TilePane auctionPane;
   @FXML
-  private ScrollPane auctionScrollPane;
+  private static ScrollPane auctionScrollPane = new ScrollPane(new HBox(10));
 
   public MainWebController() {
     ItemDAO itemDAO = new ItemDAO();
@@ -65,6 +66,10 @@ public class MainWebController {
     return instance;
   }
 
+  public ScrollPane getScrollPane() {
+    return auctionScrollPane;
+  }
+
   public void toggleLogedin() {
     logIn.setVisible(false);
     logIn.setManaged(false);
@@ -73,6 +78,8 @@ public class MainWebController {
     searchItems.setDisable(false);
     auctionScrollPane.setDisable(false);
     auctionScrollPane.setVisible(true);
+    auctionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+    auctionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     logInLabel.setText("Hi "+ user.getUserName());
   }
 
