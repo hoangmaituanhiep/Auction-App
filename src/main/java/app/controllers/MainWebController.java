@@ -50,6 +50,8 @@ public class MainWebController {
   private Label connectServerLabel;
   @FXML
   private TilePane auctionPane;
+  @FXML
+  private ScrollPane auctionScrollPane;
 
   public MainWebController() {
     ItemDAO itemDAO = new ItemDAO();
@@ -69,6 +71,8 @@ public class MainWebController {
     join.setDisable(false);
     sell.setDisable(false);
     searchItems.setDisable(false);
+    auctionScrollPane.setDisable(false);
+    auctionScrollPane.setVisible(true);
     logInLabel.setText("Hi "+ user.getUserName());
   }
 
