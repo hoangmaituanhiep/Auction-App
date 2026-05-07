@@ -60,6 +60,11 @@ public class MainWebController {
 
     this.itemsService.setupDatabase();
     this.connectionService.setupDatabase();
+
+    searchItems.setDisable(true);
+    join.setDisable(true);
+    sell.setDisable(true);
+    logIn.setDisable(true);
   }
 
   private static MainWebController instance;
@@ -82,6 +87,10 @@ public class MainWebController {
 
       logIn.setVisible(false);
       logIn.setManaged(false);
+
+      join.setDisable(false);
+      sell.setDisable(false);
+      searchItems.setDisable(false);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -116,6 +125,8 @@ public class MainWebController {
       enterAuction.setManaged(false);
       connectServerLabel.setManaged(false);
       serverIp.setVisible(false);
+
+      logIn.setDisable(false);
 
       PacketMessage welcomePacket = networkClient.receivePacket();
       if (welcomePacket != null && welcomePacket.getType() == Message.WELCOME) {
