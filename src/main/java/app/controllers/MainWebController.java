@@ -116,8 +116,9 @@ public class MainWebController {
       FXMLLoader sellLoader = new FXMLLoader(getClass().getResource("/app/itemInfo.fxml"));
       Scene sellScene = new Scene(sellLoader.load());
 
-      Stage sellStage = (Stage) sell.getScene().getWindow();
+      Stage sellStage = new Stage();
       sellStage.setScene(sellScene);
+      sellStage.show();
     }
     catch (IOException e) {
       logger.error("ERROR:" + e.getMessage());
