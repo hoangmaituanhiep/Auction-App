@@ -60,10 +60,6 @@ public class MainWebController {
 
     this.itemsService.setupDatabase();
     this.connectionService.setupDatabase();
-
-    join.setDisable(true);
-    sell.setDisable(true);
-    logIn.setDisable(true);
   }
 
   private static MainWebController instance;
@@ -73,6 +69,14 @@ public class MainWebController {
       instance = new MainWebController();
     }
     return instance;
+  }
+
+  @FXML
+  public void initialize() {
+    searchItems.setDisable(true);
+    join.setDisable(true);
+    sell.setDisable(true);
+    logIn.setDisable(true);
   }
 
   @FXML
@@ -89,6 +93,7 @@ public class MainWebController {
 
       join.setDisable(false);
       sell.setDisable(false);
+      searchItems.setDisable(false);
     } catch (IOException e) {
       e.printStackTrace();
     }
