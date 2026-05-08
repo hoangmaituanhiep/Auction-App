@@ -56,8 +56,8 @@ public class MainWebController {
     return instance;
   }
 
-  public void addItemToAuction() {
-    Label itemLabel = new Label("Cái thằng Hoàng lồn cái thằng Hiệp cặc chó");
+  public void addItemToAuction(String itemInfo) {
+    Label itemLabel = new Label(itemInfo);
     itemLabel.setWrapText(true);
     VBox itemBox = new VBox(10);
     itemBox.setAlignment(Pos.CENTER);
@@ -67,7 +67,7 @@ public class MainWebController {
             "-fx-background-radius: 20;" +
             "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);"
         );
-    itemBox.setPrefSize(200, 100);
+    itemBox.setPrefWidth(200);
     itemBox.getChildren().add(itemLabel);
     auctionBox.getChildren().add(itemBox);
   }
