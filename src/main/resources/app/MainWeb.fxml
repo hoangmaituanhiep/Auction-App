@@ -7,7 +7,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -76,28 +75,9 @@
                   }
                 </style>
               <content>
-                <HBox fx:id="auctionBox" spacing="10"/>
+                <HBox fx:id="auctionBox" spacing="10" />
               </content>
             </ScrollPane>
-            <Label fx:id="connectServerLabel" alignment="CENTER" contentDisplay="CENTER" text="Enter the Server's IP to enter the Auction (Ex: 192.168.0.1)" textAlignment="CENTER">
-               <font>
-                  <Font size="14.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="10.0" />
-               </VBox.margin>
-            </Label>
-            <TextField fx:id="serverIp" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="200.0" promptText="Enter Server's IP">
-               <font>
-                  <Font size="15.0" />
-               </font>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets bottom="15.0" />
-               </VBox.margin>
-            </TextField>
             <Button fx:id="enterAuction" alignment="CENTER" mnemonicParsing="false" onAction="#handleEnterAuction" prefHeight="50.0" prefWidth="160.0" text="Enter Auction" textAlignment="CENTER">
                <font>
                   <Font size="16.0" />
