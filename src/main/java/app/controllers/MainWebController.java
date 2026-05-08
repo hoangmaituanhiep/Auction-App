@@ -14,6 +14,8 @@ import app.services.ItemsService;
 import org.slf4j.Logger;
 
 import javafx.fxml.*;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -55,7 +57,18 @@ public class MainWebController {
   }
 
   public void addItemToAuction() {
-    VBox itemBox = new VBox(new Label("Cái thằng Hoàng lồn cái thằng Hiệp cặc chó"));
+    Label itemLabel = new Label("Cái thằng Hoàng lồn cái thằng Hiệp cặc chó");
+    itemLabel.setWrapText(true);
+    VBox itemBox = new VBox(10);
+    itemBox.setAlignment(Pos.CENTER);
+    itemBox.setPadding(new Insets(30));
+    itemBox.setStyle(
+            "-fx-background-color: #2980b9;" + 
+            "-fx-background-radius: 20;" +
+            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);"
+        );
+    itemBox.setPrefSize(200, 100);
+    itemBox.getChildren().add(itemLabel);
     auctionBox.getChildren().add(itemBox);
   }
 
