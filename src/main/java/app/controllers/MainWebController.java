@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import app.MainApp;
 import app.NetworkClient;
-import app.dao.ItemDAO;
-import app.dao.UserDAO;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
@@ -54,12 +52,6 @@ public class MainWebController {
   @FXML
   private ScrollPane auctionScrollPane;
 
-  public MainWebController() {
-    ItemDAO itemDAO = new ItemDAO();
-    this.itemsService = new ItemsService(itemDAO);
-    this.itemsService.setupDatabase();
-  }
-
   private static MainWebController instance;
 
   public static MainWebController getInstance() {
@@ -101,6 +93,11 @@ public class MainWebController {
     logIn.setDisable(true);
 
     user = User.getInstance();
+
+    networkClient = NetworkClient.getInstance();
+    networkClient.addUIListener(Message.WELCOME, packet -> {
+      logger.info("INFO: Welcome bro.");
+    });
   }
 
   @FXML
@@ -139,6 +136,7 @@ public class MainWebController {
     networkClient = NetworkClient.getInstance();
     try {
       networkClient.connect(serverIp.getText(), MainApp.getPort());
+
       logger.info("INFO: Connected successfully at: " + MainApp.getPort());
       enterAuction.setVisible(false);
       connectServerLabel.setVisible(false);
@@ -149,17 +147,9 @@ public class MainWebController {
       serverIp.setVisible(false);
 
       logIn.setDisable(false);
-
-      PacketMessage welcomePacket = networkClient.receivePacket();
-      if (welcomePacket != null && welcomePacket.getType() == Message.WELCOME) {
-        logger.info("INFO: Welcome!");
-      }
     }
     catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
-    }
-    catch (ClassNotFoundException e) {
-      logger.error("ERROR: " + e.getMessage());
     }
   }
 

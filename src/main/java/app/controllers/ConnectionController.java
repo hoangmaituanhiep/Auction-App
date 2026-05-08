@@ -15,8 +15,11 @@ import java.io.IOException;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
-import app.dao.UserDAO;
-import app.services.ConnectionService;
+import app.NetworkClient;
+import app.packets.Message;
+import app.packets.PacketMessage;
+import app.payload.ConnectionRequestPayload;
+import app.payload.ConnectionRespondPayload;
 
 public class ConnectionController {
   @FXML
@@ -38,59 +41,93 @@ public class ConnectionController {
 
   private static final Logger logger = LoggerFactory.getLogger(ConnectionController.class);
 
-  private ConnectionService service;
   private MainWebController mainWebController;
-  
+  private NetworkClient networkClient;
+
   public ConnectionController() {
-    UserDAO userDAO = new UserDAO();
-    this.service = new ConnectionService(userDAO);
-
-    service.setupDatabase();
-
     mainWebController = MainWebController.getInstance();
+    networkClient = NetworkClient.getInstance();
+  }
+
+  public void initialize() {
+    networkClient.addUIListener(Message.LOGIN_RESPONSE, packet -> {
+      ConnectionRespondPayload response = (ConnectionRespondPayload) packet.getPayload();
+      if (response.isSuccess() ) {
+        try {
+          mainWebController.toggleLogedin();
+          FXMLLoader mainPage = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
+          Scene mainScene = new Scene(mainPage.load());
+          Stage mainStage = (Stage) signInButton.getScene().getWindow();
+          mainStage.setScene(mainScene);
+        }
+        catch (IOException e) {
+          logger.error("ERROR: {}", e.getMessage());
+        }
+      }
+      else {
+        status.setText("Login failed");
+        logger.error("Authentication failed");
+      }
+    });
+
+    networkClient.addUIListener(Message.SIGNUP_RESPONSE, packet -> {
+      ConnectionRespondPayload response = (ConnectionRespondPayload) packet.getPayload();
+      if (response.isSuccess()) {
+        logger.info("INFO: Signup succeeded. Navigating to login...");
+
+        try {
+          logger.debug("DEBUG: Switching to login...");
+          FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/login.fxml"));
+          Scene loginScene = new Scene(loader.load());
+          Stage stage = (Stage) signUpButton.getScene().getWindow();
+          stage.setScene(loginScene);
+        } catch (IOException e) {
+          status.setText("Cannot navigate to login scene. \nDon't try again.");
+          logger.error("ERROR: " + e.getMessage());
+        }
+      } else {
+        status.setText("Failed to register.");
+        logger.error("ERROR: Authentication failed.");
+      }
+    });
+
   }
 
   @FXML
   public void handleLogin() {
-    logger.debug("DEBUG: Signing in...");
-    // Why put the authenticate outside the if statement, so it can correctly
-    // process the authentication without being interrupt
-    boolean isSuccess = service.authenticate(getUserName.getText(), getPassword.getText());
+    logger.debug("DEBUG: Request signing in...");
+    String username = getUserName.getText();
+    String password = getPassword.getText();
 
-    if (isSuccess) {
-      logger.info("INFO: Login succeeded. Closing window ...");
-      Stage thisStage = (Stage) signInButton.getScene().getWindow();
-      thisStage.close();
+    try {
+      ConnectionRequestPayload loginData = new ConnectionRequestPayload(username, password);
+      PacketMessage packet = new PacketMessage(Message.LOGIN_REQUEST, loginData);
+      networkClient.sendPacket(packet);
 
-      mainWebController.toggleLogedin();
-    } else {
-      logger.error("ERROR: Authentication failed!");
+      logger.info("INFO: Sent login request");
+    } catch (IOException e) {
+      logger.error("ERROR: {}", e.getMessage());
     }
   }
 
   @FXML
   public void handleSignUp() {
     logger.debug("DEBUG: Signing up...");
+    String username = getUserName.getText();
+    String password = getPassword.getText();
+    String repassword = confirmPassword.getText();
+    String email = getEmail.getText();
 
-    if (service.authenticate(getUserName.getText(), getPassword.getText(), confirmPassword.getText(), getEmail.getText())) {
-      
-      logger.info("INFO: Signup succeeded. Navigating to login...");
+    try {
+      ConnectionRequestPayload signupData = new ConnectionRequestPayload(username, password, repassword, email);
+      PacketMessage packet = new PacketMessage(Message.SIGNUP_REQUEST, signupData);
+      networkClient.sendPacket(packet);
 
-      try {
-        logger.debug("DEBUG: Switching to login...");
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/login.fxml"));
-        Scene loginScene = new Scene(loader.load());
-        Stage stage = (Stage) signUpButton.getScene().getWindow();
-        stage.setScene(loginScene);
-      } catch (IOException e) {
-        status.setText("Cannot navigate to login scene. \nDon't try again.");
-        logger.error("ERROR: " + e.getMessage());
-      }
-    } else {
-      status.setText("Failed to register.");
-      logger.error("ERROR: Authentication failed.");
+      logger.info("INFO: Sent signup request");
+    } catch (IOException e) {
+      logger.error("ERROR {}", e.getMessage());
     }
+      
   }
 
   @FXML

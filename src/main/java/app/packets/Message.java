@@ -7,8 +7,15 @@ public enum Message {
     CANCLE_AUCTION("Cancel auction"),
     DISCONNECT("disconnect"),
     ERROR("Error"),
-    JOIN_AUCTION("Join auction");
+    JOIN_AUCTION("Join auction"),
+    LOGIN_REQUEST("Wait for login"),
+    LOGIN_RESPONSE("Send login signal"),
+    SIGNUP_REQUEST("Wait for signup"),
+    SIGNUP_RESPONSE("Send signup signal");
 
-    private String type;
-    Message(String type) {this.type = type;}
+    private String message;
+    Message(String message) {this.message = message;}
+    public String getMessage() {
+      return this.message;
+    }
 }

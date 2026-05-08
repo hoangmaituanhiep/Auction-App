@@ -12,6 +12,7 @@ public class ConnectionService {
 
   public ConnectionService(UserDAO userDAO) {
     this.userDAO = userDAO;
+    setupDatabase();
   }
 
   public void setupDatabase() {

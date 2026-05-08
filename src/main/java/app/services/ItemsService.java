@@ -13,6 +13,7 @@ public class ItemsService {
 
   public ItemsService(ItemDAO itemDAO) {
     this.itemDAO = itemDAO;
+    setupDatabase();
   }
 
   public void setupDatabase() {
