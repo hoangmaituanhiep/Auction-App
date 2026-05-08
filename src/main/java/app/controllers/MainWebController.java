@@ -17,9 +17,9 @@ import javafx.fxml.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 
 public class MainWebController {
@@ -44,7 +44,7 @@ public class MainWebController {
   @FXML
   private Label logInLabel;
   @FXML
-  private TilePane auctionPane;
+  private HBox auctionBox;
   @FXML
   private ScrollPane auctionScrollPane;
 
@@ -54,16 +54,9 @@ public class MainWebController {
     return instance;
   }
 
-  public ScrollPane getScrollPane() {
-    if (auctionScrollPane == null) {
-      HBox hBox = new HBox(10);
-      hBox.setStyle("-fx-border-color: red; -fx-min-width: 50; -fx-min-height: 50;");
-      auctionScrollPane = new ScrollPane();
-      auctionScrollPane.setContent(hBox);
-      auctionScrollPane.setFitToHeight(true);
-      auctionScrollPane.setFitToWidth(true);
-    }
-    return auctionScrollPane;
+  public void addItemToAuction() {
+    VBox itemBox = new VBox(new Label("Cái thằng Hoàng lồn cái thằng Hiệp cặc chó"));
+    auctionBox.getChildren().add(itemBox);
   }
 
   public void toggleLogedin() {

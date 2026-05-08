@@ -30,12 +30,8 @@ public class SellingController {
         logger.info("Sell item button clicked");
         Stage stage = (Stage) sellItem.getScene().getWindow();
         mainWebController = MainWebController.getInstance();
+        mainWebController.addItemToAuction();
         try {
-            VBox itemBox = new VBox(5);
-            Label name = new Label(getItemName.getText());
-            itemBox.getChildren().add(name);
-            HBox hBox = (HBox) mainWebController.getScrollPane().getContent();
-            hBox.getChildren().add(itemBox);
             stage.close();
         } catch (Exception e) {
             logger.error("Error occurred while closing stage", e);
