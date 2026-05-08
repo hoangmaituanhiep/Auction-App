@@ -163,7 +163,13 @@ public class ClientHandler implements Runnable {
             break;
         }
       } catch (ClassNotFoundException | IOException e) {
-        logger.error("ERROR: " + e.getMessage());
+        logger.info("INFO: Client disconnected or connection lost.");
+        try {
+          stopRunning();
+        } catch (IOException ex) {
+          logger.error("ERROR: Failed to clean up client connection.");
+        }
+        break;
       }
     }
   }

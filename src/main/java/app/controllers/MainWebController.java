@@ -34,8 +34,6 @@ public class MainWebController {
   @FXML
   private TextField searchItems;
   @FXML
-  private TextField serverIp;
-  @FXML
   private Button logIn;
   @FXML
   private Button join;
@@ -45,8 +43,6 @@ public class MainWebController {
   private Button enterAuction;
   @FXML
   private Label logInLabel;
-  @FXML
-  private Label connectServerLabel;
   @FXML
   private TilePane auctionPane;
   @FXML
@@ -135,16 +131,12 @@ public class MainWebController {
     logger.debug("DEBUG: Connecting to server...");
     networkClient = NetworkClient.getInstance();
     try {
-      networkClient.connect(serverIp.getText(), MainApp.getPort());
+      networkClient.connect("127.0.0.1", MainApp.getPort());
 
       logger.info("INFO: Connected successfully at: " + MainApp.getPort());
       enterAuction.setVisible(false);
-      connectServerLabel.setVisible(false);
-      serverIp.setVisible(false);
 
       enterAuction.setManaged(false);
-      connectServerLabel.setManaged(false);
-      serverIp.setVisible(false);
 
       logIn.setDisable(false);
     }

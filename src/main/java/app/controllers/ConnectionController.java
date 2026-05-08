@@ -53,16 +53,9 @@ public class ConnectionController {
     networkClient.addUIListener(Message.LOGIN_RESPONSE, packet -> {
       ConnectionRespondPayload response = (ConnectionRespondPayload) packet.getPayload();
       if (response.isSuccess() ) {
-        try {
-          mainWebController.toggleLogedin();
-          FXMLLoader mainPage = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
-          Scene mainScene = new Scene(mainPage.load());
-          Stage mainStage = (Stage) signInButton.getScene().getWindow();
-          mainStage.setScene(mainScene);
-        }
-        catch (IOException e) {
-          logger.error("ERROR: {}", e.getMessage());
-        }
+        mainWebController.toggleLogedin();
+        Stage mainStage = (Stage) signInButton.getScene().getWindow();
+        mainStage.close();
       }
       else {
         status.setText("Login failed");
