@@ -76,7 +76,7 @@
                   }
                 </style>
               <content>
-                <HBox fx:id="auctionBox" />
+                <HBox fx:id="auctionBox" spacing="10"/>
               </content>
             </ScrollPane>
             <Label fx:id="connectServerLabel" alignment="CENTER" contentDisplay="CENTER" text="Enter the Server's IP to enter the Auction (Ex: 192.168.0.1)" textAlignment="CENTER">
