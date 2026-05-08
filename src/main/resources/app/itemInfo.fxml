@@ -4,63 +4,120 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.SellingController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" stylesheets="@../style/style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.SellingController">
    <children>
-      <Label alignment="CENTER" prefHeight="155.0" prefWidth="600.0" text="Item">
+      <Label alignment="CENTER" prefHeight="133.0" prefWidth="960.0" text="Item">
          <font>
             <Font size="47.0" />
          </font>
       </Label>
-      <HBox prefHeight="40.0" prefWidth="600.0">
+      <HBox prefHeight="333.0" prefWidth="878.0">
          <children>
-            <Label alignment="CENTER" prefHeight="40.0" prefWidth="84.0" text="Item Name:">
-               <font>
-                  <Font size="16.0" />
-               </font>
+            <VBox prefHeight="314.0" prefWidth="618.0">
+               <children>
+                  <HBox prefHeight="46.0" prefWidth="538.0">
+                     <children>
+                        <Label prefHeight="46.0" prefWidth="120.0" text="Item name:">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Enter item name...">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="46.0" prefWidth="538.0">
+                     <children>
+                        <Label prefHeight="46.0" prefWidth="120.0" text="Details:">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Write details...">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="46.0" prefWidth="538.0">
+                     <children>
+                        <Label prefHeight="46.0" prefWidth="120.0" text="Starting price:">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Enter price...">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+                  <HBox prefHeight="46.0" prefWidth="538.0">
+                     <children>
+                        <Label prefHeight="46.0" prefWidth="120.0" text="Duration:">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Label>
+                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Enter time (in minute)">
+                           <font>
+                              <Font size="19.0" />
+                           </font>
+                        </TextField>
+                     </children>
+                  </HBox>
+               </children>
                <HBox.margin>
-                  <Insets left="50.0" right="15.0" />
-               </HBox.margin></Label>
-            <TextField fx:id="getItemName" prefHeight="40.0" prefWidth="386.0" promptText="Enter name..." style="-fx-border-width: 0 0 1 0; -fx-border-color: #cccccc;">
-               <HBox.margin>
-                  <Insets right="20.0" />
+                  <Insets top="20.0" />
                </HBox.margin>
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </TextField>
+            </VBox>
+            <VBox minHeight="-Infinity" minWidth="-Infinity" prefHeight="334.0" prefWidth="310.0">
+               <children>
+                  <ImageView fx:id="imageView" fitHeight="194.0" fitWidth="312.0" pickOnBounds="true">
+                     <VBox.margin>
+                        <Insets top="32.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <Button fx:id="uploadFileButton" mnemonicParsing="false" prefHeight="38.0" prefWidth="130.0" text="Upload File">
+                     <VBox.margin>
+                        <Insets left="90.0" top="30.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+            </VBox>
          </children>
          <VBox.margin>
-            <Insets top="15.0" />
+            <Insets />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="57.0" prefWidth="600.0">
-         <children>
-            <Label alignment="CENTER" prefHeight="54.0" prefWidth="152.0" text="Details:" />
-            <TextField fx:id="getDetails" prefHeight="50.0" prefWidth="378.0" promptText="Write details..." />
-         </children>
-      </HBox>
-      <HBox prefHeight="66.0" prefWidth="600.0">
-         <children>
-            <Label alignment="CENTER" prefHeight="65.0" prefWidth="145.0" text="Starting Price:" />
-            <TextField fx:id="getStartingPrice" prefHeight="64.0" prefWidth="390.0" promptText="Enter Starting Price..." />
-         </children>
-      </HBox>
-      <HBox prefHeight="100.0" prefWidth="200.0">
-         <children>
-            <Label alignment="CENTER" prefHeight="60.0" prefWidth="149.0" text="Duration" />
-            <TextField fx:id="getDuration" prefHeight="56.0" prefWidth="390.0" promptText="Enter time (in minutes)" />
-         </children>
-      </HBox>
-      <Button fx:id="sellItem" minWidth="-Infinity" mnemonicParsing="false" onAction="#addSellingItem" prefWidth="100.0" text="Sell">
+      <Button fx:id="sellItem" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addSellingItem" prefHeight="40.0" prefWidth="90.0" text="Sell">
          <VBox.margin>
-            <Insets left="250.0" />
+            <Insets left="435.0" />
          </VBox.margin>
       </Button>
    </children>
