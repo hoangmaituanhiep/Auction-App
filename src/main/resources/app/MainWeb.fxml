@@ -76,7 +76,7 @@
                   }
                 </style>
               <content>
-                <AnchorPane minHeight="100.0" minWidth="100.0" prefHeight="200.0" prefWidth="200.0" />
+                <HBox fx:id="auctionBox" />
               </content>
             </ScrollPane>
             <Label fx:id="connectServerLabel" alignment="CENTER" contentDisplay="CENTER" text="Enter the Server's IP to enter the Auction (Ex: 192.168.0.1)" textAlignment="CENTER">
