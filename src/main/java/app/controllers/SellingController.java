@@ -30,7 +30,10 @@ public class SellingController {
         logger.info("Sell item button clicked");
         Stage stage = (Stage) sellItem.getScene().getWindow();
         mainWebController = MainWebController.getInstance();
-        mainWebController.addItemToAuction();
+        mainWebController.addItemToAuction(String.format("- %s\n- %s\n- %s\n- %s", getItemName.getText()
+                                            , getDetails.getText()
+                                            , getStartingPrice.getText()
+                                            , getDuration.getText()));
         try {
             stage.close();
         } catch (Exception e) {

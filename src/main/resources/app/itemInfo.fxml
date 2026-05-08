@@ -40,12 +40,6 @@
             <Insets top="15.0" />
          </VBox.margin>
       </HBox>
-      <HBox prefHeight="58.0" prefWidth="600.0">
-         <children>
-            <Label alignment="CENTER" prefHeight="58.0" prefWidth="150.0" text="Company:" />
-            <TextField fx:id="getCompany" prefHeight="50.0" prefWidth="382.0" promptText="Enter company..." />
-         </children>
-      </HBox>
       <HBox prefHeight="57.0" prefWidth="600.0">
          <children>
             <Label alignment="CENTER" prefHeight="54.0" prefWidth="152.0" text="Details:" />
