@@ -14,7 +14,7 @@
 
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainWebController">
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER" style="-fx-background-color: #1616c9;">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1616c9;" BorderPane.alignment="CENTER">
          
          <children>
             <ImageView fitHeight="142.0" fitWidth="158.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
@@ -67,14 +67,14 @@
    <center>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane fx:id="auctionScrollPane" disable="true" prefHeight="525.0" prefWidth="200.0" visible="false">
+            <ScrollPane fx:id="auctionScrollPane" disable="true" prefHeight="578.0" prefWidth="1280.0" visible="false">
                <style>
                   .scroll-pane .viewport {
                     -fx-background-color: transparent;
                   }
                 </style>
               <content>
-                <VBox fx:id="auctionBox" spacing="10" style="-fx-background-color: #360505;"/>
+                <VBox fx:id="auctionBox" spacing="10" style="-fx-background-color: #360505;" />
               </content>
             </ScrollPane>
          </children>
