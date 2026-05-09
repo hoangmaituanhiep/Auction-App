@@ -8,8 +8,6 @@ import app.MainApp;
 import app.NetworkClient;
 import app.functions.User;
 import app.packets.Message;
-import app.packets.PacketMessage;
-import app.services.ItemsService;
 
 import org.slf4j.Logger;
 
@@ -28,7 +26,6 @@ public class MainWebController {
   private static final Logger logger = LoggerFactory.getLogger(MainWebController.class);
 
   private NetworkClient networkClient;
-  private ItemsService itemsService;
   private User user;
 
   @FXML
@@ -92,11 +89,18 @@ public class MainWebController {
     searchItems.setDisable(true);
     join.setDisable(true);
     sell.setDisable(true);
-    logIn.setDisable(true);
 
     user = User.getInstance();
 
     networkClient = NetworkClient.getInstance();
+    try {
+      networkClient.connect("127.0.0.1", MainApp.getPort());
+      logger.info("INFO: Connected to server successfully at: " + MainApp.getPort());
+    }
+    catch (IOException e) {
+      logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
+    }
+
     networkClient.addUIListener(Message.WELCOME, packet -> {
       logger.info("INFO: Welcome bro.");
     });
@@ -129,25 +133,6 @@ public class MainWebController {
     }
     catch (IOException e) {
       logger.error("ERROR:" + e.getMessage());
-    }
-  }
-
-  @FXML
-  public void handleEnterAuction() {
-    logger.debug("DEBUG: Connecting to server...");
-    networkClient = NetworkClient.getInstance();
-    try {
-      networkClient.connect("127.0.0.1", MainApp.getPort());
-
-      logger.info("INFO: Connected successfully at: " + MainApp.getPort());
-      enterAuction.setVisible(false);
-
-      enterAuction.setManaged(false);
-
-      logIn.setDisable(false);
-    }
-    catch (IOException e) {
-      logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
     }
   }
 

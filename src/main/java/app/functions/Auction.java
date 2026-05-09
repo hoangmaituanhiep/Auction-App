@@ -75,11 +75,11 @@ public class Auction {
     }
 
     public double getCurrentHighestPrice(String id) {
-        return getItem(id).getCurrent_Price();
+        return getItem(id).getCurrentPrice();
     }
 
     public boolean setCurrentHighestPrice(String id, double price) {
-        if (getItem(id).getCurrent_Price() < price) {
+        if (getItem(id).getCurrentPrice() < price) {
             getItem(id).setNewPrice(price);
             return true;
         }

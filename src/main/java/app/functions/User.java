@@ -76,7 +76,7 @@ class Bidder extends User {
 
   public void Autioned(int itemId, double newPrice) {
     Item item = itemsList.get(itemId);
-    if (newPrice > item.getCurrent_Price()) {
+    if (newPrice > item.getCurrentPrice()) {
       item.setNewPrice(newPrice);
       System.out.println("Done!!!");
     } else {

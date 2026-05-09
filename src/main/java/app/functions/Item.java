@@ -9,8 +9,12 @@ public abstract class Item extends Entity {
   private double startingPrice;
   private double current_Price;
   private double maxPrice;
+  private int duration;
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
+
   private String detail = "Seller is too lazy to write anything here.";
-  private LocalDateTime endTime;
   private Image image;
 
   public Item(String name) {
@@ -42,7 +46,7 @@ public abstract class Item extends Entity {
     return name;
   }
 
-  public double getCurrent_Price() {
+  public double getCurrentPrice() {
     return current_Price;
   }
 
@@ -60,14 +64,6 @@ public abstract class Item extends Entity {
         "\nCurrent highest price: " + current_Price;
   }
 
-  public LocalDateTime getEndTime() {
-    return endTime;
-  }
-
-  public void setEndTime(LocalDateTime endTime) {
-    this.endTime = endTime;
-  }
-
   public Image getImage() {
     return image;
   }
@@ -77,9 +73,7 @@ public abstract class Item extends Entity {
   }
 
   public int getDuration() {
-    LocalDateTime now = LocalDateTime.now();
-    Duration duration = Duration.between(now, endTime);
-    return (int) duration.toHours();
+    return duration;
   }
 
   public abstract String toString();
@@ -95,7 +89,7 @@ class Electronics extends Item {
   public String toString() {
     return "Name: " + super.getName() +
         "\nDescribe: " + super.getDetail() +
-        "\nPrice: " + super.getCurrent_Price();
+        "\nPrice: " + super.getCurrentPrice();
   }
 }
 
@@ -107,7 +101,7 @@ class Art extends Item {
   public String toString() {
     return "Name: " + super.getName() +
         "\nDescribe: " + super.getDetail() +
-        "\nPrice: " + super.getCurrent_Price();
+        "\nPrice: " + super.getCurrentPrice();
   }
 }
 
@@ -119,6 +113,6 @@ class Vehicle extends Item {
   public String toString() {
     return "Name: " + super.getName() +
         "\nDescribe: " + super.getDetail() +
-        "\nPrice: " + super.getCurrent_Price();
+        "\nPrice: " + super.getCurrentPrice();
   }
 }
