@@ -30,7 +30,7 @@
                               <Insets left="30.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Enter item name...">
+                        <TextField fx:id="getItemName" prefHeight="46.0" prefWidth="469.0" promptText="Enter item name...">
                            <font>
                               <Font size="19.0" />
                            </font>
@@ -50,7 +50,7 @@
                               <Insets left="30.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Write details...">
+                        <TextField fx:id="getDetails" prefHeight="46.0" prefWidth="469.0" promptText="Write details...">
                            <font>
                               <Font size="19.0" />
                            </font>
@@ -67,7 +67,7 @@
                               <Insets left="30.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Enter price...">
+                        <TextField fx:id="getStartingPrice" prefHeight="46.0" prefWidth="469.0" promptText="Enter price...">
                            <font>
                               <Font size="19.0" />
                            </font>
@@ -84,7 +84,7 @@
                               <Insets left="30.0" />
                            </HBox.margin>
                         </Label>
-                        <TextField prefHeight="46.0" prefWidth="469.0" promptText="Enter time (in minute)">
+                        <TextField fx:id="getDuration" prefHeight="46.0" prefWidth="469.0" promptText="Enter time (in minute)">
                            <font>
                               <Font size="19.0" />
                            </font>
