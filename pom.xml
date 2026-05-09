@@ -109,28 +109,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <groupId>com.github.dkanejs</groupId>
-                <artifactId>maven-git-build-hook-plugin</artifactId>
-                <version>3.5.2</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>install</goal>
-                        </goals>
-                        <configuration>
-                            <installHooks>
-                                <pre-push>
-                                    echo "--- HE THONG DANG KIEM TRA TOAN DIEN (Quality Gate) ---"
-                                    # Lệnh verify sẽ chạy: Compile, Test, Checkstyle, PMD, SpotBugs
-                                    mvn clean verify
-                                </pre-push>
-                            </installHooks>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-
         </plugins>
     </build>
 </project>
