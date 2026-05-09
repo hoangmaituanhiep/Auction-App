@@ -1,27 +1,20 @@
 package app.functions;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 import app.Client;
 
 public class Auction {
-    private final String auctionId;
+    private final int auctionId;
     private double step;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
     private String status;
     private Map<String, Item> auctionItem;
     private Map<String, User> onlineUser;
     private List<Client> clients;
     private Admin admin;
 
-    public Auction(String auctionId, Seller seller, double step,
-            LocalDateTime starTime, LocalDateTime endTime) {
+    public Auction(int auctionId) {
         this.auctionId = auctionId;
-        this.step = step;
-        this.startTime = starTime;
-        this.endTime = endTime;
         this.status = "PENDING";
         this.auctionItem = new HashMap<String, Item>();
         this.onlineUser = new HashMap<>();
@@ -29,7 +22,7 @@ public class Auction {
     }
 
     // Auction ID
-    public String getAuctionId() {
+    public int getAuctionId() {
         return auctionId;
     }
 
@@ -40,24 +33,6 @@ public class Auction {
 
     public void setStep(double step) {
         this.step = step;
-    }
-
-    //Start Time
-    public LocalDateTime getStartTime() {
-        return startTime;
-    }
-
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    //End Time
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
     }
 
     //Status

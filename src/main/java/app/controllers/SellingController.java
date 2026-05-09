@@ -31,109 +31,113 @@ import java.io.IOException;
 import org.slf4j.Logger;
 
 public class SellingController {
-    private static final Logger logger = LoggerFactory.getLogger(MainWebController.class);
-    @FXML
-    private Button sellItem;
-    @FXML
-    private TextField getItemName;
-    @FXML
-    private TextField getDetails;
-    @FXML
-    private TextField getStartingPrice;
-    @FXML
-    private TextField getDuration;
-    @FXML
-    private ComboBox<String> categoryComboBox;
-    @FXML
-    private Button uploadFileButton;
-    @FXML
-    private ImageView imageView;
-    
-    private MainWebController mainWebController;
-    private NetworkClient networkClient;
-    private User user;
+  private static final Logger logger = LoggerFactory.getLogger(MainWebController.class);
+  @FXML
+  private Button sellItem;
+  @FXML
+  private TextField getItemName;
+  @FXML
+  private TextField getDetails;
+  @FXML
+  private TextField getStartingPrice;
+  @FXML
+  private TextField getDuration;
+  @FXML
+  private ComboBox<String> categoryComboBox;
+  @FXML
+  private Button uploadFileButton;
+  @FXML
+  private ImageView imageView;
 
-    @FXML
-    public void initialize() {
-      mainWebController = MainWebController.getInstance();
-      networkClient = NetworkClient.getInstance();
-      user = User.getInstance();
+  private MainWebController mainWebController;
+  private NetworkClient networkClient;
+  private User user;
 
-      networkClient.addUIListener(Message.SEND_ITEM_RESPOND, packet -> {
-        SellItemRespondPayload response = (SellItemRespondPayload) packet.getPayload();
-        if (response.isSuccess()) {
-          //TODO: Need logic
-        }
-      });
-    }
-    @FXML
-    public void addSellingItem() {
-        logger.info("Sell item button clicked");
-        Stage stage = (Stage) sellItem.getScene().getWindow();
-        mainWebController.addItemToAuction(imageView, String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", getItemName.getText()
-                                            , getDetails.getText()
-                                            , getStartingPrice.getText()
-                                            , getDuration.getText()));
-      
-        Item item = null;  
+  @FXML
+  public void initialize() {
+    mainWebController = MainWebController.getInstance();
+    networkClient = NetworkClient.getInstance();
+    user = User.getInstance();
 
-        if (categoryComboBox.getValue() == null) {
-            logger.warn("WARN: No category selected");
-            return;
-        }
-
-        switch (categoryComboBox.getValue()) {
-          case "Vehicle":
-            item = new Vehicle(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
-            break;
-
-          case "Art":
-            item = new Art(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
-            break;
-          
-          case "Electronics":
-            item = new Electronics(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
-            break;
-          default:
-            logger.warn("WARN: Invalid category");
-            return;
-        }
-
-        if (item != null) {
-          SellItemRequestPayload payload = new SellItemRequestPayload(item);
-          PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
-
-          try {
-            networkClient.sendPacket(message);
-            logger.info("INFO: Item info sent");
-          }
-          catch (IOException e) {
-            logger.error("ERROR: {}", e.getMessage());
-          }
-        }
-
+    networkClient.addUIListener(Message.SEND_ITEM_RESPOND, packet -> {
+      SellItemRespondPayload response = (SellItemRespondPayload) packet.getPayload();
+      if (response.isSuccess()) {
         try {
-            stage.close();
+          Stage stage = (Stage) sellItem.getScene().getWindow();
+          stage.close();
         } catch (Exception e) {
-            logger.error("Error occurred while closing stage", e);
+          logger.error("Error occurred while closing stage", e);
         }
+        mainWebController.addItemToAuction(imageView,
+            String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", getItemName.getText(),
+                getDetails.getText(), getStartingPrice.getText(), getDuration.getText()));
+      }
+    });
+  }
+
+  @FXML
+  public void addSellingItem() {
+    logger.info("Sell item button clicked");
+
+    Item item = null;
+
+    if (categoryComboBox.getValue() == null) {
+      logger.warn("WARN: No category selected");
+      return;
     }
-    @FXML
-    public void handleUploadFile() {
-        logger.info("Upload file button clicked");
-                FileChooser fileChooser = new FileChooser();
 
-        //Set extension filter
-        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
-        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
-        fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+    switch (categoryComboBox.getValue()) {
+      case "Vehicle":
+        item = new Vehicle(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()),
+            Double.parseDouble(getStartingPrice.getText()));
+        break;
 
-        //Show open file dialog
-        File file = fileChooser.showOpenDialog(null);
+      case "Art":
+        item = new Art(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()),
+            Double.parseDouble(getStartingPrice.getText()));
+        break;
 
-        if (file != null) {
-            Image image = new Image(file.toURI().toString());
-            imageView.setImage(image);
-        }
+      case "Electronics":
+        item = new Electronics(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()),
+            Double.parseDouble(getStartingPrice.getText()));
+        break;
+      default:
+        logger.warn("WARN: Invalid category");
+        return;
     }
+
+    if (item != null) {
+      SellItemRequestPayload payload = new SellItemRequestPayload(item);
+      PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
+
+      user.addItem(item);
+
+      try {
+        networkClient.sendPacket(message);
+        logger.info("INFO: Item info sent");
+      } catch (IOException e) {
+        logger.error("ERROR: {}", e.getMessage());
+      }
+    }
+
+  }
+
+  @FXML
+  public void handleUploadFile() {
+    logger.info("Upload file button clicked");
+    FileChooser fileChooser = new FileChooser();
+
+    // Set extension filter
+    FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+    FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+    fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+    // Show open file dialog
+    File file = fileChooser.showOpenDialog(null);
+
+    if (file != null) {
+      Image image = new Image(file.toURI().toString());
+      imageView.setImage(image);
+    }
+  }
 }

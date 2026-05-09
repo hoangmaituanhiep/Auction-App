@@ -1,6 +1,8 @@
 package app.payload;
 
-public class SellItemRespondPayload {
+import java.io.Serializable;
+
+public class SellItemRespondPayload implements Serializable {
   private boolean isSuccess;
   private String error;
 

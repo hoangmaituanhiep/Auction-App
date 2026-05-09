@@ -19,11 +19,11 @@ public class ItemDAO{
     logger.debug("DEBUG: Initializing item table database...");
 
     String table = "CREATE TABLE IF NOT EXISTS items(id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                    + "name TEXT NOT NULL, "
-                    + "details TEXT, "
-                    + "startingPrice REAL NOT NULL, "
-                    + "currentPrice REAL"
-                    + "duration INTEGER NOT NULL)";
+            + "name TEXT NOT NULL, "
+            + "details TEXT, "
+            + "startingPrice REAL NOT NULL, "
+            + "currentPrice REAL, "
+            + "duration INTEGER NOT NULL)";
     
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         Statement statement = connection.createStatement()) {
@@ -38,7 +38,7 @@ public class ItemDAO{
   public boolean insertItem(Item item) {
     logger.debug("DEBUG: Adding new item...");
 
-    String insert = "INSERT INTO items(name, details, startingPrice, current, duration) VALUES(?, ?, ?, ?, ?)";
+    String insert = "INSERT INTO items(name, details, startingPrice, currentPrice, duration) VALUES(?, ?, ?, ?, ?)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert)) {

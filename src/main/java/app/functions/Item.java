@@ -1,10 +1,12 @@
 package app.functions;
 
 import java.time.*;
+import java.io.Serializable;
 
 import javafx.scene.image.Image;
 
-public abstract class Item extends Entity {
+public abstract class Item extends Entity implements Serializable {
+  private static final long serialVersionUID = 1L;
   private String name;
   private double startingPrice;
   private double current_Price;
@@ -13,7 +15,7 @@ public abstract class Item extends Entity {
   
 
   private String detail = "Seller is too lazy to write anything here.";
-  private Image image;
+  private transient Image image;
 
   public Item(String name, String detail, int duration, double startingPrice) {
     this.name = name;
