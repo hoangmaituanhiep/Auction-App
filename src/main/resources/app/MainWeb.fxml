@@ -15,12 +15,12 @@
 
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainWebController">
    <top>
-      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1616c9;" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #070707;" BorderPane.alignment="CENTER">
          
          <children>
             <ImageView fitHeight="142.0" fitWidth="142.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../images/Auction.png" />
+                  <Image url="@../images/Auction1.png" />
                </image>
                <HBox.margin>
                   <Insets left="15.0" right="50.0" />
@@ -45,8 +45,8 @@
             </Button>
             <StackPane prefHeight="42.0" prefWidth="69.0">
                <children>
-                  <Label fx:id="logInLabel" mouseTransparent="true" prefHeight="42.0" prefWidth="100" style="-fx-alignment: center;" />
-                  <Button fx:id="logIn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#callLogIn" prefHeight="42.0" prefWidth="69.0" style="-fx-background-color: #00000000; -fx-text-fill: #000000;" text="LOGIN" />
+                  <Label fx:id="logInLabel" mouseTransparent="true" prefHeight="42.0" prefWidth="100" style="-fx-alignment: center; -fx-font-weight: bold;" />
+                  <Button fx:id="logIn" contentDisplay="CENTER" mnemonicParsing="false" onAction="#callLogIn" prefHeight="42.0" prefWidth="69.0" style="-fx-background-color: #00000000; -fx-text-fill: #eadada;" text="LOGIN" />
                </children>
                <HBox.margin>
                   <Insets left="30.0" top="30.0" />
@@ -68,7 +68,7 @@
    <center>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
-            <ScrollPane fx:id="auctionScrollPane" disable="true" prefHeight="578.0" prefWidth="1280.0" visible="false" style="-fx-background-color: #360505; -fx-background: #360505;" BorderPane.alignment="CENTER" fitToWidth="true">
+            <ScrollPane fx:id="auctionScrollPane" disable="true" prefHeight="578.0" prefWidth="1280.0" visible="false" BorderPane.alignment="CENTER" fitToWidth="true">
                <style>
                   .scroll-pane .viewport {
                     -fx-background-color: transparent;
