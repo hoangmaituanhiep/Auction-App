@@ -3,11 +3,14 @@ package app.controllers;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +25,7 @@ import app.packets.PacketMessage;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.slf4j.Logger;
@@ -40,6 +44,10 @@ public class SellingController {
     private TextField getDuration;
     @FXML
     private ComboBox<String> categoryComboBox;
+    @FXML
+    private Button uploadFileButton;
+    @FXML
+    private ImageView imageView;
     
     private MainWebController mainWebController;
     private NetworkClient networkClient;
@@ -62,7 +70,7 @@ public class SellingController {
     public void addSellingItem() {
         logger.info("Sell item button clicked");
         Stage stage = (Stage) sellItem.getScene().getWindow();
-        mainWebController.addItemToAuction(String.format("- %s\n- %s\n- %s\n- %s", getItemName.getText()
+        mainWebController.addItemToAuction(imageView, String.format("- %s\n- %s\n- %s\n- %s", getItemName.getText()
                                             , getDetails.getText()
                                             , getStartingPrice.getText()
                                             , getDuration.getText()));
@@ -108,6 +116,24 @@ public class SellingController {
             stage.close();
         } catch (Exception e) {
             logger.error("Error occurred while closing stage", e);
+        }
+    }
+    @FXML
+    public void handleUploadFile() {
+        logger.info("Upload file button clicked");
+                FileChooser fileChooser = new FileChooser();
+
+        //Set extension filter
+        FileChooser.ExtensionFilter extFilterJPG = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.JPG");
+        FileChooser.ExtensionFilter extFilterPNG = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.PNG");
+        fileChooser.getExtensionFilters().addAll(extFilterJPG, extFilterPNG);
+
+        //Show open file dialog
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null) {
+            Image image = new Image(file.toURI().toString());
+            imageView.setImage(image);
         }
     }
 }
