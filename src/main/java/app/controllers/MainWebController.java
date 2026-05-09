@@ -18,10 +18,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
 
 
 public class MainWebController {
@@ -45,7 +44,7 @@ public class MainWebController {
   @FXML
   private Label logInLabel;
   @FXML
-  private VBox auctionBox;
+  private FlowPane auctionBox;
   @FXML
   private ScrollPane auctionScrollPane;
 
@@ -68,7 +67,7 @@ public class MainWebController {
             "-fx-background-radius: 20;" +
             "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);"
         );
-    itemBox.setPrefWidth(200);
+    itemBox.setPrefWidth(220);
     itemBox.getChildren().add(imageView);
     itemBox.getChildren().add(itemLabel);
 
