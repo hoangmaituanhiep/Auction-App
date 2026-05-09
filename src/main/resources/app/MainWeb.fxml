@@ -17,12 +17,12 @@
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" style="-fx-background-color: #1616c9;" BorderPane.alignment="CENTER">
          
          <children>
-            <ImageView fitHeight="142.0" fitWidth="158.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="142.0" fitWidth="142.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/Auction.png" />
                </image>
                <HBox.margin>
-                  <Insets left="15.0" right="50.0" top="10.0" />
+                  <Insets left="15.0" right="50.0" />
                </HBox.margin>
             </ImageView>
             <TextField fx:id="searchItems" alignment="CENTER" prefHeight="42.0" prefWidth="666.0" promptText="Search items...">
