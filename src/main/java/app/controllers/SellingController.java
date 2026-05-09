@@ -70,7 +70,7 @@ public class SellingController {
     public void addSellingItem() {
         logger.info("Sell item button clicked");
         Stage stage = (Stage) sellItem.getScene().getWindow();
-        mainWebController.addItemToAuction(imageView, String.format("- %s\n- %s\n- %s\n- %s", getItemName.getText()
+        mainWebController.addItemToAuction(imageView, String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", getItemName.getText()
                                             , getDetails.getText()
                                             , getStartingPrice.getText()
                                             , getDuration.getText()));
