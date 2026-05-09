@@ -11,16 +11,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.config.DatabaseConfig;
-import app.functions.User;
 
 public class UserDAO {
   private static final Logger logger = LoggerFactory.getLogger(UserDAO.class);
-
-  private User user;
-
-  public UserDAO() {
-    user = User.getInstance();
-  }
 
   public void createTable() {
     logger.debug("DEBUG: Initializing user table database...");
@@ -52,9 +45,6 @@ public class UserDAO {
           preStatement.executeUpdate();
           
           logger.info("INFO: Successfully created new user.");
-
-          user.setUserName(username);
-          user.setEmail(email);
           
           return true;
         }

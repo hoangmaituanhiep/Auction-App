@@ -10,15 +10,16 @@ public abstract class Item extends Entity {
   private double current_Price;
   private double maxPrice;
   private int duration;
-  public void setDuration(int duration) {
-    this.duration = duration;
-  }
+  
 
   private String detail = "Seller is too lazy to write anything here.";
   private Image image;
 
-  public Item(String name) {
+  public Item(String name, String detail, int duration, double startingPrice) {
     this.name = name;
+    this.detail = detail;
+    this.duration = duration;
+    this.startingPrice = startingPrice;
   }
 
   public int getId() {
@@ -72,47 +73,13 @@ public abstract class Item extends Entity {
     this.image = image;
   }
 
+  public void setDuration(int duration) {
+    this.duration = duration;
+  }
+
   public int getDuration() {
     return duration;
   }
 
   public abstract String toString();
-}
-
-class Electronics extends Item {
-
-  public Electronics(String name, String company) {
-    super(name);
-  }
-
-  @Override
-  public String toString() {
-    return "Name: " + super.getName() +
-        "\nDescribe: " + super.getDetail() +
-        "\nPrice: " + super.getCurrentPrice();
-  }
-}
-
-class Art extends Item {
-  public Art(String name, String artist_name) {
-    super(name);
-  }
-
-  public String toString() {
-    return "Name: " + super.getName() +
-        "\nDescribe: " + super.getDetail() +
-        "\nPrice: " + super.getCurrentPrice();
-  }
-}
-
-class Vehicle extends Item {
-  public Vehicle(String name, String company) {
-    super(name);
-  }
-
-  public String toString() {
-    return "Name: " + super.getName() +
-        "\nDescribe: " + super.getDetail() +
-        "\nPrice: " + super.getCurrentPrice();
-  }
 }

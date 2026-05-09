@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import app.NetworkClient;
+import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.ConnectionRequestPayload;
@@ -43,16 +44,20 @@ public class ConnectionController {
 
   private MainWebController mainWebController;
   private NetworkClient networkClient;
+  private User user;
 
   public ConnectionController() {
     mainWebController = MainWebController.getInstance();
     networkClient = NetworkClient.getInstance();
+    user=User.getInstance();
   }
 
   public void initialize() {
     networkClient.addUIListener(Message.LOGIN_RESPONSE, packet -> {
       ConnectionRespondPayload response = (ConnectionRespondPayload) packet.getPayload();
       if (response.isSuccess() ) {
+        user.setUserName(getUserName.getText());
+        user.setEmail(getEmail.getText());
         mainWebController.toggleLogedin();
         Stage mainStage = (Stage) signInButton.getScene().getWindow();
         mainStage.close();

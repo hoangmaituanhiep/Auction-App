@@ -20,9 +20,9 @@ public class ItemDAO{
 
     String table = "CREATE TABLE IF NOT EXISTS items(id INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + "name TEXT NOT NULL, "
-                    + "company TEXT, " 
                     + "details TEXT, "
                     + "startingPrice REAL NOT NULL, "
+                    + "currentPrice REAL"
                     + "duration INTEGER NOT NULL)";
     
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
@@ -38,13 +38,14 @@ public class ItemDAO{
   public boolean insertItem(Item item) {
     logger.debug("DEBUG: Adding new item...");
 
-    String insert = "INSERT INTO items(name, company, details, startingPrice, duration) VALUES(?, ?, ?, ?, ?)";
+    String insert = "INSERT INTO items(name, details, startingPrice, current, duration) VALUES(?, ?, ?, ?, ?)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert)) {
           preStatement.setString(1, item.getName());
-          preStatement.setString(3, item.getDetail());
-          preStatement.setDouble(4, item.getStartingPrice());
+          preStatement.setString(2, item.getDetail());
+          preStatement.setDouble(3, item.getStartingPrice());
+          preStatement.setDouble(4, item.getCurrentPrice());
           preStatement.setInt(5, item.getDuration());
 
           logger.info("INFO: Inserted SQLite.");
@@ -58,4 +59,5 @@ public class ItemDAO{
       return false;
     }
   }
+
 }

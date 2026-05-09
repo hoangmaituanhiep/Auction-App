@@ -2,6 +2,7 @@ package app.controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
@@ -9,6 +10,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import org.slf4j.LoggerFactory;
+
+import app.NetworkClient;
+import app.functions.Art;
+import app.functions.Electronics;
+import app.functions.Item;
+import app.functions.User;
+import app.functions.Vehicle;
+import app.packets.Message;
+import app.packets.PacketMessage;
+import app.payload.SellItemRequestPayload;
+
+import java.io.IOException;
+
 import org.slf4j.Logger;
 
 public class SellingController {
@@ -23,17 +37,68 @@ public class SellingController {
     private TextField getStartingPrice;
     @FXML
     private TextField getDuration;
+    @FXML
+    private ComboBox<String> categoryComboBox;
     
     private MainWebController mainWebController;
+    private NetworkClient networkClient;
+    private User user;
+
+    @FXML
+    public void initialize() {
+      mainWebController = MainWebController.getInstance();
+      networkClient = NetworkClient.getInstance();
+      user = User.getInstance();
+    }
     @FXML
     public void addSellingItem() {
         logger.info("Sell item button clicked");
         Stage stage = (Stage) sellItem.getScene().getWindow();
-        mainWebController = MainWebController.getInstance();
         mainWebController.addItemToAuction(String.format("- %s\n- %s\n- %s\n- %s", getItemName.getText()
                                             , getDetails.getText()
                                             , getStartingPrice.getText()
                                             , getDuration.getText()));
+      
+        Item item = null;  
+
+        if (categoryComboBox.getValue() == null) {
+            logger.warn("WARN: No category selected");
+            return;
+        }
+
+        switch (categoryComboBox.getValue()) {
+          case "Vehicle":
+            item = new Vehicle(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
+            user.addItem(item);
+            break;
+
+          case "Art":
+            item = new Art(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
+            user.addItem(item);
+            break;
+          
+          case "Electronics":
+            item = new Electronics(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
+            user.addItem(item);
+            break;
+          default:
+            logger.warn("WARN: Invalid category");
+            return;
+        }
+
+        if (item != null) {
+          SellItemRequestPayload payload = new SellItemRequestPayload(item);
+          PacketMessage message = new PacketMessage(Message.SEND_AUCTION, payload);
+
+          try {
+            networkClient.sendPacket(message);
+            logger.info("INFO: Item info sent");
+          }
+          catch (IOException e) {
+            logger.error("ERROR: {}", e.getMessage());
+          }
+        }
+
         try {
             stage.close();
         } catch (Exception e) {
