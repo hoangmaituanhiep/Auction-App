@@ -45,7 +45,7 @@ public class MainWebController {
   @FXML
   private Label logInLabel;
   @FXML
-  private HBox auctionBox;
+  private VBox auctionBox;
   @FXML
   private ScrollPane auctionScrollPane;
 
@@ -58,14 +58,15 @@ public class MainWebController {
   public void addItemToAuction(ImageView imageView, String itemInfo) {
     Label itemLabel = new Label(itemInfo);
     itemLabel.setWrapText(true);
+    itemLabel.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
 
     VBox itemBox = new VBox(10);
-    itemBox.setAlignment(Pos.CENTER);
+    itemBox.setAlignment(Pos.TOP_LEFT);
     itemBox.setPadding(new Insets(30));
     itemBox.setStyle(
-            "-fx-background-color: #2980b9;" + 
+            "-fx-background-color: #090e13;" + 
             "-fx-background-radius: 20;" +
-            "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);"
+            "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);"
         );
     itemBox.setPrefWidth(200);
     itemBox.getChildren().add(imageView);
