@@ -115,7 +115,7 @@
                         <Insets top="32.0" />
                      </VBox.margin>
                   </ImageView>
-                  <Button fx:id="uploadFileButton" mnemonicParsing="false" prefHeight="38.0" prefWidth="130.0" text="Upload File">
+                  <Button fx:id="uploadFileButton" mnemonicParsing="false" prefHeight="38.0" onAction="#handleUploadFile" prefWidth="130.0" text="Upload File">
                      <VBox.margin>
                         <Insets left="90.0" top="30.0" />
                      </VBox.margin>

@@ -20,6 +20,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 
 public class MainWebController {
@@ -53,9 +55,10 @@ public class MainWebController {
     return instance;
   }
 
-  public void addItemToAuction(String itemInfo) {
+  public void addItemToAuction(ImageView imageView, String itemInfo) {
     Label itemLabel = new Label(itemInfo);
     itemLabel.setWrapText(true);
+
     VBox itemBox = new VBox(10);
     itemBox.setAlignment(Pos.CENTER);
     itemBox.setPadding(new Insets(30));
@@ -65,7 +68,9 @@ public class MainWebController {
             "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 5);"
         );
     itemBox.setPrefWidth(200);
+    itemBox.getChildren().add(imageView);
     itemBox.getChildren().add(itemLabel);
+
     auctionBox.getChildren().add(itemBox);
   }
 
