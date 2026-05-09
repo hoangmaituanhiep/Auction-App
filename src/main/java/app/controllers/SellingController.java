@@ -20,6 +20,7 @@ import app.functions.Vehicle;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.SellItemRequestPayload;
+import app.payload.SellItemRespondPayload;
 
 import java.io.IOException;
 
@@ -49,6 +50,13 @@ public class SellingController {
       mainWebController = MainWebController.getInstance();
       networkClient = NetworkClient.getInstance();
       user = User.getInstance();
+
+      networkClient.addUIListener(Message.SEND_ITEM_RESPOND, packet -> {
+        SellItemRespondPayload response = (SellItemRespondPayload) packet.getPayload();
+        if (response.isSuccess()) {
+          //TODO: Need logic
+        }
+      });
     }
     @FXML
     public void addSellingItem() {
@@ -69,17 +77,14 @@ public class SellingController {
         switch (categoryComboBox.getValue()) {
           case "Vehicle":
             item = new Vehicle(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
-            user.addItem(item);
             break;
 
           case "Art":
             item = new Art(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
-            user.addItem(item);
             break;
           
           case "Electronics":
             item = new Electronics(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()), Double.parseDouble(getStartingPrice.getText()));
-            user.addItem(item);
             break;
           default:
             logger.warn("WARN: Invalid category");
@@ -88,7 +93,7 @@ public class SellingController {
 
         if (item != null) {
           SellItemRequestPayload payload = new SellItemRequestPayload(item);
-          PacketMessage message = new PacketMessage(Message.SEND_AUCTION, payload);
+          PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
 
           try {
             networkClient.sendPacket(message);
@@ -104,6 +109,5 @@ public class SellingController {
         } catch (Exception e) {
             logger.error("Error occurred while closing stage", e);
         }
-        
     }
 }

@@ -2,9 +2,8 @@ package app.packets;
 
 public enum Message {
     WELCOME("Welcome"),
-    SEND_AUCTION("Send auction"),
-    SEND_AUCTION_ID("Send auction id"),
-    CANCLE_AUCTION("Cancel auction"),
+    SEND_ITEM_REQUEST("Send item request"),
+    SEND_ITEM_RESPOND("Send item respond"),
     DISCONNECT("disconnect"),
     ERROR("Error"),
     JOIN_AUCTION("Join auction"),

@@ -13,6 +13,8 @@ import app.packets.PacketMessage;
 import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
 import app.payload.RegisterClientPayload;
+import app.payload.SellItemRequestPayload;
+import app.payload.SellItemRespondPayload;
 import app.services.ConnectionService;
 import app.services.ItemsService;
 
@@ -95,29 +97,26 @@ public class ClientHandler implements Runnable {
             }
             break;
 
-          case CANCLE_AUCTION:
+          case SEND_ITEM_REQUEST:
             try {
-              // TODO: Add cancellation logic
+              SellItemRequestPayload sellData = (SellItemRequestPayload) packetMessage.getPayload();
+              boolean addSuccess = itemsService.addItems(sellData.getItem());
+
+              SellItemRespondPayload respondPayload;
+              if (addSuccess) {
+                 respondPayload = new SellItemRespondPayload(addSuccess);
+              }
+              else {
+                respondPayload = new SellItemRespondPayload(addSuccess, "ERROR: Cannot insert Item into DB");
+              }
+
+              PacketMessage respondMessage = new PacketMessage(Message.SEND_ITEM_RESPOND, respondPayload);
+              objectOutputStream.writeObject(respondMessage);
             } catch (Exception e) {
               logger.error("ERROR: Unrecognized Packet");
             }
             break;
 
-          case SEND_AUCTION:
-            try {
-              // TODO: Add send auction logic
-            } catch (Exception e) {
-              logger.error("ERROR: Unrecognized Packet");
-            }
-            break;
-
-          case SEND_AUCTION_ID:
-            try {
-              // TODO: Add auction ID logic
-            } catch (Exception e) {
-              logger.error("ERROR: Unrecognized Packet");
-            }
-            break;
           case LOGIN_REQUEST:
             try {
               ConnectionRequestPayload loginData = (ConnectionRequestPayload) packetMessage.getPayload();
