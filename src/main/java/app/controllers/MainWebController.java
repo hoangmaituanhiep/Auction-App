@@ -21,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
@@ -30,6 +31,7 @@ public class MainWebController {
 
   private NetworkClient networkClient;
   private User user;
+  private SellingController sellingController;
 
   @FXML
   private BorderPane mainPane;
@@ -98,7 +100,7 @@ public class MainWebController {
     sell.setDisable(true);
 
     user = User.getInstance();
-
+    sellingController = SellingController.getInstance();
     networkClient = NetworkClient.getInstance();
     try {
       networkClient.connect("127.0.0.1", MainApp.getPort());
@@ -118,7 +120,9 @@ public class MainWebController {
 
       String itemInfo = String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", newItem.getName(),
                 newItem.getDetail(), newItem.getStartingPrice(), newItem.getDuration());
-      ImageView placeholder = new ImageView();
+
+      Image image = sellingController.handleUploadFile();
+      ImageView placeholder = new ImageView(image);
 
       addItemToAuction(placeholder, itemInfo);
     });
