@@ -68,9 +68,6 @@ public class SellingController {
         } catch (Exception e) {
           logger.error("Error occurred while closing stage", e);
         }
-        mainWebController.addItemToAuction(imageView,
-            String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", getItemName.getText(),
-                getDetails.getText(), getStartingPrice.getText(), getDuration.getText()));
       }
     });
   }
