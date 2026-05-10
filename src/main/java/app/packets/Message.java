@@ -4,6 +4,7 @@ public enum Message {
     WELCOME("Welcome"),
     SEND_ITEM_REQUEST("Send item request"),
     SEND_ITEM_RESPOND("Send item respond"),
+    BROADCAST_NEW_ITEM("Globally notify"),
     DISCONNECT("disconnect"),
     ERROR("Error"),
     JOIN_AUCTION("Join auction"),

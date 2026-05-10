@@ -6,8 +6,10 @@ import org.slf4j.LoggerFactory;
 
 import app.MainApp;
 import app.NetworkClient;
+import app.functions.Item;
 import app.functions.User;
 import app.packets.Message;
+import app.payload.SellItemRequestPayload;
 
 import org.slf4j.Logger;
 
@@ -108,6 +110,17 @@ public class MainWebController {
 
     networkClient.addUIListener(Message.WELCOME, packet -> {
       logger.info("INFO: Welcome bro.");
+    });
+
+    networkClient.addUIListener(Message.BROADCAST_NEW_ITEM, packet -> {
+      SellItemRequestPayload payload = (SellItemRequestPayload) packet.getPayload();
+      Item newItem = payload.getItem();
+
+      String itemInfo = String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", newItem.getName(),
+                newItem.getDetail(), newItem.getStartingPrice(), newItem.getDuration());
+      ImageView placeholder = new ImageView();
+
+      addItemToAuction(placeholder, itemInfo);
     });
   }
 

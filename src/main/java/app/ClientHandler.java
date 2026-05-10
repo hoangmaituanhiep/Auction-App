@@ -105,6 +105,10 @@ public class ClientHandler implements Runnable {
               SellItemRespondPayload respondPayload;
               if (addSuccess) {
                  respondPayload = new SellItemRespondPayload(addSuccess);
+                 SellItemRequestPayload globalRequest = new SellItemRequestPayload(sellData.getItem());
+                 PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, respondPayload);
+
+                 server.broadcast(packetMessage);
               }
               else {
                 respondPayload = new SellItemRespondPayload(addSuccess, "ERROR: Cannot insert Item into DB");
@@ -184,6 +188,7 @@ public class ClientHandler implements Runnable {
 
   public void sendPacket(PacketMessage message) throws IOException {
     objectOutputStream.writeObject(message);
+    objectOutputStream.flush();
   }
 
   public void joinAution(PacketMessage packetMessage) throws IOException {
