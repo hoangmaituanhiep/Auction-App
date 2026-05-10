@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="596.0">
+         <children>
+            <VBox prefHeight="174.0" prefWidth="596.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="86.0" prefWidth="596.0" text="REMAINING TIME">
+                     <font>
+                        <Font size="54.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="countdownLabel" alignment="CENTER" prefHeight="57.0" prefWidth="614.0" text="00:00">
+                     <font>
+                        <Font size="51.0" />
+                     </font>
+                  </Label>
+               </children>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </VBox>
+            <VBox prefHeight="361.0" prefWidth="596.0">
+               <children>
+                  <ImageView fx:id="itemImage" fitHeight="356.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <VBox prefHeight="720.0" prefWidth="685.0">
+         <children>
+            <TitledPane animated="false" prefHeight="376.0" prefWidth="686.0" text="Bid History">
+              <content>
+                <AnchorPane fx:id="bidHistory" minHeight="0.0" minWidth="0.0" prefHeight="281.0" prefWidth="684.0" />
+              </content>
+            </TitledPane>
+            <VBox prefHeight="283.0" prefWidth="686.0">
+               <children>
+                  <HBox prefHeight="36.0" prefWidth="686.0">
+                     <children>
+                        <Label prefHeight="36.0" prefWidth="158.0" text="Current Price">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="30.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="updateCurrentPrice" alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="472.0" text="Cập nhật giá vào label này">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <Label prefHeight="40.0" prefWidth="222.0" text="Place Bid">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="106.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="placeBid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="474.0" promptText="Enter new price...">
+                     <VBox.margin>
+                        <Insets left="106.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Button fx:id="submitBidButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="154.0" text="SUBMIT BID">
+                     <VBox.margin>
+                        <Insets left="266.0" top="20.0" />
+                     </VBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="20.0" />
+               </VBox.margin>
+            </VBox>
+         </children>
+      </VBox>
+   </children>
+</HBox>
