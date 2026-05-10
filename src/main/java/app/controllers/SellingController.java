@@ -32,8 +32,9 @@ import org.slf4j.Logger;
 
 public class SellingController {
   private static final Logger logger = LoggerFactory.getLogger(MainWebController.class);
-
   private static SellingController instance;
+
+  private Image selectedImage;
 
   @FXML
   private Button sellItem;
@@ -128,7 +129,7 @@ public class SellingController {
   }
 
   @FXML
-  public Image handleUploadFile() {
+  public void handleUploadFile() {
     logger.info("Upload file button clicked");
     FileChooser fileChooser = new FileChooser();
 
@@ -141,12 +142,15 @@ public class SellingController {
     File file = fileChooser.showOpenDialog(null);
 
     if (file != null) {
-      Image image = new Image(file.toURI().toString());
-      imageView.setImage(image);
-
-      return image;
+      selectedImage = new Image(file.toURI().toString());
+      imageView.setImage(selectedImage);
     }
+  }
 
-    return null;
+  public Image getImage() {
+    return this.selectedImage;
+  }
+  public void setImage() {
+    this.selectedImage = null;
   }
 }

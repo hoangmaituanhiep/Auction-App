@@ -31,7 +31,6 @@ public class MainWebController {
 
   private NetworkClient networkClient;
   private User user;
-  private SellingController sellingController;
 
   @FXML
   private BorderPane mainPane;
@@ -100,7 +99,6 @@ public class MainWebController {
     sell.setDisable(true);
 
     user = User.getInstance();
-    sellingController = SellingController.getInstance();
     networkClient = NetworkClient.getInstance();
     try {
       networkClient.connect("127.0.0.1", MainApp.getPort());
@@ -121,8 +119,9 @@ public class MainWebController {
       String itemInfo = String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", newItem.getName(),
                 newItem.getDetail(), newItem.getStartingPrice(), newItem.getDuration());
 
-      Image image = sellingController.handleUploadFile();
+      Image image = SellingController.getInstance().getImage();
       ImageView placeholder = new ImageView(image);
+      SellingController.getInstance().setImage();
 
       addItemToAuction(placeholder, itemInfo);
     });
