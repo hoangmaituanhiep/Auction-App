@@ -79,7 +79,7 @@ public class Server {
       Socket clientSocket = serverSocket.accept();
       Client client = new Client(clientSocket);
       ClientHandler clientThread = new ClientHandler(client);
-      clientHandlers.put(client.getSocket().getInetAddress().getHostAddress(), clientThread);
+      clientHandlers.put(client.getSocket().getRemoteSocketAddress().toString(), clientThread);
       executors.execute(clientThread);
     }
   }

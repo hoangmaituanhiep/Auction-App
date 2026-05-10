@@ -106,9 +106,9 @@ public class ClientHandler implements Runnable {
               if (addSuccess) {
                  respondPayload = new SellItemRespondPayload(addSuccess);
                  SellItemRequestPayload globalRequest = new SellItemRequestPayload(sellData.getItem());
-                 PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, respondPayload);
+                 PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, globalRequest);
 
-                 server.broadcast(packetMessage);
+                 server.broadcast(globalMessage);
               }
               else {
                 respondPayload = new SellItemRespondPayload(addSuccess, "ERROR: Cannot insert Item into DB");
@@ -183,7 +183,7 @@ public class ClientHandler implements Runnable {
     client.getSocket().close();
 
     Server server = Server.getInstance();
-    server.getClientHanlders().remove(getClient().getSocket().getInetAddress().getHostAddress());
+    server.getClientHanlders().remove(getClient().getSocket().getRemoteSocketAddress().toString());
   }
 
   public void sendPacket(PacketMessage message) throws IOException {

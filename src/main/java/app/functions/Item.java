@@ -1,23 +1,14 @@
 package app.functions;
 
-import java.time.*;
-import java.io.Serializable;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import javafx.scene.image.Image;
 
-public abstract class Item extends Entity implements Serializable, CountdownDurations {
+public abstract class Item extends Entity {
   private static final long serialVersionUID = 1L;
   private String name;
   private double startingPrice;
   private double current_Price;
   private double maxPrice;
-  private int duration;
-  ExecutorService executorService = Executors.newSingleThreadExecutor();
-  
+  private int duration;  
 
   private String detail = "Seller is too lazy to write anything here.";
   private transient Image image;
@@ -86,28 +77,6 @@ public abstract class Item extends Entity implements Serializable, CountdownDura
 
   public int getDuration() {
     return duration;
-  }
-
-  public boolean startCountdown() {
-    AtomicInteger duration_seconds = new AtomicInteger(duration * 60);
-    Future<Boolean> future = executorService.submit(() -> {
-      while (duration_seconds.get() > 0) {
-        try {
-          Thread.sleep(1000);
-        } catch (InterruptedException e) {
-          Thread.currentThread().interrupt();
-          break;
-        }
-        duration_seconds.decrementAndGet();
-      }
-      return true;
-    });
-    try {
-      return future.get();
-    } catch (Exception e) {
-      ;
-      return false;
-    }
   }
 
   public abstract String toString();
