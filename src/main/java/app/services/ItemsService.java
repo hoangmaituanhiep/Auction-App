@@ -29,9 +29,6 @@ public class ItemsService {
       logger.error("ERROR: Starting price must be greater than 0.");
       return false;
     }
-    if (item.getDuration() < 0) {
-      logger.error("ERROR: Timer must be greater than 0 and be an int");
-    }
 
     return itemDAO.insertItem(item);
   }
