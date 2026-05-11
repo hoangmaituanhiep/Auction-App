@@ -117,7 +117,7 @@ public class MainWebController {
       Item newItem = payload.getItem();
 
       String itemInfo = String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", newItem.getName(),
-                newItem.getDetail(), newItem.getStartingPrice(), newItem.getDuration());
+                newItem.getDetail(), newItem.getStartingPrice());
 
       Image image = SellingController.getInstance().getImage();
       ImageView placeholder = new ImageView(image);

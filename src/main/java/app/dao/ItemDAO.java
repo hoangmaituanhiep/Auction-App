@@ -22,8 +22,7 @@ public class ItemDAO{
             + "name TEXT NOT NULL, "
             + "details TEXT, "
             + "startingPrice REAL NOT NULL, "
-            + "currentPrice REAL, "
-            + "duration INTEGER NOT NULL)";
+            + "currentPrice REAL) ";
     
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         Statement statement = connection.createStatement()) {
@@ -38,7 +37,7 @@ public class ItemDAO{
   public boolean insertItem(Item item) {
     logger.debug("DEBUG: Adding new item...");
 
-    String insert = "INSERT INTO items(name, details, startingPrice, currentPrice, duration) VALUES(?, ?, ?, ?, ?)";
+    String insert = "INSERT INTO items(name, details, startingPrice, currentPrice) VALUES(?, ?, ?, ?)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert)) {
@@ -46,7 +45,6 @@ public class ItemDAO{
           preStatement.setString(2, item.getDetail());
           preStatement.setDouble(3, item.getStartingPrice());
           preStatement.setDouble(4, item.getCurrentPrice());
-          preStatement.setInt(5, item.getDuration());
 
           logger.info("INFO: Inserted SQLite.");
 

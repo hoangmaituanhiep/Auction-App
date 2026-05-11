@@ -8,15 +8,13 @@ public abstract class Item extends Entity {
   private double startingPrice;
   private double current_Price;
   private double maxPrice;
-  private int duration;  
 
   private String detail = "Seller is too lazy to write anything here.";
   private transient Image image;
 
-  public Item(String name, String detail, int duration, double startingPrice) {
+  public Item(String name, String detail, double startingPrice) {
     this.name = name;
     this.detail = detail;
-    this.duration = duration;
     this.startingPrice = startingPrice;
   }
 
@@ -69,14 +67,6 @@ public abstract class Item extends Entity {
 
   public void setImage(Image image) {
     this.image = image;
-  }
-
-  public void setDuration(int duration) {
-    this.duration = duration;
-  }
-
-  public int getDuration() {
-    return duration;
   }
 
   public abstract String toString();

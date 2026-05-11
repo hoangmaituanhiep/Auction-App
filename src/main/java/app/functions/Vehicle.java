@@ -1,8 +1,8 @@
 package app.functions;
 
 public class Vehicle extends Item {
-  public Vehicle(String name, String detail, int duration, double startingPrice) {
-    super(name, detail, duration, startingPrice);
+  public Vehicle(String name, String detail, double startingPrice) {
+    super(name, detail, startingPrice);
   }
 
   public String toString() {

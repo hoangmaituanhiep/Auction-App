@@ -2,8 +2,8 @@ package app.functions;
 
 public class Electronics extends Item {
 
-  public Electronics(String name, String detail, int duration, double startingPrice) {
-    super(name, detail, duration, startingPrice);
+  public Electronics(String name, String detail, double startingPrice) {
+    super(name, detail, startingPrice);
   }
 
   @Override

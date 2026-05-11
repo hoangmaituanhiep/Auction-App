@@ -94,18 +94,15 @@ public class SellingController {
 
     switch (categoryComboBox.getValue()) {
       case "Vehicle":
-        item = new Vehicle(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()),
-            Double.parseDouble(getStartingPrice.getText()));
+        item = new Vehicle(getItemName.getText(), getDetails.getText(), Double.parseDouble(getStartingPrice.getText()));
         break;
 
       case "Art":
-        item = new Art(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()),
-            Double.parseDouble(getStartingPrice.getText()));
+        item = new Art(getItemName.getText(), getDetails.getText(), Double.parseDouble(getStartingPrice.getText()));
         break;
 
       case "Electronics":
-        item = new Electronics(getItemName.getText(), getDetails.getText(), Integer.parseInt(getDuration.getText()),
-            Double.parseDouble(getStartingPrice.getText()));
+        item = new Electronics(getItemName.getText(), getDetails.getText(), Double.parseDouble(getStartingPrice.getText()));
         break;
       default:
         logger.warn("WARN: Invalid category");

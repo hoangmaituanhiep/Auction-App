@@ -1,8 +1,8 @@
 package app.functions;
 
 public class Art extends Item {
-  public Art(String name, String detail, int duration, double startingPrice) {
-    super(name, detail, duration, startingPrice);
+  public Art(String name, String detail, double startingPrice) {
+    super(name, detail, startingPrice);
   }
 
   public String toString() {
