@@ -109,13 +109,14 @@ public class ClientHandler implements Runnable {
                  PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, globalRequest);
 
                  server.broadcast(globalMessage);
+                 logger.info("INFO: Notice other online clients");
               }
               else {
                 respondPayload = new SellItemRespondPayload(addSuccess, "ERROR: Cannot insert Item into DB");
               }
 
               PacketMessage respondMessage = new PacketMessage(Message.SEND_ITEM_RESPOND, respondPayload);
-              objectOutputStream.writeObject(respondMessage);
+              sendPacket(respondMessage);
             } catch (Exception e) {
               logger.error("ERROR: Unrecognized Packet");
             }

@@ -27,6 +27,7 @@ import app.payload.SellItemRespondPayload;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 
 import org.slf4j.Logger;
 
@@ -35,6 +36,7 @@ public class SellingController {
   private static SellingController instance;
 
   private Image selectedImage;
+  private byte[] selectedImageBytes;
 
   @FXML
   private Button sellItem;
@@ -110,6 +112,7 @@ public class SellingController {
     }
 
     if (item != null) {
+      item.setImageData(selectedImageBytes);
       SellItemRequestPayload payload = new SellItemRequestPayload(item);
       PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
 
@@ -139,6 +142,11 @@ public class SellingController {
     File file = fileChooser.showOpenDialog(null);
 
     if (file != null) {
+      try {
+        selectedImageBytes = Files.readAllBytes(file.toPath());
+      } catch (IOException e) {
+        logger.error("ERROR: Failed to read image bytes", e);
+      }
       selectedImage = new Image(file.toURI().toString());
       imageView.setImage(selectedImage);
     }
@@ -147,7 +155,7 @@ public class SellingController {
   public Image getImage() {
     return this.selectedImage;
   }
-  public void setImage() {
+  public void clearImage() {
     this.selectedImage = null;
   }
 }

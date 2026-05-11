@@ -11,6 +11,7 @@ public abstract class Item extends Entity {
 
   private String detail = "Seller is too lazy to write anything here.";
   private transient Image image;
+  private byte[] imageData;
 
   public Item(String name, String detail, double startingPrice) {
     this.name = name;
@@ -67,6 +68,14 @@ public abstract class Item extends Entity {
 
   public void setImage(Image image) {
     this.image = image;
+  }
+
+  public byte[] getImageData() {
+    return imageData;
+  }
+
+  public void setImageData(byte[] imageData) {
+    this.imageData = imageData;
   }
 
   public abstract String toString();

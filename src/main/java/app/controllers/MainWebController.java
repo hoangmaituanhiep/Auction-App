@@ -1,7 +1,7 @@
 package app.controllers;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-
 import org.slf4j.LoggerFactory;
 
 import app.MainApp;
@@ -60,7 +60,7 @@ public class MainWebController {
   public void addItemToAuction(ImageView imageView, String itemInfo) {
     Label itemLabel = new Label(itemInfo);
     itemLabel.setWrapText(true);
-    itemLabel.setStyle("-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: bold;");
+    itemLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
 
     VBox itemBox = new VBox(10);
     itemBox.setAlignment(Pos.TOP_LEFT);
@@ -116,12 +116,21 @@ public class MainWebController {
       SellItemRequestPayload payload = (SellItemRequestPayload) packet.getPayload();
       Item newItem = payload.getItem();
 
-      String itemInfo = String.format("-Name: %s\n-Details: %s\n-Starting Price: %s\n-Duration: %s", newItem.getName(),
+      logger.info("INFO: Got server's item");
+
+      String itemInfo = String.format("-Name: %s\n-Details: %s\n-Starting Price: %s", newItem.getName(),
                 newItem.getDetail(), newItem.getStartingPrice());
 
-      Image image = SellingController.getInstance().getImage();
+      Image image = null;
+      if (newItem.getImageData() != null) {
+          image = new Image(new ByteArrayInputStream(newItem.getImageData()));
+      }
+      
       ImageView placeholder = new ImageView(image);
-      SellingController.getInstance().setImage();
+
+      if (SellingController.getInstance() != null) {
+          SellingController.getInstance().clearImage();
+      }
 
       addItemToAuction(placeholder, itemInfo);
     });
