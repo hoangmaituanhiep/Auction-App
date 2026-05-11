@@ -73,6 +73,19 @@ public class MainWebController {
     itemBox.setPrefWidth(220);
     itemBox.getChildren().add(imageView);
     itemBox.getChildren().add(itemLabel);
+    itemBox.setOnMouseClicked(e -> {
+      try {
+        FXMLLoader bidLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
+        Scene bidScene = new Scene(bidLoader.load());
+
+        Stage bidStage = new Stage();
+        bidStage.setScene(bidScene);
+        bidStage.show();
+      }
+      catch (IOException ex) {
+        logger.error("ERROR:" + ex.getMessage());
+      }
+    });
 
     auctionBox.getChildren().add(itemBox);
   }
