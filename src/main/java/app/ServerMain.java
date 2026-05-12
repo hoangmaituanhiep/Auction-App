@@ -25,6 +25,7 @@ public class ServerMain {
     Server server = Server.getInstance(port);
 
     try {
+      MediaServer.start(port + 1); // <--- MUST BE STARTED BEFORE server.listen()
       server.listen();
     }
     catch (IOException e){

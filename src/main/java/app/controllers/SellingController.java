@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 
 import org.slf4j.LoggerFactory;
 
+import app.MainApp;
 import app.NetworkClient;
 import app.functions.Art;
 import app.functions.Electronics;
@@ -25,8 +26,13 @@ import app.packets.PacketMessage;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.file.Files;
 
 import org.slf4j.Logger;
@@ -112,7 +118,11 @@ public class SellingController {
     }
 
     if (item != null) {
-      item.setImageData(selectedImageBytes);
+      if (selectedImageBytes != null) {
+        String uploadedPath = uploadImageToServer(selectedImageBytes);
+        item.setImagePath(uploadedPath);
+      }
+      
       SellItemRequestPayload payload = new SellItemRequestPayload(item);
       PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
 
@@ -157,5 +167,28 @@ public class SellingController {
   }
   public void clearImage() {
     this.selectedImage = null;
+  }
+
+  private String uploadImageToServer(byte[] imageBytes) {
+    try {
+      int port = MainApp.getPort() + 1;
+
+      URL url = new URL("http://127.0.0.1:" + port + "/upload");
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setDoOutput(true);
+      connection.setRequestMethod("POST");
+      
+      try (OutputStream os = connection.getOutputStream()) {
+        os.write(imageBytes);
+      }
+
+      try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+        return reader.readLine();
+      }
+    }
+    catch (Exception e) {
+      logger.error("ERROR: Failed to upload image to server. {}", e.getMessage());
+      return null;
+    }
   }
 }

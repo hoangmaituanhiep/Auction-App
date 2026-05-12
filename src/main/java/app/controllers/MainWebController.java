@@ -135,8 +135,11 @@ public class MainWebController {
                 newItem.getDetail(), newItem.getStartingPrice());
 
       Image image = null;
-      if (newItem.getImageData() != null) {
-          image = new Image(new ByteArrayInputStream(newItem.getImageData()));
+      if (newItem.getImagePath() != null && !newItem.getImagePath().isEmpty()) {
+          int port = MainApp.getPort()+1;
+          String url = "http://127.0.0.1:" + port + newItem.getImagePath();
+
+          image = new Image(url, true);
       }
       
       ImageView placeholder = new ImageView(image);
