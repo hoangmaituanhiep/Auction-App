@@ -5,7 +5,7 @@
 lib/
 bin/
 target/
-src/java/resources/images/clients/
+src/main/resources/images/clients/
 
 # Log file
 *.log
