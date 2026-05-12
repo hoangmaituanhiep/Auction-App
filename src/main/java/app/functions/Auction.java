@@ -2,101 +2,118 @@ package app.functions;
 
 import java.util.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import app.Client;
 
 public class Auction {
-    private final int auctionId;
-    private double step;
-    private String status;
-    private Map<String, Item> auctionItem;
-    private Map<String, User> onlineUser;
-    private List<Client> clients;
-    private Admin admin;
+  private static final Logger logger = LoggerFactory.getLogger(Auction.class);
+  
+  private final int auctionId;
+  private double step;
+  private String status;
+  private Map<String, Item> auctionItem;
+  private Map<String, User> onlineUser;
+  private List<Client> clients;
 
-    public Auction(int auctionId) {
-        this.auctionId = auctionId;
-        this.status = "PENDING";
-        this.auctionItem = new HashMap<String, Item>();
-        this.onlineUser = new HashMap<>();
-        clients = new ArrayList<Client>();
-    }
+  public Auction(int auctionId) {
+    this.auctionId = auctionId;
+    this.status = "CANCELED";
+    this.auctionItem = new HashMap<String, Item>();
+    this.onlineUser = new HashMap<>();
+    clients = new ArrayList<Client>();
+  }
 
-    // Auction ID
-    public int getAuctionId() {
-        return auctionId;
-    }
+  // Auction ID
+  public int getAuctionId() {
+    return auctionId;
+  }
 
-    // Step
-    public double getStep() {
-        return step;
-    }
+  // Step
+  public double getStep() {
+    return step;
+  }
 
-    public void setStep(double step) {
-        this.step = step;
-    }
+  public void setStep(double step) {
+    this.step = step;
+  }
 
-    //Status
-    public String getStatus() {
-        return status;
-    }
+  // Status
+  public String getStatus() {
+    return status;
+  }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+  public void setStatus(String status) {
+    switch (status) {
+      case "OPEN":
+        this.status = "OPEN";
+        break;
 
-    //Auction Item
-    public Item getItem(String id) {
-        return auctionItem.get(id);
-    }
+      case "RUNNING":
+        this.status = "RUNNING";
+        break;
 
-    public double getCurrentHighestPrice(String id) {
-        return getItem(id).getCurrentPrice();
-    }
-
-    public boolean setCurrentHighestPrice(String id, double price) {
-        if (getItem(id).getCurrentPrice() < price) {
-            getItem(id).setNewPrice(price);
-            return true;
-        }
-        return false;
-    }
-
-    public void add(Map<String, Item> list_item) {
-        auctionItem.putAll(list_item);
-    }
-
-    public Map<String, Item> getAuctionItem() {
-        return auctionItem;
+      case "FINISHED":
+        this.status = "FINISHED";
+        break;
+      
+      case "CANCELED":
+        this.status = "CANCELED";
+        break;
+      
+      default:
+        logger.error("ERROR: Unrecognized status");
+        break;
     }
 
-    //Online User
-    public Admin getAdmin() {
-        return admin;
-    }
+  }
 
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
-        onlineUser.put(admin.toString(), admin);
-    }
+  // Auction Item
+  public Item getItem(String id) {
+    return auctionItem.get(id);
+  }
 
-    public Map<String, User> getOnlineUser() {
-        return onlineUser;
-    }
+  public double getCurrentHighestPrice(String id) {
+    return getItem(id).getCurrentPrice();
+  }
 
-    public void addOnlineUser(User user) {
-        onlineUser.put(user.toString(), user);
+  public boolean setCurrentHighestPrice(String id, double price) {
+    if (getItem(id).getCurrentPrice() < price) {
+      getItem(id).setNewPrice(price);
+      return true;
     }
+    return false;
+  }
 
-    public User getUser(String username) {
-        if (onlineUser.containsKey(username)) {
-            return onlineUser.get(username);
-        }
-        return null;
+  public void add(Map<String, Item> list_item) {
+    auctionItem.putAll(list_item);
+  }
+
+  public Map<String, Item> getAuctionItems() {
+    return auctionItem;
+  }
+
+  public Map<String, User> getOnlineUser() {
+    return onlineUser;
+  }
+
+  public void addOnlineUser(User user) {
+    onlineUser.put(user.toString(), user);
+  }
+
+  public User getUser(String username) {
+    if (onlineUser.containsKey(username)) {
+      return onlineUser.get(username);
     }
-    public List<Client> getClients() {
-        return clients;
-    }
-    public void addClient(Client client) {
-        clients.add(client);
-    }
+    return null;
+  }
+
+  public List<Client> getClients() {
+    return clients;
+  }
+
+  public void addClient(Client client) {
+    clients.add(client);
+  }
 }
