@@ -57,7 +57,7 @@
                   <Insets left="20.0" top="30.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="sell" mnemonicParsing="false" onAction="#sellItems" prefHeight="42.0" prefWidth="68.0" text="SELL">
+            <Button fx:id="sell" mnemonicParsing="false" onAction="#sellItems" prefHeight="42.0" prefWidth="68.0" text="NEW">
                <HBox.margin>
                   <Insets left="20.0" top="30.0" />
                </HBox.margin>
