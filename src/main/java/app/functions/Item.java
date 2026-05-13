@@ -23,6 +23,10 @@ public abstract class Item extends Entity {
     return id;
   }
 
+  public void addId(int id) {
+    this.id = id;
+  }
+
   public void setStartingPrice(double price) {
     this.startingPrice = price;
     this.current_Price = price;

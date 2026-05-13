@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.Client;
+import javafx.beans.Observable;
+import javafx.collections.ObservableList;
 
 public class Auction {
   private static final Logger logger = LoggerFactory.getLogger(Auction.class);
@@ -13,14 +15,14 @@ public class Auction {
   private final int auctionId;
   private double step;
   private String status;
-  private Map<String, Item> auctionItem;
+  private List<Integer> itemId;
   private Map<String, User> onlineUser;
   private List<Client> clients;
 
   public Auction(int auctionId) {
     this.auctionId = auctionId;
     this.status = "CANCELED";
-    this.auctionItem = new HashMap<String, Item>();
+    this.itemId = new ArrayList<>();
     this.onlineUser = new HashMap<>();
     clients = new ArrayList<Client>();
   }
@@ -70,29 +72,14 @@ public class Auction {
   }
 
   // Auction Item
-  public Item getItem(String id) {
-    return auctionItem.get(id);
+  public List<Integer> getItemId() {
+    return itemId;
   }
 
-  public double getCurrentHighestPrice(String id) {
-    return getItem(id).getCurrentPrice();
+  public void addNewItem(int id) {
+    itemId.add(id);
   }
 
-  public boolean setCurrentHighestPrice(String id, double price) {
-    if (getItem(id).getCurrentPrice() < price) {
-      getItem(id).setNewPrice(price);
-      return true;
-    }
-    return false;
-  }
-
-  public void add(Map<String, Item> list_item) {
-    auctionItem.putAll(list_item);
-  }
-
-  public Map<String, Item> getAuctionItems() {
-    return auctionItem;
-  }
 
   public Map<String, User> getOnlineUser() {
     return onlineUser;

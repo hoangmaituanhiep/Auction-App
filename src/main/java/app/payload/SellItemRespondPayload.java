@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class SellItemRespondPayload implements Serializable {
   private boolean isSuccess;
   private String error;
+  private int itemId;
 
   public boolean isSuccess() {
     return isSuccess;
@@ -22,8 +23,17 @@ public class SellItemRespondPayload implements Serializable {
     this.error = error;
   }
 
-  public SellItemRespondPayload(boolean isSuccess) {
+  public int getItemId(){
+    return itemId;
+  }
+
+  public void setItemId(int id) {
+    this.itemId = id;
+  }
+
+  public SellItemRespondPayload(boolean isSuccess, int itemId) {
     this.isSuccess = isSuccess;
+    this.itemId = itemId;
   }
 
   public SellItemRespondPayload(boolean isSuccess, String error) {

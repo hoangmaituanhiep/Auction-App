@@ -80,6 +80,8 @@ public class SellingController {
       SellItemRespondPayload response = (SellItemRespondPayload) packet.getPayload();
       if (response.isSuccess()) {
         try {
+          user.addItemId(response.getItemId());
+          user.getCurrentAuction().addNewItem(response.getItemId());
           Stage stage = (Stage) sellItem.getScene().getWindow();
           stage.close();
         } catch (Exception e) {

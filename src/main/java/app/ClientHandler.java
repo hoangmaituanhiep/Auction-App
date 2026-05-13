@@ -104,7 +104,7 @@ public class ClientHandler implements Runnable {
 
               SellItemRespondPayload respondPayload;
               if (addSuccess) {
-                 respondPayload = new SellItemRespondPayload(addSuccess);
+                 respondPayload = new SellItemRespondPayload(addSuccess, itemsService.getLastestItemId());
                  SellItemRequestPayload globalRequest = new SellItemRequestPayload(sellData.getItem());
                  PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, globalRequest);
 

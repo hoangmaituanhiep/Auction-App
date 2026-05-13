@@ -30,17 +30,17 @@ public abstract class User extends Entity {
     return instance;
   }
 
-  public void setItems(ObservableList<Item> initialItems) {
-    itemsList.setAll(initialItems);
-    itemsMap.clear();
-    for (Item item : initialItems) {
-      itemsMap.put(item.getId(), item);
-    }
-  }
-
   public void addItem(Item item) {
     itemsList.add(item);
     itemsMap.put(item.getId(), item);
+  }
+
+  public void addItemId(int id) {
+    itemsList.getLast().addId(id);
+  }
+
+  public Item getLastItem() {
+    return itemsList.getLast();
   }
 
   public int getId() {
@@ -65,6 +65,10 @@ public abstract class User extends Entity {
 
   public void participate(Auction auction) {
     this.auction = auction;
+  }
+
+  public Auction getCurrentAuction() {
+    return auction;
   }
 }
 
@@ -145,13 +149,6 @@ class Seller extends User {
   public void deleteSellingItem(String id) {
     if (list_item.containsKey(id)) {
       list_item.remove(id);
-    }
-  }
-
-  public void sellAll() {
-    if (auction != null) {
-      auction.add(list_item);
-      list_item.clear();
     }
   }
 

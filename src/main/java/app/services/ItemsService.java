@@ -32,4 +32,8 @@ public class ItemsService {
 
     return itemDAO.insertItem(item);
   }
+
+  public int getLastestItemId() {
+    return itemDAO.getLastestItemId();
+  }
 }

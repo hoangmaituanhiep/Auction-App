@@ -3,6 +3,7 @@ package app.dao;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -14,6 +15,8 @@ import app.functions.Item;
 
 public class ItemDAO{
   private static final Logger logger = LoggerFactory.getLogger(ItemDAO.class);
+  
+  private int lastestItemId;
 
   public void createTable() {
     logger.debug("DEBUG: Initializing item table database...");
@@ -40,11 +43,17 @@ public class ItemDAO{
     String insert = "INSERT INTO items(name, details, startingPrice, currentPrice) VALUES(?, ?, ?, ?)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
-        PreparedStatement preStatement = connection.prepareStatement(insert)) {
+        PreparedStatement preStatement = connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
+          ResultSet key = preStatement.getGeneratedKeys();
+
           preStatement.setString(1, item.getName());
           preStatement.setString(2, item.getDetail());
           preStatement.setDouble(3, item.getStartingPrice());
           preStatement.setDouble(4, item.getCurrentPrice());
+
+          if (key.next()) {
+            this.lastestItemId = key.getInt(1);
+          }
 
           logger.info("INFO: Inserted SQLite.");
 
@@ -58,4 +67,7 @@ public class ItemDAO{
     }
   }
 
+  public int getLastestItemId() {
+    return lastestItemId;
+  }
 }
