@@ -41,7 +41,7 @@ public class MainWebController {
   @FXML
   private Button join;
   @FXML
-  private Button sell;
+  private Button New;
   @FXML
   private Button enterAuction;
   @FXML
@@ -83,7 +83,7 @@ public class MainWebController {
         bidStage.show();
       }
       catch (IOException ex) {
-        logger.error("ERROR:" + ex.getMessage());
+        logger.error("ERROR: {}", ex.getMessage());
       }
     });
 
@@ -94,7 +94,7 @@ public class MainWebController {
     logIn.setVisible(false);
     logIn.setManaged(false);
     join.setDisable(false);
-    sell.setDisable(false);
+    New.setDisable(false);
     searchItems.setDisable(false);
     auctionScrollPane.setDisable(false);
     auctionScrollPane.setVisible(true);
@@ -109,9 +109,13 @@ public class MainWebController {
 
     searchItems.setDisable(true);
     join.setDisable(true);
-    sell.setDisable(true);
+    New.setDisable(true);
 
     user = User.getInstance();
+    if (user.getUserName() != null && !user.getUserName().isEmpty()) {
+        toggleLogedin();
+    }
+
     networkClient = NetworkClient.getInstance();
     try {
       networkClient.connect("127.0.0.1", MainApp.getPort());
@@ -168,17 +172,15 @@ public class MainWebController {
 
 
   @FXML
-  public void sellItems() {
+  public void createAuction() {
     try {
-      FXMLLoader sellLoader = new FXMLLoader(getClass().getResource("/app/itemInfo.fxml"));
-      Scene sellScene = new Scene(sellLoader.load());
-
-      Stage sellStage = new Stage();
-      sellStage.setScene(sellScene);
-      sellStage.show();
+      FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/createAuction.fxml"));
+      Scene auctionScene = new Scene(auctionLoader.load());
+      Stage auctionStage = (Stage) New.getScene().getWindow();
+      auctionStage.setScene(auctionScene);
     }
     catch (IOException e) {
-      logger.error("ERROR:" + e.getMessage());
+      logger.error("ERROR: {}", e.getMessage());
     }
   }
 

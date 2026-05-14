@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.AuctionController">
    <children>
       <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="124.0" prefWidth="960.0" text="New Auction">
          <font>
@@ -44,7 +44,7 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <TextField fx:id="startTime" prefHeight="50.0" prefWidth="215.0" promptText="hh-mm-ss">
+            <TextField fx:id="duration" prefHeight="50.0" prefWidth="215.0" promptText="hh-mm-ss">
                <font>
                   <Font size="22.0" />
                </font></TextField>
@@ -69,7 +69,7 @@
       </HBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
-            <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="95.0" prefWidth="183.0" text="Create Auction" textAlignment="CENTER">
+            <Button fx:id="New" onAction="#addAuction" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="95.0" prefWidth="183.0" text="Create Auction" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>

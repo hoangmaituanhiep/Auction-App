@@ -14,6 +14,7 @@ public class Auction {
   
   private final int auctionId;
   private double step;
+  private double duration;
   private String status;
   private List<Integer> itemId;
   private Map<String, User> onlineUser;
