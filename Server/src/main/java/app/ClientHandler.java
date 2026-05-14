@@ -103,7 +103,20 @@ public class ClientHandler implements Runnable {
             NewAuctionRespond response;
             
             if (auctionSuccess) {
-              response = new NewAuctionRespond(auctionSuccess, auctionService.getAuctionId(), payload.getName(), payload.getDuration());
+              int newId = auctionService.getAuctionId();
+              
+              // 1. Create the data object
+              app.functions.Auction newAuctionData = new app.functions.Auction(payload.getName(), payload.getDuration());
+              newAuctionData.setAuctionId(newId);
+              
+              // 2. Wrap it in a Live Session
+              app.services.LiveAuctionSession liveSession = new app.services.LiveAuctionSession(newAuctionData);
+              
+              // 3. Start the timer and add to Server
+              liveSession.start();
+              server.addLiveAuction(liveSession);
+
+              response = new NewAuctionRespond(auctionSuccess, newId, payload.getName(), payload.getDuration());
             }
             else {
               response = new NewAuctionRespond(auctionSuccess, "Failed to create new Auction");

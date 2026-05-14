@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.NetworkClient;
-import app.Server;
 import app.functions.Auction;
 import app.functions.User;
 import app.packets.Message;
@@ -25,7 +24,6 @@ public class AuctionController {
   private static final Logger logger = LoggerFactory.getLogger(AuctionController.class);
 
   private NetworkClient networkClient;
-  private Server server;
   private User user;
   private MainWebController mainWebController;
 
@@ -41,7 +39,6 @@ public class AuctionController {
   @FXML
   public void initialize() {
     networkClient = NetworkClient.getInstance();
-    server = Server.getInstance();
     user = User.getInstance();
     mainWebController = MainWebController.getInstance();
 
@@ -49,7 +46,7 @@ public class AuctionController {
       NewAuctionRespond payload = (NewAuctionRespond) packet.getPayload();
       if (payload.isSuccess()) {
         user.getCurrentAuction().setAuctionId(payload.getAuctionId());
-        server.addAuction(user.getCurrentAuction());
+        // The server manages its own state. The client doesn't call server.addAuction()
       }
     });
   }
