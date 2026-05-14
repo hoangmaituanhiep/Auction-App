@@ -7,10 +7,12 @@ import org.slf4j.LoggerFactory;
 
 import app.NetworkClient;
 import app.Server;
+import app.functions.Auction;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.NewAuctionRequest;
+import app.payload.NewAuctionRespond;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -42,6 +44,14 @@ public class AuctionController {
     server = Server.getInstance();
     user = User.getInstance();
     mainWebController = MainWebController.getInstance();
+
+    networkClient.addUIListener(Message.NEW_AUCTION_RESPOND, packet -> {
+      NewAuctionRespond payload = (NewAuctionRespond) packet.getPayload();
+      if (payload.isSuccess()) {
+        user.getCurrentAuction().setAuctionId(payload.getAuctionId());
+        server.addAuction(user.getCurrentAuction());
+      }
+    });
   }
 
 
@@ -65,6 +75,9 @@ public class AuctionController {
       String name = auctionName.getText();
       String dur = duration.getText();
 
+      Auction auction = new Auction(name, dur);
+      user.participate(auction);
+
       NewAuctionRequest request = new NewAuctionRequest(name, dur);
       PacketMessage message = new PacketMessage(Message.NEW_AUCTION_REQUEST, request);
       try {
@@ -78,14 +91,8 @@ public class AuctionController {
       logger.error("ERROR: User is already in an auction bro");
     }
 
-    try{
-      FXMLLoader mainLoader = new FXMLLoader(getClass().getResource("/app/MainWeb.fxml"));
-      Scene mainScene = new Scene(mainLoader.load());
-      Stage mainStage = (Stage) New.getScene().getWindow();
-      mainStage.setScene(mainScene);
-    }
-    catch (IOException e){
-      logger.error("ERROR: {}", e.getMessage());
-    }
+    // Close the create auction stage instead of reloading MainWeb.fxml
+    Stage stage = (Stage) New.getScene().getWindow();
+    stage.close();
   }
 }

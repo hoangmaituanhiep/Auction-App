@@ -57,23 +57,23 @@ public class MainWebController {
     return instance;
   }
 
-  public void addItemToAuction(ImageView imageView, String itemInfo) {
-    Label itemLabel = new Label(itemInfo);
-    itemLabel.setWrapText(true);
-    itemLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
+  public void displayAuctionList(int auctionId, String name, String duration) {
+    String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Duration: %s", auctionId, name, duration);
+    Label auctionLabel = new Label(auctionInfo);
+    auctionLabel.setWrapText(true);
+    auctionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
 
-    VBox itemBox = new VBox(10);
-    itemBox.setAlignment(Pos.TOP_LEFT);
-    itemBox.setPadding(new Insets(30));
-    itemBox.setStyle(
+    VBox auctionCard = new VBox(10);
+    auctionCard.setAlignment(Pos.TOP_LEFT);
+    auctionCard.setPadding(new Insets(30));
+    auctionCard.setStyle(
             "-fx-background-color: #090e13;" + 
             "-fx-background-radius: 20;" +
             "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);"
         );
-    itemBox.setPrefWidth(220);
-    itemBox.getChildren().add(imageView);
-    itemBox.getChildren().add(itemLabel);
-    itemBox.setOnMouseClicked(e -> {
+    auctionCard.setPrefWidth(220);
+    auctionCard.getChildren().add(auctionLabel);
+    auctionCard.setOnMouseClicked(e -> {
       try {
         FXMLLoader bidLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
         Scene bidScene = new Scene(bidLoader.load());
@@ -87,7 +87,9 @@ public class MainWebController {
       }
     });
 
-    auctionBox.getChildren().add(itemBox);
+    javafx.application.Platform.runLater(() -> {
+        auctionBox.getChildren().add(auctionCard);
+    });
   }
 
   public void toggleLogedin() {
@@ -129,30 +131,11 @@ public class MainWebController {
       logger.info("INFO: Welcome bro.");
     });
 
-    networkClient.addUIListener(Message.BROADCAST_NEW_ITEM, packet -> {
-      SellItemRequestPayload payload = (SellItemRequestPayload) packet.getPayload();
-      Item newItem = payload.getItem();
-
-      logger.info("INFO: Got server's item");
-
-      String itemInfo = String.format("-Name: %s\n-Details: %s\n-Starting Price: %s", newItem.getName(),
-                newItem.getDetail(), newItem.getStartingPrice());
-
-      Image image = null;
-      if (newItem.getImagePath() != null && !newItem.getImagePath().isEmpty()) {
-          int port = MainApp.getPort()+1;
-          String url = "http://127.0.0.1:" + port + newItem.getImagePath();
-
-          image = new Image(url, true);
+    networkClient.addUIListener(Message.NEW_AUCTION_BROADCAST, packet -> {
+      app.payload.NewAuctionRespond response = (app.payload.NewAuctionRespond) packet.getPayload();
+      if (response.isSuccess()) {
+        displayAuctionList(response.getAuctionId(), response.getName(), response.getDuration());
       }
-      
-      ImageView placeholder = new ImageView(image);
-
-      if (SellingController.getInstance() != null) {
-          SellingController.getInstance().clearImage();
-      }
-
-      addItemToAuction(placeholder, itemInfo);
     });
   }
 
@@ -176,8 +159,9 @@ public class MainWebController {
     try {
       FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/createAuction.fxml"));
       Scene auctionScene = new Scene(auctionLoader.load());
-      Stage auctionStage = (Stage) New.getScene().getWindow();
+      Stage auctionStage = new Stage();
       auctionStage.setScene(auctionScene);
+      auctionStage.show();
     }
     catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());

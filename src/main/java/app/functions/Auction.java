@@ -12,17 +12,19 @@ import javafx.collections.ObservableList;
 public class Auction {
   private static final Logger logger = LoggerFactory.getLogger(Auction.class);
   
-  private final int auctionId;
+  private int auctionId;
   private double step;
-  private double duration;
+  private String duration;
+  private String name;
   private String status;
   private List<Integer> itemId;
   private Map<String, User> onlineUser;
   private List<Client> clients;
 
-  public Auction(int auctionId) {
-    this.auctionId = auctionId;
-    this.status = "CANCELED";
+  public Auction(String name, String duration) {
+    this.name = name;
+    this.duration = duration;
+    this.status = "OPEN";
     this.itemId = new ArrayList<>();
     this.onlineUser = new HashMap<>();
     clients = new ArrayList<Client>();
@@ -33,6 +35,9 @@ public class Auction {
     return auctionId;
   }
 
+  public void setAuctionId(int id) {
+    auctionId = id;
+  }
   // Step
   public double getStep() {
     return step;

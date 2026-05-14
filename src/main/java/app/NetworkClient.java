@@ -71,6 +71,9 @@ public class NetworkClient {
   }
 
   public void connect(String host, int port) throws IOException{
+    if (socket != null && !socket.isClosed()) {
+      return; // Already connected
+    }
     socket = new Socket(host, port);
     out = new ObjectOutputStream(socket.getOutputStream());
     in = new ObjectInputStream(socket.getInputStream());

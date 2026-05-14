@@ -111,4 +111,8 @@ public class Server {
       System.err.println("Already in the auction.");
     }
   }
+
+  public void addAuction(Auction auction) {
+    auctions.put(auction.getAuctionId(), auction);
+  }
 }

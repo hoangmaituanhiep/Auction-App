@@ -1,6 +1,8 @@
 package app.payload;
 
-public class NewAuctionRequest {
+import java.io.Serializable;
+
+public class NewAuctionRequest implements Serializable {
   private String name;
   private String duration;
   public NewAuctionRequest(String name, String duration) {

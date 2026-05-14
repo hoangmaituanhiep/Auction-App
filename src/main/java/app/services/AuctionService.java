@@ -46,4 +46,8 @@ public class AuctionService {
     }
     return false;
   }
+  
+  public int getAuctionId() {
+    return auctionDAO.getLatestAuctionId();
+  }
 }

@@ -31,25 +31,25 @@ public class AuctionDAO {
   }
   
   public boolean addAuction(String name, String duration) {
-    String insert = "INSERT INTO TABLE auction(name, duration, status) VALUES(?, ?, ?)";
+    String insert = "INSERT INTO auction(name, duration, status) VALUES(?, ?, ?)";
 
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getAuctionUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
-          ResultSet auctionId = preStatement.getGeneratedKeys();
           
           preStatement.setString(1, name);
           preStatement.setString(2, duration);
           preStatement.setString(3, "OPEN");
 
-          if (auctionId.next()) {
-            this.auctionId = auctionId.getInt(1);
-          }
-          else {
-            this.auctionId = -1;
-          }
-
           int update = preStatement.executeUpdate();
+
+          try (ResultSet generatedKeys = preStatement.getGeneratedKeys()) {
+            if (generatedKeys.next()) {
+              this.auctionId = generatedKeys.getInt(1);
+            } else {
+              this.auctionId = -1;
+            }
+          }
 
           return update > 0;
         }

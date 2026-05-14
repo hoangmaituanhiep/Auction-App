@@ -6,15 +6,19 @@ import java.net.Socket;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
+import app.dao.AuctionDAO;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
+import app.payload.NewAuctionRequest;
+import app.payload.NewAuctionRespond;
 import app.payload.RegisterClientPayload;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
+import app.services.AuctionService;
 import app.services.ConnectionService;
 import app.services.ItemsService;
 
@@ -26,14 +30,17 @@ public class ClientHandler implements Runnable {
   private ObjectOutputStream objectOutputStream;
   private ConnectionService connectionService;
   private ItemsService itemsService;
+  private AuctionService auctionService;
   private boolean isRunning;
 
   public ClientHandler(Client client) {
     UserDAO userDAO = new UserDAO();
     ItemDAO itemDAO = new ItemDAO();
+    AuctionDAO auctionDAO = new AuctionDAO();
 
     this.connectionService = new ConnectionService(userDAO);
     this.itemsService = new ItemsService(itemDAO);
+    this.auctionService = new AuctionService(auctionDAO);
 
     this.client = client;
     isRunning = true;
@@ -89,6 +96,24 @@ public class ClientHandler implements Runnable {
         PacketMessage packetMessage = (PacketMessage) objectInputStream.readObject();
 
         switch (packetMessage.getType()) {
+          case NEW_AUCTION_REQUEST:
+            NewAuctionRequest payload = (NewAuctionRequest) packetMessage.getPayload();
+            boolean auctionSuccess = auctionService.addAuction(payload.getName(), payload.getDuration());
+
+            NewAuctionRespond response;
+            
+            if (auctionSuccess) {
+              response = new NewAuctionRespond(auctionSuccess, auctionService.getAuctionId(), payload.getName(), payload.getDuration());
+            }
+            else {
+              response = new NewAuctionRespond(auctionSuccess, "Failed to create new Auction");
+            }
+            PacketMessage message = new PacketMessage(Message.NEW_AUCTION_RESPOND, response);
+            sendPacket(message);
+            PacketMessage serverMessage = new PacketMessage(Message.NEW_AUCTION_BROADCAST, response);
+            server.broadcast(serverMessage);
+            break;
+
           case JOIN_AUCTION:
             try {
               joinAution(packetMessage);
