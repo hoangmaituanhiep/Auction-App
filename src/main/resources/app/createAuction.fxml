@@ -2,13 +2,11 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="960.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
@@ -27,7 +25,10 @@
                   <Insets />
                </HBox.margin>
             </Label>
-            <TextField fx:id="auctionName" prefHeight="50.0" prefWidth="406.0" promptText="Enter name..." />
+            <TextField fx:id="auctionName" prefHeight="50.0" prefWidth="406.0" promptText="Enter name...">
+               <font>
+                  <Font size="22.0" />
+               </font></TextField>
          </children>
          <VBox.margin>
             <Insets left="200.0" />
@@ -38,66 +39,15 @@
             <Insets left="200.0" top="15.0" />
          </VBox.margin>
          <children>
-            <Label prefHeight="60.0" prefWidth="66.0" text="Start:">
-               <font>
-                  <Font size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets />
-               </HBox.margin>
-            </Label>
-            <ComboBox fx:id="startDayComboBox" prefHeight="60.0" prefWidth="64.0" promptText="Day" />
-            <ComboBox fx:id="startMonthComboBox" prefHeight="60.0" prefWidth="80.0" promptText="Month">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </ComboBox>
-            <ComboBox fx:id="startYearComboBox" prefHeight="60.0" prefWidth="65.0" promptText="Year">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </ComboBox>
-            <Label prefHeight="60.0" prefWidth="62.0" text="Time:">
-               <font>
-                  <Font size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </Label>
-            <TextField fx:id="startTime" prefHeight="50.0" prefWidth="102.0" promptText="00:00:00" />
-         </children>
-      </HBox>
-      <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="500.0">
-         <VBox.margin>
-            <Insets left="200.0" top="15.0" />
-         </VBox.margin>
-         <children>
-            <Label prefHeight="60.0" prefWidth="66.0" text="End:">
+            <Label prefHeight="60.0" prefWidth="106.0" text="Duration:">
                <font>
                   <Font size="22.0" />
                </font>
             </Label>
-            <ComboBox fx:id="endDayComboBox" prefHeight="60.0" prefWidth="64.0" promptText="Day" />
-            <ComboBox fx:id="endMonthComboBox" prefHeight="60.0" prefWidth="80.0" promptText="Month">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </ComboBox>
-            <ComboBox fx:id="endYearComboBox" prefHeight="60.0" prefWidth="65.0" promptText="Year">
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </ComboBox>
-            <Label prefHeight="60.0" prefWidth="62.0" text="Time:">
+            <TextField fx:id="startTime" prefHeight="50.0" prefWidth="215.0" promptText="hh-mm-ss">
                <font>
                   <Font size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="20.0" />
-               </HBox.margin>
-            </Label>
-            <TextField fx:id="endTime" prefHeight="50.0" prefWidth="102.0" promptText="00:00:00" />
+               </font></TextField>
          </children>
       </HBox>
       <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="500.0">
@@ -110,12 +60,21 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <Button fx:id="addItemButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="57.0" text="+">
+            <Button fx:id="addItemButton" mnemonicParsing="false" prefHeight="60.0" prefWidth="101.0" text="+">
                <font>
                   <Font size="28.0" />
                </font>
             </Button>
          </children>
       </HBox>
+      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <Button contentDisplay="CENTER" mnemonicParsing="false" prefHeight="95.0" prefWidth="183.0" text="Create Auction" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
    </children>
 </VBox>
