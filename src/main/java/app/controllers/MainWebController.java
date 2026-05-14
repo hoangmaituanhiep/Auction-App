@@ -50,6 +50,10 @@ public class MainWebController {
   private FlowPane auctionBox;
   @FXML
   private ScrollPane auctionScrollPane;
+  @FXML
+  private TextField Ip;
+  @FXML
+  private Button enter;
 
   private static MainWebController instance;
 
@@ -109,6 +113,7 @@ public class MainWebController {
   public void initialize() {
     instance = this;
 
+    logIn.setDisable(true);
     searchItems.setDisable(true);
     join.setDisable(true);
     New.setDisable(true);
@@ -119,13 +124,6 @@ public class MainWebController {
     }
 
     networkClient = NetworkClient.getInstance();
-    try {
-      networkClient.connect("127.0.0.1", MainApp.getPort());
-      logger.info("INFO: Connected to server successfully at: " + MainApp.getPort());
-    }
-    catch (IOException e) {
-      logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
-    }
 
     networkClient.addUIListener(Message.WELCOME, packet -> {
       logger.info("INFO: Welcome bro.");
@@ -137,6 +135,21 @@ public class MainWebController {
         displayAuctionList(response.getAuctionId(), response.getName(), response.getDuration());
       }
     });
+  }
+
+  @FXML
+  public void enter() {
+    try {
+      networkClient.connect(Ip.getText(), MainApp.getPort());
+      logIn.setDisable(false);
+      Ip.setVisible(false);
+      enter.setVisible(false);
+      Ip.setManaged(false);
+      enter.setManaged(false);
+    }
+    catch (IOException e) {
+      logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
+    }
   }
 
   @FXML

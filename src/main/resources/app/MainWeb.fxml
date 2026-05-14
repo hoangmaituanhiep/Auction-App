@@ -68,6 +68,15 @@
    <center>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="100.0" BorderPane.alignment="CENTER">
          <children>
+            <HBox alignment="CENTER" prefHeight="80.0" prefWidth="1280.0" spacing="10.0">
+               <children>
+                  <TextField fx:id="Ip" alignment="CENTER" prefHeight="42.0" prefWidth="500.0" promptText="Enter Server's IP" />
+                  <Button fx:id="enter" mnemonicParsing="false" onAction="#enter" prefHeight="42.0" prefWidth="100.0" text="Connect" />
+               </children>
+               <VBox.margin>
+                  <Insets top="10.0" bottom="10.0" />
+               </VBox.margin>
+            </HBox>
             <ScrollPane fx:id="auctionScrollPane" disable="true" fitToWidth="true" prefHeight="578.0" prefWidth="1280.0" visible="false" BorderPane.alignment="CENTER">
                <style>
                   .scroll-pane .viewport {
