@@ -5,7 +5,7 @@
 lib/
 bin/
 target/
-src/main/resources/images/clients/
+Server/src/main/resources/images/clients/
 
 # Log file
 *.log

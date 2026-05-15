@@ -3,7 +3,7 @@ package app.functions;
 import java.util.HashMap;
 import java.util.Map;
 
-import app.controllers.MainWebController;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -33,6 +33,10 @@ public abstract class User extends Entity {
   public void addItem(Item item) {
     itemsList.add(item);
     itemsMap.put(item.getId(), item);
+  }
+
+  public ObservableList<Item> getItemsList() {
+    return itemsList;
   }
 
   public void addItemId(int id) {

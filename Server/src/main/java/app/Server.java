@@ -11,14 +11,14 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import app.functions.Auction;
+import app.services.LiveAuctionSession;
 import app.packets.PacketMessage;
 
 public class Server {
   private static final Logger logger = LoggerFactory.getLogger(Server.class);
   
   private static Map<String, ClientHandler> clientHandlers;
-  private static Map<Integer, Auction> auctions;
+  private static Map<Integer, LiveAuctionSession> liveAuctions;
   private static boolean isListening;
   private static boolean isAutioning;
   private static ExecutorService executors = Executors.newFixedThreadPool(10);
@@ -36,7 +36,7 @@ public class Server {
     }
 
     clientHandlers = new HashMap<String, ClientHandler>();
-    auctions = new HashMap<Integer, Auction>();
+    liveAuctions = new HashMap<Integer, LiveAuctionSession>();
   }
 
   Server(int port) {
@@ -50,7 +50,7 @@ public class Server {
     }
 
     clientHandlers = new HashMap<String, ClientHandler>();
-    auctions = new HashMap<Integer, Auction>();
+    liveAuctions = new HashMap<Integer, LiveAuctionSession>();
   }
 
   public Map<String, ClientHandler> getClientHanlders() {
@@ -105,14 +105,14 @@ public class Server {
   }
 
   public void joinAution(int auctionId, Client client) {
-    if (auctions.containsKey(auctionId)) {
-      auctions.get(auctionId).addClient(client);
+    if (liveAuctions.containsKey(auctionId)) {
+      liveAuctions.get(auctionId).addClient(client);
     } else {
       System.err.println("Already in the auction.");
     }
   }
 
-  public void addAuction(Auction auction) {
-    auctions.put(auction.getAuctionId(), auction);
+  public void addLiveAuction(LiveAuctionSession session) {
+    liveAuctions.put(session.getAuction().getAuctionId(), session);
   }
 }

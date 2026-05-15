@@ -31,6 +31,7 @@ public class MainWebController {
 
   private NetworkClient networkClient;
   private User user;
+  private String host;
 
   @FXML
   private BorderPane mainPane;
@@ -79,7 +80,7 @@ public class MainWebController {
     auctionCard.getChildren().add(auctionLabel);
     auctionCard.setOnMouseClicked(e -> {
       try {
-        FXMLLoader bidLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
+        FXMLLoader bidLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
         Scene bidScene = new Scene(bidLoader.load());
 
         Stage bidStage = new Stage();
@@ -147,7 +148,8 @@ public class MainWebController {
   @FXML
   public void enter() {
     try {
-      networkClient.connect(Ip.getText(), MainApp.getPort());
+      host = Ip.getText();
+      networkClient.connect(host, MainApp.getPort());
       logIn.setDisable(false);
       Ip.setVisible(false);
       enter.setVisible(false);
@@ -188,6 +190,23 @@ public class MainWebController {
     }
   }
 
+  @FXML
+  public void openAuctionManager() {
+    try {
+      FXMLLoader managerLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
+      Scene managerScene = new Scene(managerLoader.load(), 1280, 720);
+      Stage managerStage = new Stage();
+      managerStage.setScene(managerScene);
+      managerStage.show();
+    }
+    catch (IOException e) {
+      logger.error("ERROR: {}", e.getMessage());
+    }
+  }
+
+  public String getHost(){
+    return host;
+  }
   // @FXML
   // public void addAuctionItem(Item item) {
   //   VBox card = new VBox(10);

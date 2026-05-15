@@ -38,6 +38,11 @@ public class Auction {
   public void setAuctionId(int id) {
     auctionId = id;
   }
+  
+  public String getDuration() {
+    return duration;
+  }
+
   // Step
   public double getStep() {
     return step;

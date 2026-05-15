@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MediaServer {
-  private static final String IMAGE_DIR = "src/main/resources/images/clients/";
+  private static final String IMAGE_DIR = "Server/src/main/resources/images/clients/";
   private static final Logger logger = LoggerFactory.getLogger(MediaServer.class);
 
   public static void start(int port) throws IOException {

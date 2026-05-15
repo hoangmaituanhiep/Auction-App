@@ -44,7 +44,7 @@
                   <Font size="22.0" />
                </font>
             </Label>
-            <TextField fx:id="duration" prefHeight="50.0" prefWidth="215.0" promptText="hh-mm-ss">
+            <TextField fx:id="duration" prefHeight="50.0" prefWidth="215.0" promptText="minutes">
                <font>
                   <Font size="22.0" />
                </font></TextField>
@@ -65,11 +65,16 @@
                   <Font size="28.0" />
                </font>
             </Button>
+            <Label prefHeight="62.0" prefWidth="185.0">
+               <font>
+                  <Font size="37.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
          <children>
-            <Button fx:id="New" onAction="#addAuction" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="95.0" prefWidth="183.0" text="Create Auction" textAlignment="CENTER">
+            <Button fx:id="New" contentDisplay="CENTER" mnemonicParsing="false" onAction="#addAuction" prefHeight="95.0" prefWidth="183.0" text="Create Auction" textAlignment="CENTER">
                <font>
                   <Font name="System Bold" size="17.0" />
                </font>
