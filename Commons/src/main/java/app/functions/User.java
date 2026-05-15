@@ -35,6 +35,10 @@ public abstract class User extends Entity {
     itemsMap.put(item.getId(), item);
   }
 
+  public ObservableList<Item> getItemsList() {
+    return itemsList;
+  }
+
   public void addItemId(int id) {
     itemsList.getLast().addId(id);
   }
