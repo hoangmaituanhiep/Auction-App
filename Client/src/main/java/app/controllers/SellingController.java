@@ -175,7 +175,7 @@ public class SellingController {
     try {
       int port = MainApp.getPort() + 1;
 
-      URL url = new URL("http://127.0.0.1:" + port + "/upload");
+      URL url = new URL("http://" + MainApp.getHost() + ":" + port + "/upload");
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setRequestMethod("POST");
