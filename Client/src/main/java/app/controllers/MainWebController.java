@@ -25,7 +25,6 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 
-
 public class MainWebController {
   private static final Logger logger = LoggerFactory.getLogger(MainWebController.class);
 
@@ -72,10 +71,9 @@ public class MainWebController {
     auctionCard.setAlignment(Pos.TOP_LEFT);
     auctionCard.setPadding(new Insets(30));
     auctionCard.setStyle(
-            "-fx-background-color: #090e13;" + 
+        "-fx-background-color: #090e13;" +
             "-fx-background-radius: 20;" +
-            "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);"
-        );
+            "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);");
     auctionCard.setPrefWidth(220);
     auctionCard.getChildren().add(auctionLabel);
     auctionCard.setOnMouseClicked(e -> {
@@ -86,14 +84,13 @@ public class MainWebController {
         Stage bidStage = new Stage();
         bidStage.setScene(bidScene);
         bidStage.show();
-      }
-      catch (IOException ex) {
+      } catch (IOException ex) {
         logger.error("ERROR: {}", ex.getMessage());
       }
     });
 
     javafx.application.Platform.runLater(() -> {
-        auctionBox.getChildren().add(auctionCard);
+      auctionBox.getChildren().add(auctionCard);
     });
   }
 
@@ -107,7 +104,7 @@ public class MainWebController {
     auctionScrollPane.setVisible(true);
     auctionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     auctionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-    logInLabel.setText("Hi "+ user.getUserName());
+    logInLabel.setText("Hi " + user.getUserName());
   }
 
   @FXML
@@ -121,10 +118,16 @@ public class MainWebController {
 
     user = User.getInstance();
     if (user.getUserName() != null && !user.getUserName().isEmpty()) {
-        toggleLogedin();
+      toggleLogedin();
     }
 
     networkClient = NetworkClient.getInstance();
+    try {
+      networkClient.connect(MainApp.getHost(), MainApp.getPort());
+      logger.info("INFO: Connected to server successfully at: {}:{}", MainApp.getHost(), MainApp.getPort());
+    } catch (IOException e) {
+      logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
+    }
 
     networkClient.addUIListener(Message.WELCOME, packet -> {
       logger.info("INFO: Welcome bro.");
@@ -148,8 +151,7 @@ public class MainWebController {
       enter.setVisible(false);
       Ip.setManaged(false);
       enter.setManaged(false);
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
     }
   }
@@ -162,12 +164,11 @@ public class MainWebController {
       Scene loginScene = new Scene(loginLoader.load());
       Stage loginStage = new Stage();
       loginStage.setScene(loginScene);
-      loginStage.show();    
+      loginStage.show();
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
-
 
   @FXML
   public void createAuction() {
@@ -177,8 +178,7 @@ public class MainWebController {
       Stage auctionStage = new Stage();
       auctionStage.setScene(auctionScene);
       auctionStage.show();
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
     }
   }
@@ -202,42 +202,43 @@ public class MainWebController {
   }
   // @FXML
   // public void addAuctionItem(Item item) {
-  //   VBox card = new VBox(10);
-  //   card.setStyle("-fx-border-color: #ccc; -fx-padding: 10; -fx-background-color: #f9f9f9;");
+  // VBox card = new VBox(10);
+  // card.setStyle("-fx-border-color: #ccc; -fx-padding: 10; -fx-background-color:
+  // #f9f9f9;");
 
-  //   ImageView imageView = new ImageView(item.getImage());
-  //   imageView.setFitWidth(150);
-  //   imageView.setFitHeight(150);
-  //   imageView.setPreserveRatio(true);
+  // ImageView imageView = new ImageView(item.getImage());
+  // imageView.setFitWidth(150);
+  // imageView.setFitHeight(150);
+  // imageView.setPreserveRatio(true);
 
-  //   Label nameLabel = new Label(item.getName());
-  //   Label priceLabel = new Label("Giá khởi điểm: " + item.getStartingPrice());
+  // Label nameLabel = new Label(item.getName());
+  // Label priceLabel = new Label("Giá khởi điểm: " + item.getStartingPrice());
 
-  //   Button chooseImageBtn = new Button("Chọn ảnh");
-  //   chooseImageBtn.setOnAction(e -> {
-  //     FileChooser fileChooser = new FileChooser();
-  //     fileChooser.setTitle("Chọn ảnh sản phẩm");
-  //     fileChooser.getExtensionFilters().add(
-  //         new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-  //     File file = fileChooser.showOpenDialog(null);
-  //     if (file != null) {
-  //       Image image = new Image(file.toURI().toString());
-  //       item.setImage(image);
-  //       imageView.setImage(image);
-  //     }
-  //   });
+  // Button chooseImageBtn = new Button("Chọn ảnh");
+  // chooseImageBtn.setOnAction(e -> {
+  // FileChooser fileChooser = new FileChooser();
+  // fileChooser.setTitle("Chọn ảnh sản phẩm");
+  // fileChooser.getExtensionFilters().add(
+  // new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
+  // File file = fileChooser.showOpenDialog(null);
+  // if (file != null) {
+  // Image image = new Image(file.toURI().toString());
+  // item.setImage(image);
+  // imageView.setImage(image);
+  // }
+  // });
 
-  //   card.getChildren().addAll(imageView, nameLabel, priceLabel);
-  //   auctionPane.getChildren().add(card);
+  // card.getChildren().addAll(imageView, nameLabel, priceLabel);
+  // auctionPane.getChildren().add(card);
 
-  //   // Timeline kiểm tra hết hạn
-  //   Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-  //     if (LocalDateTime.now().isAfter(item.getEndTime())) {
-  //       auctionPane.getChildren().remove(card);
-  //     }
-  //   }));
-  //   timeline.setCycleCount(Animation.INDEFINITE);
-  //   timeline.play();
+  // // Timeline kiểm tra hết hạn
+  // Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
+  // if (LocalDateTime.now().isAfter(item.getEndTime())) {
+  // auctionPane.getChildren().remove(card);
+  // }
+  // }));
+  // timeline.setCycleCount(Animation.INDEFINITE);
+  // timeline.play();
   // }
 
 }

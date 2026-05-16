@@ -112,7 +112,8 @@ public class SellingController {
         break;
 
       case "Electronics":
-        item = new Electronics(getItemName.getText(), getDetails.getText(), Double.parseDouble(getStartingPrice.getText()));
+        item = new Electronics(getItemName.getText(), getDetails.getText(),
+            Double.parseDouble(getStartingPrice.getText()));
         break;
       default:
         logger.warn("WARN: Invalid category");
@@ -124,7 +125,7 @@ public class SellingController {
         String uploadedPath = uploadImageToServer(selectedImageBytes);
         item.setImagePath(uploadedPath);
       }
-      
+
       SellItemRequestPayload payload = new SellItemRequestPayload(item);
       PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
 
@@ -167,6 +168,7 @@ public class SellingController {
   public Image getImage() {
     return this.selectedImage;
   }
+
   public void clearImage() {
     this.selectedImage = null;
   }
@@ -175,11 +177,11 @@ public class SellingController {
     try {
       int port = MainApp.getPort() + 1;
 
-      URL url = new URL("http://" + mainWebController.getHost() + ":" + port + "/upload");
+      URL url = new URL("http://" + MainApp.getHost() + ":" + port + "/upload");
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setRequestMethod("POST");
-      
+
       try (OutputStream os = connection.getOutputStream()) {
         os.write(imageBytes);
       }
@@ -187,8 +189,7 @@ public class SellingController {
       try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
         return reader.readLine();
       }
-    }
-    catch (Exception e) {
+    } catch (Exception e) {
       logger.error("ERROR: Failed to upload image to server. {}", e.getMessage());
       return null;
     }
