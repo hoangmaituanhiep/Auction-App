@@ -16,9 +16,14 @@ public class MainApp extends Application {
   private static final Logger logger = LoggerFactory.getLogger(MainApp.class);
 
   private static int port = 8080;// default port
+  private static String host = "127.0.0.1"; // default host
 
   public static int getPort() {
     return port;
+  }
+  
+  public static String getHost() {
+    return host;
   }
 
 
@@ -36,13 +41,16 @@ public class MainApp extends Application {
   }
 
   public static void main(String[] args) throws IOException {
-    // get port
+    // get port and host
     if (args.length > 0) {
       try {
         port = Integer.parseInt(args[0]);
       } catch (NumberFormatException e) {
         System.err.println("Invalid port");
       }
+    }
+    if (args.length > 1) {
+        host = args[1];
     }
     Application.launch(args);// call start and pass port indirectly
   }
