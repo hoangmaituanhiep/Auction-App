@@ -22,7 +22,7 @@ jobs:
 
     # 1. Kiểm tra lỗi biên dịch (Compile)
     - name: Compile Code
-      run: mvn clean compile
+      run: mvn clean install
 
     # 2. Kiểm tra lỗi phong cách (Checkstyle)
     - name: Run Style Check

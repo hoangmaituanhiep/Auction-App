@@ -9,6 +9,10 @@ import app.Server;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +23,14 @@ public class LiveAuctionSession {
   private Server server;
   private Auction auction;
   private Timer timer;
-  private long remainingTimeMillis;
+  private ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
+  private ScheduledFuture<?> countDown;
+  private long remainingTimeS;
 
   public LiveAuctionSession(Auction auction) {
     server = Server.getInstance();
     this.auction = auction;
-    this.remainingTimeMillis = parseDuration(auction.getDuration());
+    this.remainingTimeS = parseDuration(auction.getDuration())*60;
   }
 
   private long parseDuration(String duration) {
@@ -37,24 +43,23 @@ public class LiveAuctionSession {
   }
 
   public void start() {
-    timer = new Timer();
-    timer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        remainingTimeMillis -= 1000;
-        if (remainingTimeMillis <= 0) {
-          auction.setStatus("FINISHED");
-          timer.cancel();
-          // Broadcast finished
-          AuctionTimeoutPayload timeoutResponse = new AuctionTimeoutPayload(true, auction.getAuctionId());
-          PacketMessage message = new PacketMessage(Message.AUCTION_TIMEOUT, timeoutResponse);
+    logger.info("INFO: starting count down at {}", remainingTimeS);
 
-          server.broadcast(message);
-        } else {
-          // Broadcast tick
-        }
+    Runnable tick = () -> {
+      if (remainingTimeS > 0) {
+        remainingTimeS --;
       }
-    }, 1000, 1000);
+      else {
+        AuctionTimeoutPayload payload = new AuctionTimeoutPayload(false, auction.getAuctionId());
+        PacketMessage message = new PacketMessage(Message.AUCTION_TIMEOUT, payload);
+
+        server.broadcast(message);
+
+        countDown.cancel(false);
+      }
+    };
+
+    countDown = schedule.scheduleAtFixedRate(tick, 0, 1, TimeUnit.SECONDS);
   }
 
   public synchronized boolean placeBid(Client client, double bid) {
