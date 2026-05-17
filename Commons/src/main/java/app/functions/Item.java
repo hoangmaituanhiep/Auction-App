@@ -17,6 +17,7 @@ public abstract class Item extends Entity {
     this.name = name;
     this.detail = detail;
     this.startingPrice = startingPrice;
+    this.current_Price = startingPrice;
   }
 
   public int getId() {
@@ -62,7 +63,7 @@ public abstract class Item extends Entity {
 
   public String getDetail() {
     return detail +
-        "\nStrating price: " + startingPrice +
+        "\nStarting price: " + startingPrice +
         "\nCurrent highest price: " + current_Price;
   }
 

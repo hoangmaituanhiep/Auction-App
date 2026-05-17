@@ -9,7 +9,9 @@ import app.NetworkClient;
 import app.functions.Item;
 import app.functions.User;
 import app.packets.Message;
+import app.payload.AuctionTimeoutPayload;
 import app.payload.SellItemRequestPayload;
+import app.payload.NewAuctionRespond;
 
 import org.slf4j.Logger;
 
@@ -17,6 +19,7 @@ import javafx.fxml.*;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -69,6 +72,7 @@ public class MainWebController {
     auctionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
 
     VBox auctionCard = new VBox(10);
+    auctionCard.setId(String.valueOf(auctionId));
     auctionCard.setAlignment(Pos.TOP_LEFT);
     auctionCard.setPadding(new Insets(30));
     auctionCard.setStyle(
@@ -80,12 +84,12 @@ public class MainWebController {
     auctionCard.getChildren().add(auctionLabel);
     auctionCard.setOnMouseClicked(e -> {
       try {
-        FXMLLoader bidLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
-        Scene bidScene = new Scene(bidLoader.load());
+        FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
+        Scene auctionScene = new Scene(auctionLoader.load());
 
-        Stage bidStage = new Stage();
-        bidStage.setScene(bidScene);
-        bidStage.show();
+        Stage auctionStage = new Stage();
+        auctionStage.setScene(auctionScene);
+        auctionStage.show();
       }
       catch (IOException ex) {
         logger.error("ERROR: {}", ex.getMessage());
@@ -95,6 +99,17 @@ public class MainWebController {
     javafx.application.Platform.runLater(() -> {
         auctionBox.getChildren().add(auctionCard);
     });
+  }
+
+  public void disableAuction(String id) {
+    Scene currentScene = auctionScrollPane.getScene();
+    Node node = currentScene.lookup(id);
+
+    if (node instanceof VBox) {
+      VBox auctionCard = (VBox) node;
+      auctionCard.setVisible(false);
+      auctionCard.setManaged(false);
+    }
   }
 
   public void toggleLogedin() {
@@ -131,9 +146,18 @@ public class MainWebController {
     });
 
     networkClient.addUIListener(Message.NEW_AUCTION_BROADCAST, packet -> {
-      app.payload.NewAuctionRespond response = (app.payload.NewAuctionRespond) packet.getPayload();
+      NewAuctionRespond response = (NewAuctionRespond) packet.getPayload();
       if (response.isSuccess()) {
         displayAuctionList(response.getAuctionId(), response.getName(), response.getDuration());
+      }
+    });
+
+    networkClient.addUIListener(Message.AUCTION_TIMEOUT, packet -> {
+      AuctionTimeoutPayload response =  (AuctionTimeoutPayload) packet.getPayload();
+      boolean isFinished = response.isFinished();
+
+      if (isFinished) {
+        disableAuction(String.valueOf(response.getAuctionId()));
       }
     });
   }
