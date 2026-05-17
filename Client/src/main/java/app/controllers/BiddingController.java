@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import app.NetworkClient;
 import app.packets.Message;
 import app.packets.PacketMessage;
+import app.payload.BidItemRequestPayload;
+import app.payload.BidItemRespondPayload;
 import javafx.fxml.FXML;
 
 import javafx.scene.control.Button;
@@ -44,7 +46,7 @@ public class BiddingController {
             try {
 
             } catch (Exception e) {
-                logger.error("Error while bidding: ", e)
+                logger.error("Error while bidding: ", e);
             }
         }
     });
@@ -60,7 +62,7 @@ public class BiddingController {
         try{
             networkClient.sendPacket(mesage);
             logger.info("New price is sent.");
-        } catch(IOExceptione e){
+        } catch(IOException e){
             logger.error("ERROR: {}", e.getMessage());
         }
     }
