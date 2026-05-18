@@ -27,7 +27,7 @@
          <children>
             <TitledPane animated="false" prefHeight="376.0" prefWidth="686.0" text="Bid History">
                <content>
-                  <TableView prefHeight="200.0" prefWidth="200.0">
+                  <TableView fx:id="tableBidHistory" prefHeight="200.0" prefWidth="200.0">
                     <columns>
                       <TableColumn fx:id="nameBidder" prefWidth="75.0" text="Name" />
                       <TableColumn fx:id="bidTime" prefWidth="75.0" text="Time" />
