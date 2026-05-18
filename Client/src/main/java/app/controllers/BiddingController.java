@@ -20,6 +20,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 
 public class BiddingController {
+    private int ItemId;
+
     private static final Logger logger = LoggerFactory.getLogger(MainWebController.class);
     @FXML
     private ImageView itemImage;
@@ -35,21 +37,29 @@ public class BiddingController {
     private MainWebController mainWebController;
     private NetworkClient networkClient;
 
+    public int getItemId () {
+        return ItemId;
+    }
+
+    public void setItemId(int ItemId) {
+        this.ItemId = ItemId;
+    }
+
     @FXML
     public void initialize() {
-    mainWebController = MainWebController.getInstance();
-    networkClient = NetworkClient.getInstance();
+        mainWebController = MainWebController.getInstance();
+        networkClient = NetworkClient.getInstance();
 
-    networkClient.addUIListener(Message.NEW_PRICE_RESPOND, packet -> {
-        BidItemRespondPayload respone = (BidItemRespondPayload) packet.getPayload();
-        if(respone.isSuccess()) {
-            try {
-
-            } catch (Exception e) {
-                logger.error("Error while bidding: ", e);
+        networkClient.addUIListener(Message.NEW_PRICE_RESPOND, packet -> {
+            BidItemRespondPayload respone = (BidItemRespondPayload) packet.getPayload();
+            if(respone.isSuccess()) {
+                try {
+                    updateCurrentPrice.setText(String.format("Current highest price: %d", placeBid.getText()));
+                } catch (Exception e) {
+                    logger.error("Error while bidding: ", e);
+                }
             }
-        }
-    });
+        });
     }
 
     @FXML

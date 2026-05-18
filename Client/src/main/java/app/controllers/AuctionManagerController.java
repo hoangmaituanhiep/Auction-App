@@ -22,6 +22,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.scene.Parent;
 
 public class AuctionManagerController {
   private static final Logger logger = LoggerFactory.getLogger(AuctionManagerController.class);
@@ -64,6 +65,24 @@ public class AuctionManagerController {
         imageView.setFitHeight(80);
         imageView.setPreserveRatio(true);
         text.setWrapText(true);
+
+        content.setOnMouseClicked(e -> {
+          FXMLLoader biddingLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
+          try {
+            Parent parent = biddingLoader.load();
+
+            // Set Item id for controller
+            BiddingController controller = biddingLoader.getController();
+            controller.setItemId(getItem().getId());
+
+            Scene scene = new Scene(parent);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+          } catch(IOException exception) {
+            logger.error("Error while open Bidding screen: ", exception.getMessage());
+          }
+        });
       }
       @Override
       protected void updateItem(Item item, boolean empty) {
