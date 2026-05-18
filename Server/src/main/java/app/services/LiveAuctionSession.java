@@ -1,50 +1,65 @@
 package app.services;
 
 import app.functions.Auction;
+import app.packets.Message;
+import app.packets.PacketMessage;
+import app.payload.AuctionTimeoutPayload;
 import app.Client;
+import app.Server;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LiveAuctionSession {
+  private static final Logger logger = LoggerFactory.getLogger(LiveAuctionSession.class);
+
+  private Server server;
   private Auction auction;
   private Timer timer;
-  private long remainingTimeMillis;
+  private ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
+  private ScheduledFuture<?> countDown;
+  private long remainingTimeS;
 
   public LiveAuctionSession(Auction auction) {
+    server = Server.getInstance();
     this.auction = auction;
-    this.remainingTimeMillis = parseDuration(auction.getDuration());
+    this.remainingTimeS = parseDuration(auction.getDuration())*60;
   }
 
-  // Basic utility to parse a duration string like "2h", "30m", or fallback
   private long parseDuration(String duration) {
     try {
-      if (duration.endsWith("m")) {
-        return Long.parseLong(duration.replace("m", "")) * 60 * 1000;
-      } else if (duration.endsWith("h")) {
-        return Long.parseLong(duration.replace("h", "")) * 60 * 60 * 1000;
-      }
-      return Long.parseLong(duration) * 1000; // Assume seconds if no suffix
+      return Long.parseLong(duration);
     } catch (Exception e) {
-      return 60 * 60 * 1000; // Default 1 hour
+      logger.error("ERROR: Invalid duration.");
+      return 0;
     }
   }
 
   public void start() {
-    timer = new Timer();
-    timer.scheduleAtFixedRate(new TimerTask() {
-      @Override
-      public void run() {
-        remainingTimeMillis -= 1000;
-        if (remainingTimeMillis <= 0) {
-          auction.setStatus("FINISHED");
-          timer.cancel();
-          // Broadcast finished
-        } else {
-          // Broadcast tick
-        }
+    logger.info("INFO: starting count down at {}", remainingTimeS);
+
+    Runnable tick = () -> {
+      if (remainingTimeS > 0) {
+        remainingTimeS --;
       }
-    }, 1000, 1000);
+      else {
+        AuctionTimeoutPayload payload = new AuctionTimeoutPayload(false, auction.getAuctionId());
+        PacketMessage message = new PacketMessage(Message.AUCTION_TIMEOUT, payload);
+
+        server.broadcast(message);
+
+        countDown.cancel(false);
+      }
+    };
+
+    countDown = schedule.scheduleAtFixedRate(tick, 0, 1, TimeUnit.SECONDS);
   }
 
   public synchronized boolean placeBid(Client client, double bid) {

@@ -22,15 +22,8 @@ jobs:
 
     # 1. Kiểm tra lỗi biên dịch (Compile)
     - name: Compile Code
-      run: mvn clean compile
+      run: mvn clean install
 
-    # 2. Kiểm tra lỗi phong cách (Checkstyle)
-    - name: Run Style Check
-      run: mvn checkstyle:check
-
-    # 3. Chạy tất cả Unit Tests (Lỗi logic)
-    - name: Run Unit Tests
-      run: mvn test
 
     # 4. Kiểm tra lỗi tiềm ẩn bằng SpotBugs (Tùy chọn thêm)
     # Giúp tìm lỗi như NullPointerException, lỗi đóng resource Database...

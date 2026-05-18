@@ -6,8 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.MainApp;
+import app.NetworkClient;
 import app.functions.Item;
 import app.functions.User;
+import app.packets.Message;
+import app.payload.AuctionTimeoutPayload;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -24,6 +27,7 @@ public class AuctionManagerController {
   private static final Logger logger = LoggerFactory.getLogger(AuctionManagerController.class);
 
   private MainWebController mainWebController;
+  private NetworkClient networkClient;
 
   @FXML
   private ListView<Item> itemListView;
@@ -38,6 +42,16 @@ public class AuctionManagerController {
   public void initialize() {
     user = User.getInstance();
     mainWebController = MainWebController.getInstance();
+    networkClient = NetworkClient.getInstance();
+
+    networkClient.addUIListener(Message.AUCTION_TIMEOUT, packet -> {
+      AuctionTimeoutPayload payload = (AuctionTimeoutPayload) packet.getPayload();
+      boolean isFinished = payload.isFinished();
+
+      if (isFinished) {
+        backToMainWeb();
+      }
+    });
 
     itemListView.setItems(user.getItemsList());
     itemListView.setCellFactory(listView -> new ListCell<>() {
