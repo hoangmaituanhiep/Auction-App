@@ -6,6 +6,14 @@ import java.util.Map;
 public class Admin extends User {
   private String password;
   private Map<String, User> listUser;
+  private static Admin instance;
+
+  public static Admin getInstance() {
+    if (instance == null) {
+      instance = new Admin();
+    }
+    return instance;
+  }
 
   public Admin() {
     this.userName = "admin1";

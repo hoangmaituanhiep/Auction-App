@@ -68,10 +68,10 @@ public class ConnectionController {
         }
         if (mainWebController != null)
           mainWebController.toggleLogedin();
-      } else {
+        } else {
         if (status != null)
           status.setText("Login failed");
-        logger.error("Authentication failed");
+          logger.error("Authentication failed");
       }
     });
 
@@ -96,7 +96,7 @@ public class ConnectionController {
       } else {
         if (status != null)
           status.setText("Failed to register.");
-        logger.error("ERROR: Authentication failed.");
+          logger.error("ERROR: Authentication failed.");
       }
     });
 
@@ -110,13 +110,16 @@ public class ConnectionController {
 
     if (username.equals("admin1") && password.equals("toidongtinh")) {
       Stage mainStage = (Stage) signInButton.getScene().getWindow();
-      mainStage.close();
 
-      this.user = new Admin();
+      this.user = Admin.getInstance();
 
       if (mainWebController != null) {
+        mainWebController.setUser(this.user);
         mainWebController.toggleLogedin();
       }
+      logger.info("INFO: Admin logged in");
+      mainStage.close();
+      return;
     }
 
     try {
