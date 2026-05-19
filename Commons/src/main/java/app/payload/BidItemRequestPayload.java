@@ -1,6 +1,8 @@
 package app.payload;
 
-public class BidItemRequestPayload {
+import java.io.Serializable;
+
+public class BidItemRequestPayload implements Serializable {
   private double price;
   int Id;
   public BidItemRequestPayload(int Id, double price) {

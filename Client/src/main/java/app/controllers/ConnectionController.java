@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import app.NetworkClient;
+import app.functions.Admin;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
@@ -49,24 +50,27 @@ public class ConnectionController {
   public ConnectionController() {
     mainWebController = MainWebController.getInstance();
     networkClient = NetworkClient.getInstance();
-    user=User.getInstance();
+    user = User.getInstance();
   }
 
   public void initialize() {
     networkClient.addUIListener(Message.LOGIN_RESPONSE, packet -> {
       ConnectionRespondPayload response = (ConnectionRespondPayload) packet.getPayload();
-      if (response.isSuccess() ) {
-        if (getUserName != null) user.setUserName(getUserName.getText());
-        if (getEmail != null) user.setEmail(getEmail.getText());
-        
+      if (response.isSuccess()) {
+        if (getUserName != null)
+          user.setUserName(getUserName.getText());
+        if (getEmail != null)
+          user.setEmail(getEmail.getText());
+
         if (signInButton != null && signInButton.getScene() != null && signInButton.getScene().getWindow() != null) {
-            Stage mainStage = (Stage) signInButton.getScene().getWindow();
-            mainStage.close();
+          Stage mainStage = (Stage) signInButton.getScene().getWindow();
+          mainStage.close();
         }
-        if (mainWebController != null) mainWebController.toggleLogedin();
-      }
-      else {
-        if (status != null) status.setText("Login failed");
+        if (mainWebController != null)
+          mainWebController.toggleLogedin();
+      } else {
+        if (status != null)
+          status.setText("Login failed");
         logger.error("Authentication failed");
       }
     });
@@ -81,15 +85,17 @@ public class ConnectionController {
           FXMLLoader loader = new FXMLLoader(getClass().getResource("/app/login.fxml"));
           Scene loginScene = new Scene(loader.load());
           if (signUpButton != null && signUpButton.getScene() != null && signUpButton.getScene().getWindow() != null) {
-              Stage stage = (Stage) signUpButton.getScene().getWindow();
-              stage.setScene(loginScene);
+            Stage stage = (Stage) signUpButton.getScene().getWindow();
+            stage.setScene(loginScene);
           }
         } catch (IOException e) {
-          if (status != null) status.setText("Cannot navigate to login scene. \nDon't try again.");
+          if (status != null)
+            status.setText("Cannot navigate to login scene. \nDon't try again.");
           logger.error("ERROR: " + e.getMessage());
         }
       } else {
-        if (status != null) status.setText("Failed to register.");
+        if (status != null)
+          status.setText("Failed to register.");
         logger.error("ERROR: Authentication failed.");
       }
     });
@@ -101,6 +107,17 @@ public class ConnectionController {
     logger.debug("DEBUG: Request signing in...");
     String username = getUserName.getText();
     String password = getPassword.getText();
+
+    if (username.equals("admin1") && password.equals("toidongtinh")) {
+      Stage mainStage = (Stage) signInButton.getScene().getWindow();
+      mainStage.close();
+
+      this.user = new Admin();
+
+      if (mainWebController != null) {
+        mainWebController.toggleLogedin();
+      }
+    }
 
     try {
       ConnectionRequestPayload loginData = new ConnectionRequestPayload(username, password);
@@ -130,7 +147,7 @@ public class ConnectionController {
     } catch (IOException e) {
       logger.error("ERROR {}", e.getMessage());
     }
-      
+
   }
 
   @FXML

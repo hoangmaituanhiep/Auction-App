@@ -50,7 +50,8 @@ public class LiveAuctionSession {
         remainingTimeS --;
       }
       else {
-        AuctionTimeoutPayload payload = new AuctionTimeoutPayload(false, auction.getAuctionId());
+        logger.info("INFO: Count down finished.");
+        AuctionTimeoutPayload payload = new AuctionTimeoutPayload(true, auction.getAuctionId());
         PacketMessage message = new PacketMessage(Message.AUCTION_TIMEOUT, payload);
 
         server.broadcast(message);

@@ -1,6 +1,8 @@
 package app.payload;
 
-public class AuctionTimeoutPayload {
+import java.io.Serializable;
+
+public class AuctionTimeoutPayload implements Serializable{
   private boolean isFinished;
   private int auctionId;
   public AuctionTimeoutPayload(boolean isFinished, int auctionId) {

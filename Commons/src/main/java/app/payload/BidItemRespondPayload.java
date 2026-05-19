@@ -1,6 +1,8 @@
 package app.payload;
 
-public class BidItemRespondPayload {
+import java.io.Serializable;
+
+public class BidItemRespondPayload implements Serializable{
   private boolean isSuccess;
   private String error;
 
