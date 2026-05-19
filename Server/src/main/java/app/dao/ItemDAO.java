@@ -86,6 +86,26 @@ public class ItemDAO{
       return false;
     }
   }
+
+  public double getCurrentPrice(int id) {
+    String getId = "SELECT currentPrice FROM items WHERE id  = ?";
+
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getAuctionUrl());
+    PreparedStatement preStatement = connection.prepareStatement(getId)) {
+      preStatement.setInt(1, id);
+
+      try (ResultSet resultSet = preStatement.executeQuery()) {
+        if (resultSet.next()) {
+          return resultSet.getDouble("currentPrice");
+        }
+      }
+    }
+    catch (SQLException e) {
+      logger.error("ERROR: {}", e.getMessage());
+    }
+    return 0;
+  }
+
   public int getLastestItemId() {
     return lastestItemId;
   }
