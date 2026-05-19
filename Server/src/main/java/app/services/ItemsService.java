@@ -33,6 +33,15 @@ public class ItemsService {
     return itemDAO.insertItem(item);
   }
 
+  public boolean setNewPrice(int id, double newPrice) {
+    if (itemDAO.getCurrentPrice(id) >= newPrice) {
+      logger.debug("DEBUG: New price must be higher than current price.");
+      return false;
+    }
+
+    return itemDAO.setNewPrice(id, newPrice);
+  }
+
   public int getLastestItemId() {
     return itemDAO.getLastestItemId();
   }
