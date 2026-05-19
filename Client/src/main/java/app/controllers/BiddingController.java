@@ -66,7 +66,7 @@ public class BiddingController {
     public void bidAction() {
         logger.info("New price is bidded");
 
-        BidItemRequestPayload payload = new BidItemRequestPayload(Double.parseDouble(placeBid.getText()));
+        BidItemRequestPayload payload = new BidItemRequestPayload(ItemId, Double.parseDouble(placeBid.getText()));
         PacketMessage mesage = new PacketMessage(Message.NEW_PRICE_REQUEST, payload);
 
         try{
