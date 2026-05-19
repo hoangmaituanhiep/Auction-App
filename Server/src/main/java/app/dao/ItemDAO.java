@@ -67,6 +67,25 @@ public class ItemDAO{
     }
   }
 
+  public boolean setNewPrice(int id, double newPrice) {
+    logger.debug("DEBUG: Setting new price for item_id {}", id);
+
+    String set = "UPDATE items SET currentPrice = ? WHERE id = ?";
+
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getAuctionUrl());
+        PreparedStatement preStatement = connection.prepareStatement(set)) {
+          preStatement.setInt(2, id);
+          preStatement.setDouble(1, newPrice);
+
+          int update = preStatement.executeUpdate();
+
+          return update > 0;
+        }
+    catch (SQLException e) {
+      logger.error("ERROR: {}", e.getMessage());
+      return false;
+    }
+  }
   public int getLastestItemId() {
     return lastestItemId;
   }
