@@ -46,7 +46,6 @@ public class AuctionController {
       NewAuctionRespond payload = (NewAuctionRespond) packet.getPayload();
       if (payload.isSuccess()) {
         user.getCurrentAuction().setAuctionId(payload.getAuctionId());
-        // The server manages its own state. The client doesn't call server.addAuction()
       }
     });
   }

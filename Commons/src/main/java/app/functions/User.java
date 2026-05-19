@@ -97,40 +97,6 @@ class Bidder extends User {
   }
 }
 
-class Admin extends User {
-  private Map<String, User> listUser;
-
-  Admin(String userName) {
-    this.userName = userName;
-    listUser = new HashMap<>();
-  }
-
-  Admin(String username, Map<String, User> listUser) {
-    this.userName = username;
-    if (listUser.isEmpty()) {
-      this.listUser = new HashMap<>();
-    } else {
-      this.listUser = listUser;
-    }
-  }
-
-  public void addUser(User user) {
-    listUser.put(user.getUserName(), user);
-  }
-
-  public Map<String, User> getListUser() {
-    return listUser;
-  }
-
-  public User findUser(String userName) {
-    return listUser.get(userName);
-  }
-
-  public String toString() {
-    return "#admin:" + getUserName();
-  }
-}
-
 class Seller extends User {
   Map<String, Item> list_item = new HashMap<>();
 

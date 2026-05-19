@@ -1,16 +1,13 @@
 package app.controllers;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import org.slf4j.LoggerFactory;
 
 import app.MainApp;
 import app.NetworkClient;
-import app.functions.Item;
 import app.functions.User;
 import app.packets.Message;
 import app.payload.AuctionTimeoutPayload;
-import app.payload.SellItemRequestPayload;
 import app.payload.NewAuctionRespond;
 
 import org.slf4j.Logger;
@@ -24,9 +21,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
+import javafx.application.Platform;
 
 public class MainWebController {
   private static final Logger logger = LoggerFactory.getLogger(MainWebController.class);
@@ -71,11 +67,11 @@ public class MainWebController {
     auctionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
 
     VBox auctionCard = new VBox(10);
-    auctionCard.setId(String.valueOf(auctionId));
+    auctionCard.setId("auction-" + String.valueOf(auctionId));
     auctionCard.setAlignment(Pos.TOP_LEFT);
     auctionCard.setPadding(new Insets(30));
     auctionCard.setStyle(
-        "-fx-background-color: #090e13;" +
+        "-fx-background-color: #5f0d0d;" +
             "-fx-background-radius: 20;" +
             "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);");
     auctionCard.setPrefWidth(220);
@@ -93,19 +89,22 @@ public class MainWebController {
       }
     });
 
-    javafx.application.Platform.runLater(() -> {
+    Platform.runLater(() -> {
       auctionBox.getChildren().add(auctionCard);
     });
   }
 
   public void disableAuction(String id) {
     Scene currentScene = auctionScrollPane.getScene();
-    Node node = currentScene.lookup(id);
+    Node node = currentScene.lookup("#auction-" + id);
 
     if (node instanceof VBox) {
       VBox auctionCard = (VBox) node;
-      auctionCard.setVisible(false);
-      auctionCard.setManaged(false);
+      auctionCard.setOnMouseClicked(null);
+      auctionCard.setStyle("-fx-background-color: #140b0b;" +
+            "-fx-background-radius: 20;" +
+            "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);");
+      auctionCard.setDisable(true);
     }
   }
 
