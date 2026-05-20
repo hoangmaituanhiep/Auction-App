@@ -11,6 +11,7 @@ import app.functions.Item;
 import app.functions.User;
 import app.packets.Message;
 import app.payload.AuctionTimeoutPayload;
+import app.payload.BidItemRequestPayload;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -51,6 +52,17 @@ public class AuctionManagerController {
 
       if (isFinished) {
         backToMainWeb();
+      }
+    });
+
+    networkClient.addUIListener(Message.NEW_PRICE_BROADCAST, packet -> {
+      BidItemRequestPayload globalRequest = (BidItemRequestPayload) packet.getPayload();
+      int targetId = globalRequest.getId();
+
+      for (Item item : itemListView.getItems()) {
+        if (item.getId() == targetId) {
+          item.setNewPrice(globalRequest.getPrice());
+        }
       }
     });
 

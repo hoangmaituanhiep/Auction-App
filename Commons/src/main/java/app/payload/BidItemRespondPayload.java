@@ -5,12 +5,15 @@ import java.io.Serializable;
 public class BidItemRespondPayload implements Serializable{
   private boolean isSuccess;
   private String error;
+  private int Id;
 
-  public BidItemRespondPayload(boolean isSuccess) {
+  public BidItemRespondPayload(int Id, boolean isSuccess) {
+    this.Id = Id;
     this.isSuccess = isSuccess;
   }
 
-  public BidItemRespondPayload(boolean isSuccess, String error) {
+  public BidItemRespondPayload(int Id, boolean isSuccess, String error) {
+    this.Id = Id;
     this.error = error;
     this.isSuccess = isSuccess;
   }
@@ -26,5 +29,8 @@ public class BidItemRespondPayload implements Serializable{
   }
   public void setError(String error) {
     this.error = error;
+  }
+  public int getId() {
+    return Id;
   }
 }
