@@ -2,6 +2,8 @@ package app;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -15,6 +17,7 @@ import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
 import app.payload.NewAuctionRequest;
 import app.payload.NewAuctionRespond;
+import app.payload.OnlineUserResponse;
 import app.payload.RegisterClientPayload;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
@@ -78,8 +81,6 @@ public class ClientHandler implements Runnable {
   public void run() {
     isRunning = true;
     Server server = Server.getInstance();
-    Message inputMessage = null;
-    PacketMessage inpuPacketMessage = null;
 
     try {
       objectOutputStream = new ObjectOutputStream(client.getSocket().getOutputStream());
@@ -200,6 +201,22 @@ public class ClientHandler implements Runnable {
               logger.error("ERROR: {}", e.getMessage());
             }
             break;
+
+          case ONLINE_USER_REQUEST:
+            logger.info("INFO: Fetching user's data");
+            List<String> onlineUsers = new ArrayList<>();
+            for (ClientHandler clientHandler : server.getClientHanlders().values()) {
+              onlineUsers.add(clientHandler.getClient().getUser().getUserName());
+            }
+            OnlineUserResponse onlineResponse = new OnlineUserResponse(onlineUsers);
+            PacketMessage onlineMessage = new PacketMessage(Message.ONLINE_USER_RESPONSE, onlineResponse);
+            try {
+              sendPacket(onlineMessage);
+            }
+            catch (IOException e) {
+              logger.error("ERROR: {}", e);
+            }
+            
 
           default:
             break;

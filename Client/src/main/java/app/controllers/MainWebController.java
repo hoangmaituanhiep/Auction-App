@@ -5,8 +5,10 @@ import org.slf4j.LoggerFactory;
 
 import app.MainApp;
 import app.NetworkClient;
+import app.functions.Admin;
 import app.functions.User;
 import app.packets.Message;
+import app.packets.PacketMessage;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.NewAuctionRespond;
 
@@ -108,7 +110,14 @@ public class MainWebController {
     }
   }
 
+  public void setUser(User user) {
+    this.user = user;
+  }
+
   public void toggleLogedin() {
+    if (user instanceof Admin) {
+      New.setText("User List");
+    }
     logIn.setVisible(false);
     logIn.setManaged(false);
     join.setDisable(false);
@@ -195,6 +204,27 @@ public class MainWebController {
 
   @FXML
   public void createAuction() {
+    if (user instanceof Admin) {
+      PacketMessage onlineRequest = new PacketMessage(Message.ONLINE_USER_REQUEST, null);
+      try {
+        networkClient.sendPacket(onlineRequest);
+      }
+      catch (IOException e) {
+        logger.error("ERROR: {}", e);
+      }
+
+      try {
+        FXMLLoader clientLoader = new FXMLLoader(getClass().getResource("/app/onlineClients.fxml"));
+        Scene scene = new Scene(clientLoader.load());
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
+      }
+      catch (IOException e) {
+        logger.error("ERROR: {}", e);
+      }
+      return;
+    }
     try {
       FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/createAuction.fxml"));
       Scene auctionScene = new Scene(auctionLoader.load());
