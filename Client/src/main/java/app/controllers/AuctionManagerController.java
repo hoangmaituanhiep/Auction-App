@@ -69,15 +69,16 @@ public class AuctionManagerController {
     itemListView.setItems(user.getItemsList());
     itemListView.setCellFactory(listView -> new ListCell<>() {
       private final ImageView imageView = new ImageView();
-      private final Label text = new Label();
-      private final HBox content = new HBox(12, imageView, text);
+      private final Label text1 = new Label();
+      private final Label text2 = new Label();
+      private final HBox content = new HBox(12, imageView, text1, text2);
       private FXMLLoader biddingLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
 
       {
         imageView.setFitWidth(80);
         imageView.setFitHeight(80);
         imageView.setPreserveRatio(true);
-        text.setWrapText(true);
+        text1.setWrapText(true);
 
         content.setOnMouseClicked(e -> {
           try {
@@ -113,7 +114,9 @@ public class AuctionManagerController {
           img = new Image(url, true);
         }
         imageView.setImage(img);
-        text.setText(item.getName() + "\n" + item.getDetail());
+        text1.setText(item.getName() + "\n" + item.getDetail());
+        text2.textProperty().unbind();
+        text2.textProperty().bind(item.getCurrentPriceProperty());
 
         setGraphic(content);
         setText(null);
