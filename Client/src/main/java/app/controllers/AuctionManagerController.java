@@ -71,6 +71,7 @@ public class AuctionManagerController {
       private final ImageView imageView = new ImageView();
       private final Label text = new Label();
       private final HBox content = new HBox(12, imageView, text);
+      private FXMLLoader biddingLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
 
       {
         imageView.setFitWidth(80);
@@ -79,20 +80,18 @@ public class AuctionManagerController {
         text.setWrapText(true);
 
         content.setOnMouseClicked(e -> {
-          FXMLLoader biddingLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
           try {
-            Parent parent = biddingLoader.load();
+            Parent root = biddingLoader.load();
 
-            // Set Item id for controller
             BiddingController controller = biddingLoader.getController();
             controller.setItemId(getItem().getId());
 
-            Scene scene = new Scene(parent);
+            Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
           } catch(IOException exception) {
-            logger.error("Error while open Bidding screen: ", exception.getMessage());
+            logger.error("Error while open Bidding screen: {}", exception.getMessage());
           }
         });
       }
