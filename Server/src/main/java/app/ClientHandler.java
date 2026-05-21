@@ -217,32 +217,9 @@ public class ClientHandler implements Runnable {
             }
             catch (IOException e) {
               logger.error("ERROR: {}", e);
-            }    
-
-          case NEW_PRICE_REQUEST:
-            try {
-              BidItemRequestPayload request = (BidItemRequestPayload) packetMessage.getPayload();
-              int Id = request.getId();
-              boolean isSuccess = itemsService.setNewPrice(Id, request.getPrice());
-
-              BidItemRespondPayload respond;
-
-              if (isSuccess) {
-                respond = new BidItemRespondPayload(Id, isSuccess);
-                BidItemRequestPayload broadcastRespond = new BidItemRequestPayload(Id, request.getPrice());
-                PacketMessage globalMess = new PacketMessage(Message.NEW_PRICE_BROADCAST, broadcastRespond);
-
-                server.broadcast(globalMess);
-              } else {
-                respond = new BidItemRespondPayload(Id, isSuccess, "The new price offer failed.");
-              }
-
-              PacketMessage packet = new PacketMessage(Message.NEW_PRICE_RESPOND, respond);
-              sendPacket(packet);
-            } catch (IOException e) {
-              logger.error("ERROR: {}", e.getMessage());
             }
             
+
           default:
             break;
         }
