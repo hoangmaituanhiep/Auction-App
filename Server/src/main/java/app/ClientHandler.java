@@ -104,24 +104,24 @@ public class ClientHandler implements Runnable {
             boolean auctionSuccess = auctionService.addAuction(payload.getName(), payload.getDuration());
 
             NewAuctionRespond response;
-            
+
             if (auctionSuccess) {
               int newId = auctionService.getAuctionId();
-              
+
               // 1. Create the data object
-              app.functions.Auction newAuctionData = new app.functions.Auction(payload.getName(), payload.getDuration());
+              app.functions.Auction newAuctionData = new app.functions.Auction(payload.getName(),
+                  payload.getDuration());
               newAuctionData.setAuctionId(newId);
-              
+
               // 2. Wrap it in a Live Session
               app.services.LiveAuctionSession liveSession = new app.services.LiveAuctionSession(newAuctionData);
-              
+
               // 3. Start the timer and add to Server
               liveSession.start();
               server.addLiveAuction(liveSession);
 
               response = new NewAuctionRespond(auctionSuccess, newId, payload.getName(), payload.getDuration());
-            }
-            else {
+            } else {
               response = new NewAuctionRespond(auctionSuccess, "Failed to create new Auction");
             }
             PacketMessage message = new PacketMessage(Message.NEW_AUCTION_RESPOND, response);
@@ -145,14 +145,13 @@ public class ClientHandler implements Runnable {
 
               SellItemRespondPayload respondPayload;
               if (addSuccess) {
-                 respondPayload = new SellItemRespondPayload(addSuccess, itemsService.getLastestItemId());
-                 SellItemRequestPayload globalRequest = new SellItemRequestPayload(sellData.getItem());
-                 PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, globalRequest);
+                respondPayload = new SellItemRespondPayload(addSuccess, itemsService.getLastestItemId());
+                SellItemRequestPayload globalRequest = new SellItemRequestPayload(sellData.getItem());
+                PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, globalRequest);
 
-                 server.broadcast(globalMessage);
-                 logger.info("INFO: Notice other online clients");
-              }
-              else {
+                server.broadcast(globalMessage);
+                logger.info("INFO: Notice other online clients");
+              } else {
                 respondPayload = new SellItemRespondPayload(addSuccess, "ERROR: Cannot insert Item into DB");
               }
 
@@ -167,19 +166,17 @@ public class ClientHandler implements Runnable {
             try {
               ConnectionRequestPayload loginData = (ConnectionRequestPayload) packetMessage.getPayload();
               boolean isSuccess = connectionService.authenticate(loginData.getUsername(), loginData.getPassword());
-              
+
               ConnectionRespondPayload responseData;
               if (isSuccess) {
                 responseData = new ConnectionRespondPayload(isSuccess);
-              }
-              else {
+              } else {
                 responseData = new ConnectionRespondPayload(isSuccess, "Authentication failed.");
               }
 
               PacketMessage responsePacket = new PacketMessage(Message.LOGIN_RESPONSE, responseData);
               objectOutputStream.writeObject(responsePacket);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
               logger.error("ERROR: {}", e.getMessage());
             }
             break;
@@ -187,13 +184,13 @@ public class ClientHandler implements Runnable {
           case SIGNUP_REQUEST:
             try {
               ConnectionRequestPayload signUpData = (ConnectionRequestPayload) packetMessage.getPayload();
-              boolean isSuccess = connectionService.authenticate(signUpData.getUsername(), signUpData.getPassword(), signUpData.getConfirmPassword(), signUpData.getEmail());
+              boolean isSuccess = connectionService.authenticate(signUpData.getUsername(), signUpData.getPassword(),
+                  signUpData.getConfirmPassword(), signUpData.getEmail());
 
               ConnectionRespondPayload responseData;
               if (isSuccess) {
                 responseData = new ConnectionRespondPayload(isSuccess);
-              }
-              else {
+              } else {
                 responseData = new ConnectionRespondPayload(isSuccess, "Authentication failed");
               }
 
@@ -214,11 +211,33 @@ public class ClientHandler implements Runnable {
             PacketMessage onlineMessage = new PacketMessage(Message.ONLINE_USER_RESPONSE, onlineResponse);
             try {
               sendPacket(onlineMessage);
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
               logger.error("ERROR: {}", e);
             }
-            
+
+          case NEW_PRICE_REQUEST:
+            try {
+              BidItemRequestPayload request = (BidItemRequestPayload) packetMessage.getPayload();
+              int Id = request.getId();
+              boolean isSuccess = itemsService.setNewPrice(Id, request.getPrice());
+
+              BidItemRespondPayload respond;
+
+              if (isSuccess) {
+                respond = new BidItemRespondPayload(Id, isSuccess);
+                BidItemRequestPayload broadcastRespond = new BidItemRequestPayload(Id, request.getPrice());
+                PacketMessage globalMess = new PacketMessage(Message.NEW_PRICE_BROADCAST, broadcastRespond);
+
+                server.broadcast(globalMess);
+              } else {
+                respond = new BidItemRespondPayload(Id, isSuccess, "The new price offer failed.");
+              }
+
+              PacketMessage packet = new PacketMessage(Message.NEW_PRICE_RESPOND, respond);
+              sendPacket(packet);
+            } catch (IOException e) {
+              logger.error("ERROR: {}", e.getMessage());
+            }
 
           default:
             break;
