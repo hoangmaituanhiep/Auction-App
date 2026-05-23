@@ -1,7 +1,5 @@
 package app.functions;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 public abstract class Item extends Entity {
@@ -10,7 +8,7 @@ public abstract class Item extends Entity {
   private double startingPrice;
   private double current_Price;
   private double maxPrice;
-  private StringProperty newPriceProperty = new SimpleStringProperty();
+
 
   private String detail = "Seller is too lazy to write anything here.";
   private transient Image image;
@@ -38,7 +36,6 @@ public abstract class Item extends Entity {
 
   public void setNewPrice(double NewPrice) {
     this.current_Price = NewPrice;
-    newPriceProperty.set(current_Price + "");
   }
 
   public void writeDetail(String detail) {
@@ -67,11 +64,8 @@ public abstract class Item extends Entity {
 
   public String getDetail() {
     return detail +
-        "\nStarting price: " + startingPrice;
-  }
-
-  public StringProperty getCurrentPriceProperty() {
-    return newPriceProperty;
+        "\nStarting price: " + startingPrice +
+        "\nCurrent price: " + current_Price;
   }
 
   public Image getImage() {
