@@ -70,8 +70,7 @@ public class AuctionManagerController {
     itemListView.setCellFactory(listView -> new ListCell<>() {
       private final ImageView imageView = new ImageView();
       private final Label text1 = new Label();
-      private final Label text2 = new Label();
-      private final HBox content = new HBox(12, imageView, text1, text2);
+      private final HBox content = new HBox(12, imageView, text1);
       private FXMLLoader biddingLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
 
       {
@@ -115,8 +114,6 @@ public class AuctionManagerController {
         }
         imageView.setImage(img);
         text1.setText(item.getName() + "\n" + item.getDetail());
-        text2.textProperty().unbind();
-        text2.textProperty().bind(item.getCurrentPriceProperty());
 
         setGraphic(content);
         setText(null);
