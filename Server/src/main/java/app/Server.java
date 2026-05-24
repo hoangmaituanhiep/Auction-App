@@ -20,13 +20,11 @@ public class Server {
   private static Map<String, ClientHandler> clientHandlers;
   private static Map<Integer, LiveAuctionSession> liveAuctions;
   private static boolean isListening;
-  private static boolean isAutioning;
   private static ExecutorService executors = Executors.newFixedThreadPool(10);
   private static ServerSocket serverSocket;
   private static Server server;
 
   Server() {
-    isAutioning = false;
     isListening = false;
 
     try {
@@ -40,7 +38,6 @@ public class Server {
   }
 
   Server(int port) {
-    isAutioning = false;
     isListening = false;
 
     try {
@@ -73,7 +70,6 @@ public class Server {
 
   public void listen() throws IOException {
     isListening = true;
-    isAutioning = true;
 
     while (isListening) {
       Socket clientSocket = serverSocket.accept();
@@ -114,5 +110,10 @@ public class Server {
 
   public void addLiveAuction(LiveAuctionSession session) {
     liveAuctions.put(session.getAuction().getAuctionId(), session);
+  }
+
+  public void removeLiveAuction(int auctionId) {
+    liveAuctions.get(auctionId).getAuction().setStatus("CANCELED");
+    liveAuctions.remove(auctionId);
   }
 }

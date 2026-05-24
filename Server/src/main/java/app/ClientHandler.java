@@ -11,10 +11,13 @@ import org.slf4j.Logger;
 import app.dao.AuctionDAO;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
+import app.functions.Auction;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.BidItemRequestPayload;
 import app.payload.BidItemRespondPayload;
+import app.payload.CancelAuctionRequest;
+import app.payload.CancelAuctionResponse;
 import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
 import app.payload.NewAuctionRequest;
@@ -26,6 +29,7 @@ import app.payload.SellItemRespondPayload;
 import app.services.AuctionService;
 import app.services.ConnectionService;
 import app.services.ItemsService;
+import app.services.LiveAuctionSession;
 
 public class ClientHandler implements Runnable {
   private static final Logger logger = LoggerFactory.getLogger(ClientHandler.class);
@@ -109,12 +113,12 @@ public class ClientHandler implements Runnable {
               int newId = auctionService.getAuctionId();
 
               // 1. Create the data object
-              app.functions.Auction newAuctionData = new app.functions.Auction(payload.getName(),
+              Auction newAuctionData = new Auction(payload.getName(),
                   payload.getDuration());
               newAuctionData.setAuctionId(newId);
 
               // 2. Wrap it in a Live Session
-              app.services.LiveAuctionSession liveSession = new app.services.LiveAuctionSession(newAuctionData);
+              LiveAuctionSession liveSession = new LiveAuctionSession(newAuctionData);
 
               // 3. Start the timer and add to Server
               liveSession.start();
@@ -175,30 +179,33 @@ public class ClientHandler implements Runnable {
               }
 
               PacketMessage responsePacket = new PacketMessage(Message.LOGIN_RESPONSE, responseData);
-              objectOutputStream.writeObject(responsePacket);
+              sendPacket(responsePacket);
             } catch (IOException e) {
               logger.error("ERROR: {}", e.getMessage());
             }
             break;
 
           case SIGNUP_REQUEST:
-            try {
-              ConnectionRequestPayload signUpData = (ConnectionRequestPayload) packetMessage.getPayload();
-              boolean isSuccess = connectionService.authenticate(signUpData.getUsername(), signUpData.getPassword(),
-                  signUpData.getConfirmPassword(), signUpData.getEmail());
 
-              ConnectionRespondPayload responseData;
-              if (isSuccess) {
-                responseData = new ConnectionRespondPayload(isSuccess);
-              } else {
-                responseData = new ConnectionRespondPayload(isSuccess, "Authentication failed");
-              }
+            ConnectionRequestPayload signUpData = (ConnectionRequestPayload) packetMessage.getPayload();
+            boolean isSuccess = connectionService.authenticate(signUpData.getUsername(), signUpData.getPassword(),
+                signUpData.getConfirmPassword(), signUpData.getEmail());
 
-              PacketMessage responsePacket = new PacketMessage(Message.SIGNUP_RESPONSE, responseData);
-              objectOutputStream.writeObject(responsePacket);
-            } catch (IOException e) {
-              logger.error("ERROR: {}", e.getMessage());
+            ConnectionRespondPayload responseData;
+            if (isSuccess) {
+              responseData = new ConnectionRespondPayload(isSuccess);
+            } else {
+              responseData = new ConnectionRespondPayload(isSuccess, "Authentication failed");
             }
+
+            PacketMessage responsePacket = new PacketMessage(Message.SIGNUP_RESPONSE, responseData);
+            try {
+              sendPacket(responsePacket);
+            }
+            catch (IOException e) {
+              logger.error("ERROR: {}", e);
+            }
+
             break;
 
           case ONLINE_USER_REQUEST:
@@ -219,18 +226,18 @@ public class ClientHandler implements Runnable {
             try {
               BidItemRequestPayload request = (BidItemRequestPayload) packetMessage.getPayload();
               int Id = request.getId();
-              boolean isSuccess = itemsService.setNewPrice(Id, request.getPrice());
+              boolean bidSuccess = itemsService.setNewPrice(Id, request.getPrice());
 
               BidItemRespondPayload respond;
 
-              if (isSuccess) {
-                respond = new BidItemRespondPayload(Id, isSuccess);
+              if (bidSuccess) {
+                respond = new BidItemRespondPayload(Id, bidSuccess);
                 BidItemRequestPayload broadcastRespond = new BidItemRequestPayload(Id, request.getPrice());
                 PacketMessage globalMess = new PacketMessage(Message.NEW_PRICE_BROADCAST, broadcastRespond);
 
                 server.broadcast(globalMess);
               } else {
-                respond = new BidItemRespondPayload(Id, isSuccess, "The new price offer failed.");
+                respond = new BidItemRespondPayload(Id, bidSuccess, "The new price offer failed.");
               }
 
               PacketMessage packet = new PacketMessage(Message.NEW_PRICE_RESPOND, respond);
@@ -238,6 +245,23 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
               logger.error("ERROR: {}", e.getMessage());
             }
+          
+          case CANCEL_AUCTION_REQUEST:
+            CancelAuctionRequest request = (CancelAuctionRequest) packetMessage.getPayload();
+            int id = request.getAuctionId();
+            server.removeLiveAuction(id);
+            boolean cancelSuccess = auctionService.updateStatus(id, "CANCELED");
+
+            CancelAuctionResponse cancelResponse;
+            if (cancelSuccess) {
+              cancelResponse = new CancelAuctionResponse(cancelSuccess, id);
+            }
+            else {
+              cancelResponse = new CancelAuctionResponse(cancelSuccess, "ERROR: failed to cancel auction");
+            }
+            PacketMessage cancelMessage = new PacketMessage(Message.CANCEL_AUCTION_RESPONSE, cancelResponse);
+
+            server.broadcast(cancelMessage);
 
           default:
             break;

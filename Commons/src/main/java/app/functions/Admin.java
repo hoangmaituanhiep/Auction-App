@@ -6,13 +6,13 @@ import java.util.Map;
 public class Admin extends User {
   private String password;
   private Map<String, User> listUser;
-  private static Admin instance;
 
   public static Admin getInstance() {
-    if (instance == null) {
+    // If the instance isn't created yet OR if it's holding a generic User$1, overwrite it with Admin
+    if (!(instance instanceof Admin)) {
       instance = new Admin();
     }
-    return instance;
+    return (Admin) instance;
   }
 
   public Admin() {

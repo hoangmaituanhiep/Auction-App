@@ -33,6 +33,10 @@ public class AuctionService {
     return false;
   }
 
+  public boolean updateStatus(int id, String status) {
+    return auctionDAO.changeAuctionStatus(id, status);
+  }
+
   public boolean updateDuration(int auctionId, String duration) {
     if (auctionId<0) {
       logger.error("ERROR: Invalid id");

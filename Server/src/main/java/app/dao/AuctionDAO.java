@@ -59,6 +59,23 @@ public class AuctionDAO {
     }
   }
 
+  public boolean changeAuctionStatus(int auctionId, String status) {
+    String query = "UPDATE auction SET status = ? WHERE id = ?";
+
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getAuctionUrl());
+        PreparedStatement preStatement = connection.prepareStatement(query)) {
+          preStatement.setInt(2, auctionId);
+          preStatement.setString(1, status);
+
+          int updatedRow = preStatement.executeUpdate();
+          return updatedRow > 0;
+        }
+    catch (SQLException e) {
+      logger.error("ERROR: Cannot change auction status in db");
+      return false;
+    }
+  }
+
   public boolean updateDuration(String duration, int auctionId) {
     String query = "UPDATE auction SET duration = ? WHERE id = ?";
 

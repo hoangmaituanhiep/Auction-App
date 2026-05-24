@@ -10,6 +10,8 @@ import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AuctionTimeoutPayload;
+import app.payload.CancelAuctionRequest;
+import app.payload.CancelAuctionResponse;
 import app.payload.NewAuctionRespond;
 
 import org.slf4j.Logger;
@@ -78,6 +80,31 @@ public class MainWebController {
             "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);");
     auctionCard.setPrefWidth(220);
     auctionCard.getChildren().add(auctionLabel);
+
+      if (user instanceof Admin) {
+        Button cancel = new Button("x");
+        cancel.setStyle("-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+
+        cancel.setOnAction(e -> {
+          e.consume(); 
+          logger.info("INFO: Admin clicked cancel button");
+
+          disableAuction(String.valueOf(auctionId));
+
+          CancelAuctionRequest cancelRequest = new CancelAuctionRequest(auctionId);
+          PacketMessage message = new PacketMessage(Message.CANCEL_AUCTION_REQUEST, cancelRequest);
+
+          try {
+            networkClient.sendPacket(message);
+          }
+          catch (IOException exception) {
+            logger.error("ERROR: {}", exception);
+          }
+        });
+
+        auctionCard.getChildren().add(cancel);
+      }
+
     auctionCard.setOnMouseClicked(e -> {
       try {
         FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
@@ -169,6 +196,13 @@ public class MainWebController {
 
       if (isFinished) {
         disableAuction(String.valueOf(response.getAuctionId()));
+      }
+    });
+
+    networkClient.addUIListener(Message.CANCEL_AUCTION_RESPONSE, packet -> {
+      CancelAuctionResponse payload = (CancelAuctionResponse) packet.getPayload();
+      if (payload.isSuccess()) {
+        disableAuction(String.valueOf(payload.getAuctionId()));
       }
     });
   }

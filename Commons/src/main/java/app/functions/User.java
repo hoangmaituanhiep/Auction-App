@@ -8,7 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public abstract class User extends Entity {
-  private static User instance;
+  protected static User instance;
   protected String userName;
   protected Auction auction;
   protected String email;
