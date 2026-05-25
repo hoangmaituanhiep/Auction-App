@@ -24,10 +24,20 @@ public abstract class User extends Entity {
   public static User getInstance() {
     // Just need one user object for each guys access the app
     if (instance == null) {
-      instance = new User() {
-      };
+      instance = new Bidder();
     }
     return instance;
+  }
+
+  public static User createNewUser(String username) {
+    User newUser;
+    if ("admin1".equals(username)) {
+      newUser = new Admin();
+    } else {
+      newUser = new Bidder();
+      newUser.setUserName(username);
+    }
+    return newUser;
   }
 
   public void addItem(Item item) {

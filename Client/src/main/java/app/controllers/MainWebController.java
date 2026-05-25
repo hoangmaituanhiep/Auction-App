@@ -239,14 +239,6 @@ public class MainWebController {
   @FXML
   public void createAuction() {
     if (user instanceof Admin) {
-      PacketMessage onlineRequest = new PacketMessage(Message.ONLINE_USER_REQUEST, null);
-      try {
-        networkClient.sendPacket(onlineRequest);
-      }
-      catch (IOException e) {
-        logger.error("ERROR: {}", e);
-      }
-
       try {
         FXMLLoader clientLoader = new FXMLLoader(getClass().getResource("/app/onlineClients.fxml"));
         Scene scene = new Scene(clientLoader.load());

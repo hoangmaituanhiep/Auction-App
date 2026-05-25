@@ -17,7 +17,8 @@ public class Client {
         this.socket=socket;
         this.socketAddress=new InetSocketAddress(socket.getInetAddress(), socket.getPort());
 
-        user = User.getInstance();
+        // We do NOT use User.getInstance() here because the Server manages multiple connected Clients.
+        // A Singleton User would incorrectly map all connections to the same User instance!
         highBidNumbers = 0;
     }
 
@@ -47,5 +48,8 @@ public class Client {
     }
     public User getUser() {
       return user;
+    }
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -12,6 +12,7 @@ import app.dao.AuctionDAO;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
 import app.functions.Auction;
+import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.BidItemRequestPayload;
@@ -174,6 +175,7 @@ public class ClientHandler implements Runnable {
               ConnectionRespondPayload responseData;
               if (isSuccess) {
                 responseData = new ConnectionRespondPayload(isSuccess);
+                client.setUser(User.createNewUser(loginData.getUsername()));
               } else {
                 responseData = new ConnectionRespondPayload(isSuccess, "Authentication failed.");
               }
@@ -194,6 +196,7 @@ public class ClientHandler implements Runnable {
             ConnectionRespondPayload responseData;
             if (isSuccess) {
               responseData = new ConnectionRespondPayload(isSuccess);
+              client.setUser(User.createNewUser(signUpData.getUsername()));
             } else {
               responseData = new ConnectionRespondPayload(isSuccess, "Authentication failed");
             }
@@ -211,8 +214,14 @@ public class ClientHandler implements Runnable {
           case ONLINE_USER_REQUEST:
             logger.info("INFO: Fetching user's data");
             List<String> onlineUsers = new ArrayList<>();
-            for (ClientHandler clientHandler : server.getClientHanlders().values()) {
-              onlineUsers.add(clientHandler.getClient().getUser().getUserName());
+            for (ClientHandler clientHandlerItem : server.getClientHanlders().values()) {
+              User clientUser = clientHandlerItem.getClient().getUser();
+              if (clientUser != null) {
+                String name = clientUser.getUserName();
+                if (name != null && !name.isEmpty()) {
+                  onlineUsers.add(name);
+                }
+              }
             }
             OnlineUserResponse onlineResponse = new OnlineUserResponse(onlineUsers);
             PacketMessage onlineMessage = new PacketMessage(Message.ONLINE_USER_RESPONSE, onlineResponse);
@@ -221,6 +230,7 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
               logger.error("ERROR: {}", e);
             }
+            break;
 
           case NEW_PRICE_REQUEST:
             try {
