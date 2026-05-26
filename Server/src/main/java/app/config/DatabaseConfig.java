@@ -30,4 +30,7 @@ public class DatabaseConfig {
   public static String getAuctionUrl() {
     return properties.getProperty("auction.url", "jdbc:sqlite:Server/src/main/resources/database/auction.db");
   }
+  public static String getBidUrl() {
+    return properties.getProperty("bid.url", "jdbc:sqlite:Server/src/main/resources/database/bid.db");
+  }
 }
