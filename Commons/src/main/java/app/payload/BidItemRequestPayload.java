@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 public class BidItemRequestPayload implements Serializable {
   private double price;
-  int Id;
-  public BidItemRequestPayload(int Id, double price) {
+  private int Id;
+  private String username;
+  public BidItemRequestPayload(int Id, String username, double price) {
     this.Id = Id;
     this.price = price;
+    this.username = username;
   }
 
   public int getId() {
@@ -16,5 +18,9 @@ public class BidItemRequestPayload implements Serializable {
 
   public double getPrice() {
     return price;
+  }
+
+  public String getUserName() {
+    return username;
   }
 }

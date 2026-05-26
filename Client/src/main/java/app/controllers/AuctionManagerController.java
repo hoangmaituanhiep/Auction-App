@@ -9,6 +9,7 @@ import app.MainApp;
 import app.NetworkClient;
 import app.functions.Item;
 import app.functions.User;
+import app.functions.BidTransaction;
 import app.packets.Message;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.BidItemRequestPayload;
@@ -62,6 +63,7 @@ public class AuctionManagerController {
       for (Item item : itemListView.getItems()) {
         if (item.getId() == targetId) {
           item.setNewPrice(globalRequest.getPrice());
+          item.addHistory(new BidTransaction(globalRequest.getUserName(), globalRequest.getPrice()));
         }
       }
     });
@@ -84,7 +86,7 @@ public class AuctionManagerController {
             Parent root = biddingLoader.load();
 
             BiddingController controller = biddingLoader.getController();
-            controller.setItemId(getItem().getId());
+            controller.setItem(getItem());
 
             Scene scene = new Scene(root);
             Stage stage = new Stage();

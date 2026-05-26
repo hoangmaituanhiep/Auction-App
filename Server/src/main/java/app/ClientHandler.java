@@ -239,13 +239,14 @@ public class ClientHandler implements Runnable {
             try {
               BidItemRequestPayload request = (BidItemRequestPayload) packetMessage.getPayload();
               int Id = request.getId();
+              String bidderName = request.getUserName();
               boolean bidSuccess = itemsService.setNewPrice(Id, request.getPrice());
 
               BidItemRespondPayload respond;
 
               if (bidSuccess) {
                 respond = new BidItemRespondPayload(Id, bidSuccess);
-                BidItemRequestPayload broadcastRespond = new BidItemRequestPayload(Id, request.getPrice());
+                BidItemRequestPayload broadcastRespond = new BidItemRequestPayload(Id, bidderName,  request.getPrice());
                 PacketMessage globalMess = new PacketMessage(Message.NEW_PRICE_BROADCAST, broadcastRespond);
 
                 server.broadcast(globalMess);

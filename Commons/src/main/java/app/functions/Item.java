@@ -1,6 +1,8 @@
 package app.functions;
 
 import javafx.scene.image.Image;
+import java.util.List;
+import java.util.ArrayList;
 
 public abstract class Item extends Entity {
   private static final long serialVersionUID = 1L;
@@ -8,6 +10,7 @@ public abstract class Item extends Entity {
   private double startingPrice;
   private double current_Price;
   private double maxPrice;
+  private List<BidTransaction> bidTransactions = new ArrayList<>();
 
 
   private String detail = "Seller is too lazy to write anything here.";
@@ -66,6 +69,14 @@ public abstract class Item extends Entity {
     return detail +
         "\nStarting price: " + startingPrice +
         "\nCurrent price: " + current_Price;
+  }
+
+  public void addHistory(BidTransaction bidTransaction) {
+    bidTransactions.add(bidTransaction);
+  }
+
+  public List getHistory() {
+    return bidTransactions;
   }
 
   public Image getImage() {
