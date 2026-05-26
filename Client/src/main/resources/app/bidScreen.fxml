@@ -21,6 +21,23 @@
                   <ImageView fx:id="itemImage" fitHeight="148.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true" />
                </children>
             </VBox>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="editItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="EDIT">
+                     <HBox.margin>
+                        <Insets left="137.75" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="deleteItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="DELETE">
+                     <HBox.margin>
+                        <Insets left="40.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <VBox.margin>
+                  <Insets top="50.0" />
+               </VBox.margin>
+            </HBox>
          </children>
       </VBox>
       <VBox prefHeight="720.0" prefWidth="685.0">
