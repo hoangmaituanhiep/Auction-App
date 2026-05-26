@@ -116,4 +116,8 @@ public class Server {
     liveAuctions.get(auctionId).getAuction().setStatus("CANCELED");
     liveAuctions.remove(auctionId);
   }
+
+  public Map<Integer, LiveAuctionSession> getLiveAuction() {
+    return liveAuctions;
+  }
 }

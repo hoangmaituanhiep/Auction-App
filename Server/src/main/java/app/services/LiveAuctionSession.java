@@ -8,7 +8,6 @@ import app.Client;
 import app.Server;
 
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -22,7 +21,6 @@ public class LiveAuctionSession {
 
   private Server server;
   private Auction auction;
-  private Timer timer;
   private ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
   private ScheduledFuture<?> countDown;
   private long remainingTimeS;
@@ -55,6 +53,7 @@ public class LiveAuctionSession {
         PacketMessage message = new PacketMessage(Message.AUCTION_TIMEOUT, payload);
 
         server.broadcast(message);
+        server.removeLiveAuction(auction.getAuctionId());
 
         countDown.cancel(false);
       }

@@ -21,6 +21,25 @@ public abstract class User extends Entity {
     itemsMap = new HashMap<>();
   }
 
+  public User(User other) {
+    this.id = other.id;
+    this.userName = other.userName;
+    this.auction = other.auction;
+    this.email = other.email;
+    this.itemsList = other.itemsList;
+    this.itemsMap = other.itemsMap;
+  }
+
+  public Bidder asBidder() {
+    if (this instanceof Bidder) return (Bidder) this;
+    return new Bidder(this);
+  }
+
+  public Seller asSeller() {
+    if (this instanceof Seller) return (Seller) this;
+    return new Seller(this);
+  }
+
   public static User getInstance() {
     // Just need one user object for each guys access the app
     if (instance == null) {
@@ -81,12 +100,24 @@ public abstract class User extends Entity {
     this.auction = auction;
   }
 
+  public void existAuction() {
+    this.auction = null;
+  }
+
   public Auction getCurrentAuction() {
     return auction;
   }
 }
 
 class Bidder extends User {
+
+  public Bidder() {
+    super();
+  }
+
+  public Bidder(User other) {
+    super(other);
+  }
 
   public <T extends Item> String getItem_Info(T item) {
     return item.toString();
@@ -109,6 +140,14 @@ class Bidder extends User {
 
 class Seller extends User {
   Map<String, Item> list_item = new HashMap<>();
+
+  public Seller() {
+    super();
+  }
+
+  public Seller(User other) {
+    super(other);
+  }
 
   public void setStartingPrice(String id, double startingPrice) {
     if (list_item.containsKey(id)) {

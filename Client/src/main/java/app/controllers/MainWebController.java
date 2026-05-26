@@ -6,12 +6,14 @@ import org.slf4j.LoggerFactory;
 import app.MainApp;
 import app.NetworkClient;
 import app.functions.Admin;
+import app.functions.Auction;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
+import app.payload.FetchDataResponsePayload;
 import app.payload.NewAuctionRespond;
 
 import org.slf4j.Logger;
@@ -81,29 +83,28 @@ public class MainWebController {
     auctionCard.setPrefWidth(220);
     auctionCard.getChildren().add(auctionLabel);
 
-      if (user instanceof Admin) {
-        Button cancel = new Button("x");
-        cancel.setStyle("-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+    if (user instanceof Admin) {
+      Button cancel = new Button("x");
+      cancel.setStyle("-fx-background-color: #d9534f; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
 
-        cancel.setOnAction(e -> {
-          e.consume(); 
-          logger.info("INFO: Admin clicked cancel button");
+      cancel.setOnAction(e -> {
+        e.consume();
+        logger.info("INFO: Admin clicked cancel button");
 
-          disableAuction(String.valueOf(auctionId));
+        disableAuction(String.valueOf(auctionId));
 
-          CancelAuctionRequest cancelRequest = new CancelAuctionRequest(auctionId);
-          PacketMessage message = new PacketMessage(Message.CANCEL_AUCTION_REQUEST, cancelRequest);
+        CancelAuctionRequest cancelRequest = new CancelAuctionRequest(auctionId);
+        PacketMessage message = new PacketMessage(Message.CANCEL_AUCTION_REQUEST, cancelRequest);
 
-          try {
-            networkClient.sendPacket(message);
-          }
-          catch (IOException exception) {
-            logger.error("ERROR: {}", exception);
-          }
-        });
+        try {
+          networkClient.sendPacket(message);
+        } catch (IOException exception) {
+          logger.error("ERROR: {}", exception);
+        }
+      });
 
-        auctionCard.getChildren().add(cancel);
-      }
+      auctionCard.getChildren().add(cancel);
+    }
 
     auctionCard.setOnMouseClicked(e -> {
       try {
@@ -127,12 +128,14 @@ public class MainWebController {
     Scene currentScene = auctionScrollPane.getScene();
     Node node = currentScene.lookup("#auction-" + id);
 
+    user.existAuction();
+
     if (node instanceof VBox) {
       VBox auctionCard = (VBox) node;
       auctionCard.setOnMouseClicked(null);
       auctionCard.setStyle("-fx-background-color: #140b0b;" +
-            "-fx-background-radius: 20;" +
-            "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);");
+          "-fx-background-radius: 20;" +
+          "-fx-effect: dropshadow(three-pass-box, rgba(71, 65, 65, 0.3), 10, 0, 0, 5);");
       auctionCard.setDisable(true);
     }
   }
@@ -183,6 +186,13 @@ public class MainWebController {
       logger.info("INFO: Welcome bro.");
     });
 
+    networkClient.addUIListener(Message.FETCH_DATA_RESPONSE, packet -> {
+      FetchDataResponsePayload fetchPayload = (FetchDataResponsePayload) packet.getPayload();
+      for (Auction auction : fetchPayload.getLiveAuction()) {
+        displayAuctionList(auction.getAuctionId(), auction.getName(), auction.getDuration());
+      }
+    });
+
     networkClient.addUIListener(Message.NEW_AUCTION_BROADCAST, packet -> {
       NewAuctionRespond response = (NewAuctionRespond) packet.getPayload();
       if (response.isSuccess()) {
@@ -217,6 +227,8 @@ public class MainWebController {
       enter.setVisible(false);
       Ip.setManaged(false);
       enter.setManaged(false);
+      
+      networkClient.sendPacket(new PacketMessage(Message.FETCH_DATA_REQUEST, null)); 
     } catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
     }
@@ -245,13 +257,13 @@ public class MainWebController {
         Stage stage = new Stage();
         stage.setScene(scene);
         stage.show();
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
         logger.error("ERROR: {}", e);
       }
       return;
     }
     try {
+      
       FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/createAuction.fxml"));
       Scene auctionScene = new Scene(auctionLoader.load());
       Stage auctionStage = new Stage();

@@ -21,6 +21,7 @@ import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
+import app.payload.FetchDataResponsePayload;
 import app.payload.NewAuctionRequest;
 import app.payload.NewAuctionRespond;
 import app.payload.OnlineUserResponse;
@@ -126,6 +127,7 @@ public class ClientHandler implements Runnable {
               server.addLiveAuction(liveSession);
 
               response = new NewAuctionRespond(auctionSuccess, newId, payload.getName(), payload.getDuration());
+              client.setUser(client.getUser().asSeller());
             } else {
               response = new NewAuctionRespond(auctionSuccess, "Failed to create new Auction");
             }
@@ -136,6 +138,7 @@ public class ClientHandler implements Runnable {
             break;
 
           case JOIN_AUCTION:
+            client.setUser(client.getUser().asBidder());
             try {
               joinAution(packetMessage);
             } catch (Exception e) {
@@ -272,6 +275,24 @@ public class ClientHandler implements Runnable {
             PacketMessage cancelMessage = new PacketMessage(Message.CANCEL_AUCTION_RESPONSE, cancelResponse);
 
             server.broadcast(cancelMessage);
+
+          case FETCH_DATA_REQUEST:
+            List<LiveAuctionSession> liveSessions = new ArrayList<>(server.getLiveAuction().values());
+            List<Auction> ongoingAuctions = new ArrayList<>();
+            for (LiveAuctionSession liveSession : liveSessions) {
+              ongoingAuctions.add(liveSession.getAuction());
+            }
+
+            FetchDataResponsePayload fetchResponse = new FetchDataResponsePayload(ongoingAuctions);
+            PacketMessage fectchMessage = new PacketMessage(Message.FETCH_DATA_RESPONSE, fetchResponse);
+
+            try {
+              sendPacket(fectchMessage);
+            }
+            catch (IOException exception) {
+              logger.error("ERROR: {}", exception);
+            }
+            break;
 
           default:
             break;
