@@ -71,7 +71,6 @@ public class AuctionManagerController {
       private final ImageView imageView = new ImageView();
       private final Label text1 = new Label();
       private final HBox content = new HBox(12, imageView, text1);
-      private FXMLLoader biddingLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
 
       {
         imageView.setFitWidth(80);
@@ -81,6 +80,7 @@ public class AuctionManagerController {
 
         content.setOnMouseClicked(e -> {
           try {
+            FXMLLoader biddingLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
             Parent root = biddingLoader.load();
 
             BiddingController controller = biddingLoader.getController();
