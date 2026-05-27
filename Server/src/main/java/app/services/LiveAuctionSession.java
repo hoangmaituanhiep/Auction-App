@@ -4,8 +4,10 @@ import app.functions.Auction;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AuctionTimeoutPayload;
+import app.payload.WinnerPayload;
 import app.Client;
 import app.Server;
+import app.dao.AuctionDAO;
 import app.dao.BidDAO;
 import app.dao.ItemDAO;
 
@@ -26,11 +28,18 @@ public class LiveAuctionSession {
   private ScheduledExecutorService schedule = Executors.newScheduledThreadPool(1);
   private ScheduledFuture<?> countDown;
   private long remainingTimeS;
+  private AuctionService auctionService;
+  private BidService bidService;
 
   public LiveAuctionSession(Auction auction) {
     server = Server.getInstance();
     this.auction = auction;
-    this.remainingTimeS = parseDuration(auction.getDuration())*60;
+    this.remainingTimeS = parseDuration(auction.getDuration()) * 60;
+
+    AuctionDAO auctionDAO = new AuctionDAO();
+    BidDAO bidDAO = new BidDAO();
+    auctionService = new AuctionService(auctionDAO);
+    bidService = new BidService(bidDAO);
   }
 
   private long parseDuration(String duration) {
@@ -47,10 +56,20 @@ public class LiveAuctionSession {
 
     Runnable tick = () -> {
       if (remainingTimeS > 0) {
-        remainingTimeS --;
-      }
-      else {
+        remainingTimeS--;
+      } else {
         logger.info("INFO: Count down finished.");
+        auctionService.updateStatus(auction.getAuctionId(), "FINISHED");
+
+        for (int itemId : auction.getItemId()) {
+          String winner = bidService.getWinner(itemId);
+          if (winner != null) {
+            WinnerPayload winnerPayload = new WinnerPayload(winner);
+            PacketMessage message = new PacketMessage(Message.WINNER_RESPOND, winnerPayload);
+
+            server.broadcast(message);
+          }
+        }
         AuctionTimeoutPayload payload = new AuctionTimeoutPayload(true, auction.getAuctionId());
         PacketMessage message = new PacketMessage(Message.AUCTION_TIMEOUT, payload);
 
@@ -65,22 +84,27 @@ public class LiveAuctionSession {
   }
 
   public synchronized boolean placeBid(Client client, int itemId, double bid, String bidderName) {
-    if (remainingTimeS <= 0) return false;
-     ItemsService itemsService = new ItemsService(new ItemDAO());
-     boolean bidSuccess = itemsService.setNewPrice(itemId, bid);
+    if (remainingTimeS <= 0)
+      return false;
+    ItemsService itemsService = new ItemsService(new ItemDAO());
+    boolean bidSuccess = itemsService.setNewPrice(itemId, bid);
 
-     if (bidSuccess) {
-      BidDAO bidDAO = new BidDAO();
-      bidDAO.insertNewPrice(itemId, bidderName, bid, String.valueOf(System.currentTimeMillis()));
-     }
+    if (bidSuccess) {
+      bidService.updatePrice(itemId, bidderName, bid, String.valueOf(System.currentTimeMillis()));
 
-     return bidSuccess;
+      if (this.remainingTimeS < 10) {
+        this.remainingTimeS += 60;
+        server.broadcast(new PacketMessage(Message.ANTI_SNIPPING_RESPOND, null));
+        logger.info("INFO: Some one bid in the last 10 second...");
+      }
+    }
+    return bidSuccess;
   }
-  
+
   public Auction getAuction() {
     return auction;
   }
-  
+
   public void addClient(Client client) {
     auction.addClient(client);
   }

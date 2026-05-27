@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -47,5 +48,22 @@ public class BidDAO {
       logger.error("ERROR: {}", e);
       return false;
     }
+  }
+
+  public String getWinner(int itemId) {
+    String query = "SELECT username, price FROM bidHistory WHERE itemId = ? ORDER BY price DESC LIMIT 1";
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getBidUrl());
+      PreparedStatement preStatement = connection.prepareStatement(query)) {
+        preStatement.setInt(1, itemId);
+        try (ResultSet result = preStatement.executeQuery()){
+          if (result.next()) {
+            return result.getString("username");
+          }
+        }
+      }
+    catch(SQLException e) {
+      logger.error("ERROR: {}", e);
+    }
+    return null;
   }
 }
