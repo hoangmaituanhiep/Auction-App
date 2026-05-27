@@ -17,4 +17,8 @@ public class BidService {
   public boolean updatePrice(int titemId, String username, double price, String timestamp) {
     return bidDAO.insertNewPrice(titemId, username, price, timestamp);
   }
+
+  public String getWinner(int itemId) {
+    return bidDAO.getWinner(itemId);
+  }
 }
