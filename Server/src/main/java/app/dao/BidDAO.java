@@ -1,7 +1,9 @@
 package app.dao;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -26,6 +28,24 @@ public class BidDAO {
     }
     catch (SQLException e) {
       logger.error("ERROR: {}", e.getMessage());
+    }
+  }
+
+  public boolean insertNewPrice(int itemId, String username, double price, String timestamp) {
+    String query = "INSERT INTO bidHistory(itemId, username, price, timestamps) VALUES(?, ?, ?, ?)";
+
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getBidUrl());
+        PreparedStatement preStatement = connection.prepareStatement(query)) {
+          preStatement.setString(2, username);
+          preStatement.setString(4, timestamp);
+          preStatement.setInt(1, itemId);
+          preStatement.setDouble(3, price);
+
+          return true;
+    }
+    catch (SQLException e) {
+      logger.error("ERROR: {}", e);
+      return false;
     }
   }
 }

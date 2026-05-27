@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import app.dao.AuctionDAO;
+import app.dao.BidDAO;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
 import app.functions.Auction;
@@ -29,6 +30,7 @@ import app.payload.RegisterClientPayload;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
 import app.services.AuctionService;
+import app.services.BidService;
 import app.services.ConnectionService;
 import app.services.ItemsService;
 import app.services.LiveAuctionSession;
@@ -42,13 +44,16 @@ public class ClientHandler implements Runnable {
   private ConnectionService connectionService;
   private ItemsService itemsService;
   private AuctionService auctionService;
+  private BidService bidService;
   private boolean isRunning;
 
   public ClientHandler(Client client) {
     UserDAO userDAO = new UserDAO();
     ItemDAO itemDAO = new ItemDAO();
     AuctionDAO auctionDAO = new AuctionDAO();
+    BidDAO bidDAO = new BidDAO();
 
+    this.bidService = new BidService(bidDAO);
     this.connectionService = new ConnectionService(userDAO);
     this.itemsService = new ItemsService(itemDAO);
     this.auctionService = new AuctionService(auctionDAO);
@@ -240,8 +245,23 @@ public class ClientHandler implements Runnable {
               BidItemRequestPayload request = (BidItemRequestPayload) packetMessage.getPayload();
               int Id = request.getId();
               String bidderName = request.getUserName();
-              boolean bidSuccess = itemsService.setNewPrice(Id, request.getPrice());
 
+              LiveAuctionSession session = null;
+              for (LiveAuctionSession s : server.getLiveAuction().values()) {
+                if (s.getAuction().getItemId().contains(Id)) {
+                  session = s;
+                  break;
+                }
+              }
+
+              boolean bidSuccess;
+              if (session != null) {
+                bidSuccess = session.placeBid(client, Id, request.getPrice(), bidderName);
+              }
+              else {
+                bidSuccess = itemsService.setNewPrice(Id, request.getPrice());
+              }
+              
               BidItemRespondPayload respond;
 
               if (bidSuccess) {

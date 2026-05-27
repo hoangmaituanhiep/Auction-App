@@ -6,6 +6,8 @@ import app.packets.PacketMessage;
 import app.payload.AuctionTimeoutPayload;
 import app.Client;
 import app.Server;
+import app.dao.BidDAO;
+import app.dao.ItemDAO;
 
 import java.util.Timer;
 import java.util.concurrent.Executors;
@@ -62,8 +64,17 @@ public class LiveAuctionSession {
     countDown = schedule.scheduleAtFixedRate(tick, 0, 1, TimeUnit.SECONDS);
   }
 
-  public synchronized boolean placeBid(Client client, double bid) {
-    return false;
+  public synchronized boolean placeBid(Client client, int itemId, double bid, String bidderName) {
+    if (remainingTimeS <= 0) return false;
+     ItemsService itemsService = new ItemsService(new ItemDAO());
+     boolean bidSuccess = itemsService.setNewPrice(itemId, bid);
+
+     if (bidSuccess) {
+      BidDAO bidDAO = new BidDAO();
+      bidDAO.insertNewPrice(itemId, bidderName, bid, String.valueOf(System.currentTimeMillis()));
+     }
+
+     return bidSuccess;
   }
   
   public Auction getAuction() {

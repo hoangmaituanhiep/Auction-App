@@ -18,7 +18,7 @@ public class UserDAO {
   public void createTable() {
     logger.debug("DEBUG: Initializing user table database...");
 
-    String table = "CREATE TABLE IF NOT EXISTS user(username TEXT NOT NULL PRIMARY KEY, email TEXT NOT NULL, password TEXT NOT NULL)";
+    String table = "CREATE TABLE IF NOT EXISTS user(username TEXT NOT NULL PRIMARY KEY, email TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL DEFAULT)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getUsersUrl());
         Statement statement = connection.createStatement()) {
@@ -31,16 +31,17 @@ public class UserDAO {
     }
   }
 
-  public boolean insertUser(String username, String password, String email) {
+  public boolean insertUser(String username, String password, String email, String role) {
     logger.debug("DEBUG: Inserting new user");
 
-    String insert = "INSERT INTO user(username, email, password) VALUES(?, ?, ?)";
+    String insert = "INSERT INTO user(username, email, password, role) VALUES(?, ?, ?, ?)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getUsersUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert)) {
           preStatement.setString(1, username);
           preStatement.setString(2, email);
           preStatement.setString(3, password);
+          preStatement.setString(4, role);
           
           preStatement.executeUpdate();
           
