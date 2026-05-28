@@ -60,6 +60,11 @@ public class BiddingController {
         networkClient = NetworkClient.getInstance();
         user = User.getInstance();
 
+        nameBidder.setCellValueFactory(cellData -> cellData.getValue().getUserName());
+        bidPrice.setCellValueFactory(cellData -> cellData.getValue().getPrice().asObject());
+
+        tableBidHistory.setItems(item.getHistory());
+
         networkClient.addUIListener(Message.NEW_PRICE_RESPOND, packet -> {
             BidItemRespondPayload respone = (BidItemRespondPayload) packet.getPayload();
             if(respone.isSuccess()) {

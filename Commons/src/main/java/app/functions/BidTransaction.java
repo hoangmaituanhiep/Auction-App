@@ -1,19 +1,21 @@
 package app.functions;
 
+import javafx.beans.property.*;
+
 public class BidTransaction {
-  private String username;
-  private double price;
+  private final StringProperty username;
+  private final DoubleProperty price;
 
   public BidTransaction(String username, double price) {
-    this.username = username;
-    this.price = price;
+    this.username = new SimpleStringProperty(username);
+    this.price = new SimpleDoubleProperty(price);
   }
 
-  public String getUserName() {
+  public StringProperty getUserName() {
     return username;
   }
 
-  public double getPrice() {
+  public DoubleProperty getPrice() {
     return price;
   }
 }
