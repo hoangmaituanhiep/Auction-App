@@ -279,6 +279,7 @@ public class ClientHandler implements Runnable {
             } catch (IOException e) {
               logger.error("ERROR: {}", e.getMessage());
             }
+            break;
           
           case CANCEL_AUCTION_REQUEST:
             CancelAuctionRequest request = (CancelAuctionRequest) packetMessage.getPayload();
@@ -296,6 +297,7 @@ public class ClientHandler implements Runnable {
             PacketMessage cancelMessage = new PacketMessage(Message.CANCEL_AUCTION_RESPONSE, cancelResponse);
 
             server.broadcast(cancelMessage);
+            break;
 
           case FETCH_DATA_REQUEST:
             List<LiveAuctionSession> liveSessions = new ArrayList<>(server.getLiveAuction().values());

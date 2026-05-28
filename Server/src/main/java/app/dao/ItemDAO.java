@@ -21,7 +21,7 @@ public class ItemDAO{
   public void createTable() {
     logger.debug("DEBUG: Initializing item table database...");
 
-    String table = "CREATE TABLE IF NOT EXISTS items(id INTEGER PRIMARY KEY AUTOINCREMENT, "
+    String table = "CREATE TABLE IF NOT EXISTS item(id INTEGER PRIMARY KEY AUTOINCREMENT, "
             + "name TEXT NOT NULL, "
             + "details TEXT, "
             + "startingPrice REAL NOT NULL, "
@@ -40,7 +40,7 @@ public class ItemDAO{
   public boolean insertItem(Item item) {
     logger.debug("DEBUG: Adding new item...");
 
-    String insert = "INSERT INTO items(name, details, startingPrice, currentPrice) VALUES(?, ?, ?, ?)";
+    String insert = "INSERT INTO item(name, details, startingPrice, currentPrice) VALUES(?, ?, ?, ?)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
@@ -56,10 +56,7 @@ public class ItemDAO{
           }
 
           logger.info("INFO: Inserted SQLite.");
-
-          int rowsAffected = preStatement.executeUpdate(); //number of rows affected
-
-          return rowsAffected > 0;
+          return true;
     }
     catch (SQLException e) {
       logger.error("ERROR: {}", e.getMessage());
@@ -70,9 +67,9 @@ public class ItemDAO{
   public boolean setNewPrice(int id, double newPrice) {
     logger.debug("DEBUG: Setting new price for item_id {}", id);
 
-    String set = "UPDATE items SET currentPrice = ? WHERE id = ?";
+    String set = "UPDATE item SET currentPrice = ? WHERE id = ?";
 
-    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getAuctionUrl());
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(set)) {
           preStatement.setInt(2, id);
           preStatement.setDouble(1, newPrice);
@@ -88,9 +85,9 @@ public class ItemDAO{
   }
 
   public double getCurrentPrice(int id) {
-    String getId = "SELECT currentPrice FROM items WHERE id  = ?";
+    String getId = "SELECT currentPrice FROM item WHERE id  = ?";
 
-    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getAuctionUrl());
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
     PreparedStatement preStatement = connection.prepareStatement(getId)) {
       preStatement.setInt(1, id);
 

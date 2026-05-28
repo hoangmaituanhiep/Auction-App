@@ -22,10 +22,10 @@ public class DatabaseConfig {
   }
 
   public static String getItemsUrl() {
-    return properties.getProperty("items.url", "jdbc:sqlite:Server/src/main/resources/database/items.db");
+    return properties.getProperty("item.url", "jdbc:sqlite:Server/src/main/resources/database/item.db");
   }
   public static String getUsersUrl() {
-    return properties.getProperty("users.url", "jdbc:sqlite:Server/src/main/resources/database/user.db");
+    return properties.getProperty("user.url", "jdbc:sqlite:Server/src/main/resources/database/user.db");
   }
   public static String getAuctionUrl() {
     return properties.getProperty("auction.url", "jdbc:sqlite:Server/src/main/resources/database/auction.db");
