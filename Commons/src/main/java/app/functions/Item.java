@@ -1,8 +1,5 @@
 package app.functions;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.application.Platform;
 import javafx.scene.image.Image;
 import java.util.List;
 import java.util.ArrayList;
