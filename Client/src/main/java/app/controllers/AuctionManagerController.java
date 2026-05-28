@@ -64,6 +64,7 @@ public class AuctionManagerController {
         if (item.getId() == targetId) {
           item.setNewPrice(globalRequest.getPrice());
           item.addHistory(new BidTransaction(globalRequest.getUserName(), globalRequest.getPrice()));
+          itemListView.refresh();
         }
       }
     });
