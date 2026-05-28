@@ -51,6 +51,8 @@ public class ItemDAO{
           preStatement.setDouble(3, item.getStartingPrice());
           preStatement.setDouble(4, item.getCurrentPrice());
 
+          preStatement.executeUpdate();
+
           if (key.next()) {
             this.lastestItemId = key.getInt(1);
           }
@@ -74,9 +76,9 @@ public class ItemDAO{
           preStatement.setInt(2, id);
           preStatement.setDouble(1, newPrice);
 
-          int update = preStatement.executeUpdate();
+          preStatement.executeUpdate();
 
-          return update > 0;
+          return true;
         }
     catch (SQLException e) {
       logger.error("ERROR: {}", e.getMessage());

@@ -27,6 +27,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 
 
 public class BiddingController {
@@ -89,11 +90,17 @@ public class BiddingController {
            BidItemRespondPayload respone = (BidItemRespondPayload) packet.getPayload();
            if(respone.isSuccess()) {
                try {
-                   updateCurrentPrice.setText(String.format("Current highest price: %d", placeBid.getText()));
+                   updateCurrentPrice.setText(String.format("Current highest price: %s", placeBid.getText()));
                    currentItem.addHistory(new BidTransaction(user.getUserName(), Double.parseDouble(placeBid.getText())));
+
+                   Stage thisStage = (Stage) submitBidButton.getScene().getWindow();
+                   thisStage.close();
                } catch (Exception e) {
                    logger.error("Error while bidding: ", e);
                }
+           }
+           else {
+            logger.error("ERROR: Bidding failed. {}", respone.getError());
            }
        });
 
@@ -110,7 +117,7 @@ public class BiddingController {
            priceSeries.getData().add(new XYChart.Data<>(timeStamp, newBid));
 
 
-           updateCurrentPrice.setText(String.format("Current highest price: %d", placeBid.getText()));
+           updateCurrentPrice.setText(String.format("Current highest price: %s", placeBid.getText()));
          }
        });
    }
