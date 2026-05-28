@@ -13,8 +13,7 @@ public abstract class Item extends Entity {
   private double startingPrice;
   private double current_Price;
   private double maxPrice;
-  private final ObservableList<BidTransaction> bidTransactions = FXCollections.observableArrayList();
-
+  private List<BidTransaction> bidHistory;
 
   private String detail = "Seller is too lazy to write anything here.";
   private transient Image image;
@@ -25,6 +24,7 @@ public abstract class Item extends Entity {
     this.detail = detail;
     this.startingPrice = startingPrice;
     this.current_Price = startingPrice;
+    bidHistory = new ArrayList<>();
   }
 
   public int getId() {
@@ -74,16 +74,6 @@ public abstract class Item extends Entity {
         "\nCurrent price: " + current_Price;
   }
 
-  public void addHistory(BidTransaction bidTransaction) {
-    Platform.runLater(() -> {
-      bidTransactions.add(bidTransaction);
-    });
-  }
-
-  public ObservableList<BidTransaction> getHistory() {
-    return bidTransactions;
-  }
-
   public Image getImage() {
     return image;
   }
@@ -100,5 +90,13 @@ public abstract class Item extends Entity {
     this.imagePath = imagePath;
   }
 
+  public void addHistory(BidTransaction transaction) {
+    bidHistory.add(transaction);
+  }
+
+  public List<BidTransaction> getHistory() {
+    return bidHistory;
+  }
+  
   public abstract String toString();
 }

@@ -11,11 +11,11 @@ public class BidTransaction {
     this.price = new SimpleDoubleProperty(price);
   }
 
-  public StringProperty getUserName() {
-    return username;
+  public String getUserName() {
+    return username.get();
   }
 
-  public DoubleProperty getPrice() {
-    return price;
+  public double getPrice() {
+    return price.get();
   }
 }

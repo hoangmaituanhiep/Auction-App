@@ -19,7 +19,7 @@ public class BidDAO {
   public void createTable() {
     logger.debug("DEBUG: Initializing bid table database...");
 
-    String table = "CREATE TABLE IF NOT EXISTS bidHistory(id INTERGER PRYMARY KEY AUTOINCREMENT, itemId INTERGER NOT NULL, username TEXT NOT NULL, price REAL NOT NULL, timestamps TEXT NOT NULL)";
+    String table = "CREATE TABLE IF NOT EXISTS bidHistory(id INTEGER PRIMARY KEY AUTOINCREMENT, itemId INTEGER NOT NULL, username TEXT NOT NULL, price REAL NOT NULL, timestamps TEXT NOT NULL)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getBidUrl());
         Statement statement = connection.createStatement()) {

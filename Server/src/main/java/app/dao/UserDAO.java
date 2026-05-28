@@ -18,7 +18,7 @@ public class UserDAO {
   public void createTable() {
     logger.debug("DEBUG: Initializing user table database...");
 
-    String table = "CREATE TABLE IF NOT EXISTS user(username TEXT NOT NULL PRIMARY KEY, email TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL DEFAULT)";
+    String table = "CREATE TABLE IF NOT EXISTS user(username TEXT NOT NULL PRIMARY KEY, email TEXT NOT NULL, password TEXT NOT NULL, role TEXT NOT NULL DEFAULT 'BIDDER')";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getUsersUrl());
         Statement statement = connection.createStatement()) {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -11,102 +12,104 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.BiddingController">
-   <children>
-      <VBox prefHeight="720.0" prefWidth="596.0">
-         <children>
-            <VBox prefHeight="361.0" prefWidth="596.0">
-               <children>
-                  <ImageView fx:id="itemImage" fitHeight="148.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true" />
-               </children>
-            </VBox>
-            <HBox prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Button fx:id="editItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="EDIT">
-                     <HBox.margin>
-                        <Insets left="137.75" />
-                     </HBox.margin>
-                  </Button>
-                  <Button fx:id="deleteItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="DELETE">
-                     <HBox.margin>
-                        <Insets left="40.0" />
-                     </HBox.margin>
-                  </Button>
-               </children>
-               <VBox.margin>
-                  <Insets top="50.0" />
-               </VBox.margin>
-            </HBox>
-         </children>
-      </VBox>
-      <VBox prefHeight="720.0" prefWidth="685.0">
-         <children>
-            <TitledPane animated="false" prefHeight="376.0" prefWidth="686.0" text="Bid History">
-               <content>
-                  <TableView fx:id="tableBidHistory" prefHeight="200.0" prefWidth="200.0">
-                    <columns>
-                      <TableColumn fx:id="nameBidder" prefWidth="75.0" text="Name" />
-                      <TableColumn fx:id="bidTime" prefWidth="75.0" text="Time" />
-                        <TableColumn fx:id="bidPrice" prefWidth="75.0" text="Price" />
-                    </columns>
-                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                     </columnResizePolicy>
-                  </TableView>
-               </content>
-            </TitledPane>
-            <VBox prefHeight="283.0" prefWidth="686.0">
-               <children>
-                  <HBox prefHeight="36.0" prefWidth="686.0">
-                     <children>
-                        <Label prefHeight="36.0" prefWidth="158.0" text="Current Price">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets left="30.0" />
-                           </HBox.margin>
-                        </Label>
-                        <Label fx:id="updateCurrentPrice" alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="472.0" text="Cập nhật giá vào label này">
-                           <font>
-                              <Font size="24.0" />
-                           </font>
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <Label prefHeight="40.0" prefWidth="222.0" text="Place Bid">
-                     <font>
-                        <Font size="24.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets left="106.0" />
-                     </VBox.margin>
-                  </Label>
-                  <TextField fx:id="placeBid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="474.0" promptText="Enter new price...">
-                     <VBox.margin>
-                        <Insets left="106.0" />
-                     </VBox.margin>
-                  </TextField>
-                  <Button fx:id="submitBidButton" mnemonicParsing="false" onAction="#bidAction" prefHeight="26.0" prefWidth="154.0" text="SUBMIT BID">
-                     <VBox.margin>
-                        <Insets left="266.0" top="20.0" />
-                     </VBox.margin>
-                  </Button>
-               </children>
-               <VBox.margin>
-                  <Insets top="20.0" />
-               </VBox.margin>
-            </VBox>
-            <Label fx:id="notiLabel">
-               <VBox.margin>
-                  <Insets left="343.0" top="10.0" />
-               </VBox.margin>
-            </Label>
-         </children>
-      </VBox>
-   </children>
+  <children>
+     <VBox prefHeight="720.0" prefWidth="596.0">
+        <children>
+           <VBox prefHeight="361.0" prefWidth="596.0">
+              <children>
+                 <ImageView fx:id="itemImage" fitHeight="148.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true" />
+              </children>
+           </VBox>
+           <HBox prefHeight="100.0" prefWidth="200.0">
+              <children>
+                 <Button fx:id="editItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="EDIT">
+                    <HBox.margin>
+                       <Insets left="137.75" />
+                    </HBox.margin>
+                 </Button>
+                 <Button fx:id="deleteItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="DELETE">
+                    <HBox.margin>
+                       <Insets left="40.0" />
+                    </HBox.margin>
+                 </Button>
+              </children>
+              <VBox.margin>
+                 <Insets top="50.0" />
+              </VBox.margin>
+           </HBox>
+        </children>
+     </VBox>
+     <VBox prefHeight="720.0" prefWidth="685.0">
+        <children>
+           <TitledPane animated="false" prefHeight="376.0" prefWidth="686.0" text="Bid History">
+              <content>
+                 <LineChart fx:id="priceChart" animated="false" createSymbols="true">
+                   <xAxis>
+                       <CategoryAxis side="BOTTOM" label="Time" fx:id="timeAxis" />
+                   </xAxis>
+                   <yAxis>
+                       <NumberAxis side="LEFT" label="Price" fx:id="priceAxis" />
+                   </yAxis>
+                 </LineChart>
+              </content>
+           </TitledPane>
+           <VBox prefHeight="283.0" prefWidth="686.0">
+              <children>
+                 <HBox prefHeight="36.0" prefWidth="686.0">
+                    <children>
+                       <Label prefHeight="36.0" prefWidth="158.0" text="Current Price">
+                          <font>
+                             <Font size="24.0" />
+                          </font>
+                          <HBox.margin>
+                             <Insets left="30.0" />
+                          </HBox.margin>
+                       </Label>
+                       <Label fx:id="updateCurrentPrice" alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="472.0" text="Cập nhật giá vào label này">
+                          <font>
+                             <Font size="24.0" />
+                          </font>
+                          <HBox.margin>
+                             <Insets />
+                          </HBox.margin>
+                       </Label>
+                    </children>
+                 </HBox>
+                 <Label prefHeight="40.0" prefWidth="222.0" text="Place Bid">
+                    <font>
+                       <Font size="24.0" />
+                    </font>
+                    <VBox.margin>
+                       <Insets left="106.0" />
+                    </VBox.margin>
+                 </Label>
+                 <TextField fx:id="placeBid" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="474.0" promptText="Enter new price...">
+                    <VBox.margin>
+                       <Insets left="106.0" />
+                    </VBox.margin>
+                 </TextField>
+                 <Button fx:id="submitBidButton" mnemonicParsing="false" onAction="#bidAction" prefHeight="26.0" prefWidth="154.0" text="SUBMIT BID">
+                    <VBox.margin>
+                       <Insets left="266.0" top="20.0" />
+                    </VBox.margin>
+                 </Button>
+              </children>
+              <VBox.margin>
+                 <Insets top="20.0" />
+              </VBox.margin>
+           </VBox>
+           <Label fx:id="notiLabel">
+              <VBox.margin>
+                 <Insets left="343.0" top="10.0" />
+              </VBox.margin>
+           </Label>
+        </children>
+     </VBox>
+  </children>
 </HBox>
