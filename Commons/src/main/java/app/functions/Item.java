@@ -1,5 +1,8 @@
 package app.functions;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import java.util.List;
 import java.util.ArrayList;
@@ -10,7 +13,7 @@ public abstract class Item extends Entity {
   private double startingPrice;
   private double current_Price;
   private double maxPrice;
-  private List<BidTransaction> bidTransactions = new ArrayList<>();
+  private final ObservableList<BidTransaction> bidTransactions = FXCollections.observableArrayList();
 
 
   private String detail = "Seller is too lazy to write anything here.";
@@ -72,10 +75,12 @@ public abstract class Item extends Entity {
   }
 
   public void addHistory(BidTransaction bidTransaction) {
-    bidTransactions.add(bidTransaction);
+    Platform.runLater(() -> {
+      bidTransactions.add(bidTransaction);
+    });
   }
 
-  public List getHistory() {
+  public ObservableList<BidTransaction> getHistory() {
     return bidTransactions;
   }
 
