@@ -3,6 +3,7 @@ package app.services;
 import app.functions.Auction;
 import app.packets.Message;
 import app.packets.PacketMessage;
+import app.payload.AntiSnippingRespondPayload;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.WinnerPayload;
 import app.Client;
@@ -94,7 +95,8 @@ public class LiveAuctionSession {
 
       if (this.remainingTimeS < 10) {
         this.remainingTimeS += 60;
-        server.broadcast(new PacketMessage(Message.ANTI_SNIPPING_RESPOND, null));
+        AntiSnippingRespondPayload snippingRespond = new AntiSnippingRespondPayload(auction.getAuctionId(), auction.getName());
+        server.broadcast(new PacketMessage(Message.ANTI_SNIPPING_RESPOND, snippingRespond));
         logger.info("INFO: Some one bid in the last 10 second...");
       }
     }

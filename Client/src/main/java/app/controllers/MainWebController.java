@@ -1,6 +1,9 @@
 package app.controllers;
 
 import java.io.IOException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 import org.slf4j.LoggerFactory;
 
 import app.MainApp;
@@ -10,6 +13,7 @@ import app.functions.Auction;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
+import app.payload.AntiSnippingRespondPayload;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
@@ -67,8 +71,10 @@ public class MainWebController {
   }
 
   public void displayAuctionList(int auctionId, String name, String duration) {
-    String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Duration: %s", auctionId, name, duration);
+    String dueTime = LocalTime.now().plusMinutes(Integer.parseInt(duration)).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Due: %s", auctionId, name, dueTime);
     Label auctionLabel = new Label(auctionInfo);
+    auctionLabel.setId("auctionLabel-"+auctionId);
     auctionLabel.setWrapText(true);
     auctionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
 
@@ -213,6 +219,21 @@ public class MainWebController {
       CancelAuctionResponse payload = (CancelAuctionResponse) packet.getPayload();
       if (payload.isSuccess()) {
         disableAuction(String.valueOf(payload.getAuctionId()));
+      }
+    });
+
+    networkClient.addUIListener(Message.ANTI_SNIPPING_RESPOND, packet -> {
+      String dueTime = LocalTime.now().plusSeconds(60).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+      AntiSnippingRespondPayload snippingPayload = (AntiSnippingRespondPayload) packet.getPayload();
+      int id = snippingPayload.getAuctionId();
+      String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Due: %s", id, snippingPayload.getName(), dueTime);
+      Scene currentScene = auctionScrollPane.getScene();
+      Node node = currentScene.lookup("#auction-"+id);
+
+      if (node instanceof VBox) {
+        VBox auctionCard = (VBox) node;
+        Label label = (Label) auctionCard.lookup("#auctionLabel-"+id);
+        label.setText(auctionInfo);
       }
     });
   }
