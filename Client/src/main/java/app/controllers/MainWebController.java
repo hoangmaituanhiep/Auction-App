@@ -11,6 +11,7 @@ import app.MainApp;
 import app.NetworkClient;
 import app.functions.Admin;
 import app.functions.Auction;
+import app.functions.Item;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
@@ -30,6 +31,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -114,19 +116,6 @@ public class MainWebController {
 
       auctionCard.getChildren().add(cancel);
     }
-
-    auctionCard.setOnMouseClicked(e -> {
-      try {
-        FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
-        Scene auctionScene = new Scene(auctionLoader.load());
-
-        Stage auctionStage = new Stage();
-        auctionStage.setScene(auctionScene);
-        auctionStage.show();
-      } catch (IOException ex) {
-        logger.error("ERROR: {}", ex.getMessage());
-      }
-    });
 
     Platform.runLater(() -> {
       auctionBox.getChildren().add(auctionCard);
@@ -239,6 +228,18 @@ public class MainWebController {
         label.setText(auctionInfo);
       }
     });
+
+    networkClient.addUIListener(Message.JOIN_AUCTION_SUCCEEDED, packet -> {
+      AuctionDTO dto = (AuctionDTO) packet.getPayload();
+
+      Auction joinedAuction = new Auction(dto.getName(), dto.getDuration());
+      joinedAuction.setAuctionId(dto.getAuctionId());
+      joinedAuction.getData(dto);
+
+      user.participate(joinedAuction);
+
+      join.setText(user.getCurrentAuction().getName());
+    });
   }
 
   @FXML
@@ -300,6 +301,31 @@ public class MainWebController {
 
   @FXML
   public void joinAuction() {
+    if (user.getCurrentAuction() != null) {
+      try {
+        FXMLLoader bidLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
+        Parent root = bidLoader.load();
+
+        BiddingController controller = bidLoader.getController();
+
+        if (!user.getItemsList().isEmpty()) {
+          for (Item item : user.getItemsList()) {
+            controller.setItem(item);
+          }
+        } else {
+          logger.warn("WARNING: No item in this auction.");
+        }
+
+        Scene bidScene = new Scene(root);
+        Stage bidStage = new Stage();
+        bidStage.setScene(bidScene);
+        bidStage.show();
+      }
+      catch (IOException e) {
+        logger.error("ERROR: {}", e.getMessage());
+      }
+      return;
+    }
     TextInputDialog getAuctionId = new TextInputDialog();
     getAuctionId.setTitle("Join Auction");
     getAuctionId.setHeaderText("Enter Auction.");
@@ -308,19 +334,24 @@ public class MainWebController {
     Optional<String> id = getAuctionId.showAndWait();
     id.ifPresent(auctionIdString -> {
       try {
+        if (auctionIdString.isEmpty() || auctionIdString.equals(null)) {
+          getAuctionId.close();
+          return;
+        }
         int auctionId = Integer.parseInt(auctionIdString);
         user = user.asBidder();
 
         RegisterClientPayload payload = new RegisterClientPayload(auctionId);
         PacketMessage message = new PacketMessage(Message.JOIN_AUCTION, payload);
         networkClient.sendPacket(message);
+        getAuctionId.close();
         logger.info("INFO: Sent join request");
       }
       catch (NumberFormatException e) {
-        logger.error("ERROR: {}", e);
+        logger.error("ERROR: {}", e.getMessage());
       }
       catch (IOException e) {
-        logger.error("ERROR: {}", e);
+        logger.error("ERROR: {}", e.getMessage());
       }
     });
   }

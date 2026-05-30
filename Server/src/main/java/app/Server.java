@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.services.LiveAuctionSession;
+import app.functions.Auction;
 import app.packets.PacketMessage;
 
 public class Server {
@@ -120,5 +121,9 @@ public class Server {
 
   public Map<Integer, LiveAuctionSession> getLiveAuction() {
     return liveAuctions;
+  }
+
+  public Auction getAuction(int id) {
+    return liveAuctions.get(id).getAuction();
   }
 }

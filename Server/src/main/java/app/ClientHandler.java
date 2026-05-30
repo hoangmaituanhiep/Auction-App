@@ -148,7 +148,12 @@ public class ClientHandler implements Runnable {
           case JOIN_AUCTION:
             client.setUser(client.getUser().asBidder());
             try {
-              joinAution(packetMessage);
+              RegisterClientPayload registerClientPayload = (RegisterClientPayload) packetMessage.getPayload();
+
+              server.joinAution(registerClientPayload.getAuctionId(), client);
+              Auction auction = server.getAuction(registerClientPayload.getAuctionId());
+              AuctionDTO auctionDTO = new AuctionDTO(auction.getAuctionId(), auction.getName(), auction.getDuration(), auction.getStep(), auction.getStatus(), auction.getItemId());
+              sendPacket(new PacketMessage(Message.JOIN_AUCTION_SUCCEEDED, auctionDTO));
             } catch (Exception e) {
               logger.error("ERROR: Unrecognized Packet");
             }
@@ -352,16 +357,5 @@ public class ClientHandler implements Runnable {
   public synchronized void sendPacket(PacketMessage message) throws IOException {
     objectOutputStream.writeObject(message);
     objectOutputStream.flush();
-  }
-
-  public void joinAution(PacketMessage packetMessage) throws IOException {
-    if (packetMessage.getPayload() instanceof RegisterClientPayload) {
-      Server server = Server.getInstance();
-      RegisterClientPayload registerClientPayload = (RegisterClientPayload) packetMessage.getPayload();
-
-      server.joinAution(registerClientPayload.getAuctionId(), client);
-    } else {
-      logger.error("ERROR: Expected RegisterClientPayload");
-    }
   }
 }
