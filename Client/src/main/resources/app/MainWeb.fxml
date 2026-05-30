@@ -52,7 +52,7 @@
                   <Insets left="30.0" top="30.0" />
                </HBox.margin>
             </StackPane>
-            <Button fx:id="join" mnemonicParsing="false" prefHeight="42.0" prefWidth="68.0" text="JOIN">
+            <Button fx:id="join" onAction="#joinAuction" mnemonicParsing="false" prefHeight="42.0" prefWidth="68.0" text="JOIN">
                <HBox.margin>
                   <Insets left="20.0" top="30.0" />
                </HBox.margin>

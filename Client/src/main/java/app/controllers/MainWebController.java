@@ -3,6 +3,7 @@ package app.controllers;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +20,7 @@ import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.FetchDataResponsePayload;
 import app.payload.NewAuctionRespond;
+import app.payload.RegisterClientPayload;
 
 import org.slf4j.Logger;
 
@@ -293,6 +295,33 @@ public class MainWebController {
     } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
     }
+  }
+
+  @FXML
+  public void joinAuction() {
+    TextInputDialog getAuctionId = new TextInputDialog();
+    getAuctionId.setTitle("Join Auction");
+    getAuctionId.setHeaderText("Enter Auction.");
+    getAuctionId.setContentText("Auction's ID: ");
+
+    Optional<String> id = getAuctionId.showAndWait();
+    id.ifPresent(auctionIdString -> {
+      try {
+        int auctionId = Integer.parseInt(auctionIdString);
+        user = user.asBidder();
+
+        RegisterClientPayload payload = new RegisterClientPayload(auctionId);
+        PacketMessage message = new PacketMessage(Message.JOIN_AUCTION, payload);
+        networkClient.sendPacket(message);
+        logger.info("INFO: Sent join request");
+      }
+      catch (NumberFormatException e) {
+        logger.error("ERROR: {}", e);
+      }
+      catch (IOException e) {
+        logger.error("ERROR: {}", e);
+      }
+    });
   }
 
   @FXML
