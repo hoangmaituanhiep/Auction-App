@@ -45,6 +45,10 @@ public class BiddingController {
    private TextField placeBid;
    @FXML
    private Button submitBidButton;
+   @FXML
+   private TextField autoBidTextField;
+   @FXML
+   private Button autoBidButton;
 
 
    private MainWebController mainWebController;
@@ -126,6 +130,9 @@ public class BiddingController {
         submitBidButton.setDisable(true);
         placeBid.setDisable(true);
         placeBid.setPromptText("You are the one sell this bro.");
+        autoBidButton.setDisable(true);
+        autoBidTextField.setDisable(true);
+        autoBidTextField.setPromptText("You are the one sell this bro.");
        }
    }
 

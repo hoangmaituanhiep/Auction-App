@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -33,7 +34,7 @@ public class Server {
       e.printStackTrace();
     }
 
-    clientHandlers = new HashMap<String, ClientHandler>();
+    clientHandlers = new ConcurrentHashMap<String, ClientHandler>();
     liveAuctions = new HashMap<Integer, LiveAuctionSession>();
   }
 
@@ -91,7 +92,7 @@ public class Server {
   }
 
   public void removeClient(Client client) throws IOException {
-    String clientID = client.getInetSocketAddress().getHostName();
+    String clientID = client.getSocket().getRemoteSocketAddress().toString();
 
     if (clientHandlers.containsKey(clientID)) {
       clientHandlers.get(clientID).stopRunning();

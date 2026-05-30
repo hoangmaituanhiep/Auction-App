@@ -17,6 +17,7 @@ import app.functions.Seller;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
+import app.payload.AuctionDTO;
 import app.payload.BidItemRequestPayload;
 import app.payload.BidItemRespondPayload;
 import app.payload.CancelAuctionRequest;
@@ -307,9 +308,10 @@ public class ClientHandler implements Runnable {
 
           case FETCH_DATA_REQUEST:
             List<LiveAuctionSession> liveSessions = new ArrayList<>(server.getLiveAuction().values());
-            List<Auction> ongoingAuctions = new ArrayList<>();
+            List<AuctionDTO> ongoingAuctions = new ArrayList<>();
             for (LiveAuctionSession liveSession : liveSessions) {
-              ongoingAuctions.add(liveSession.getAuction());
+              Auction auction = liveSession.getAuction();
+              ongoingAuctions.add(new AuctionDTO(auction.getAuctionId(), auction.getName(), auction.getDuration(), auction.getStep(), auction.getStatus(), auction.getItemId()));
             }
 
             FetchDataResponsePayload fetchResponse = new FetchDataResponsePayload(ongoingAuctions);
@@ -347,7 +349,7 @@ public class ClientHandler implements Runnable {
     server.getClientHanlders().remove(getClient().getSocket().getRemoteSocketAddress().toString());
   }
 
-  public void sendPacket(PacketMessage message) throws IOException {
+  public synchronized void sendPacket(PacketMessage message) throws IOException {
     objectOutputStream.writeObject(message);
     objectOutputStream.flush();
   }

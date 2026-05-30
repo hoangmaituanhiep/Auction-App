@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.Client;
-import javafx.beans.Observable;
-import javafx.collections.ObservableList;
+import app.payload.AuctionDTO;
 
 public class Auction {
   private static final Logger logger = LoggerFactory.getLogger(Auction.class);
@@ -28,6 +27,13 @@ public class Auction {
     this.itemId = new ArrayList<>();
     this.onlineUser = new HashMap<>();
     clients = new ArrayList<Client>();
+  }
+
+  public void getData(AuctionDTO data) {
+    this.name = data.getName();
+    this.duration = data.getDuration();
+    this.status = data.getStatus();
+    this.itemId = data.getItemIds();
   }
 
   // Auction ID

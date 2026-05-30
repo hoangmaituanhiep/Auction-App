@@ -6,13 +6,13 @@ import java.util.List;
 import app.functions.Auction;
 
 public class FetchDataResponsePayload implements Serializable {
-  List<Auction> liveAuction;
+  List<AuctionDTO> liveAuction;
 
-  public FetchDataResponsePayload(List<Auction> liveAuction) {
+  public FetchDataResponsePayload(List<AuctionDTO> liveAuction) {
     this.liveAuction = liveAuction;
   }
 
-  public List<Auction> getLiveAuction() {
+  public List<AuctionDTO> getLiveAuction() {
     return liveAuction;
   }
 }

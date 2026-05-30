@@ -15,6 +15,7 @@ import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AntiSnippingRespondPayload;
+import app.payload.AuctionDTO;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
@@ -196,7 +197,7 @@ public class MainWebController {
 
     networkClient.addUIListener(Message.FETCH_DATA_RESPONSE, packet -> {
       FetchDataResponsePayload fetchPayload = (FetchDataResponsePayload) packet.getPayload();
-      for (Auction auction : fetchPayload.getLiveAuction()) {
+      for (AuctionDTO auction : fetchPayload.getLiveAuction()) {
         displayAuctionList(auction.getAuctionId(), auction.getName(), auction.getDuration());
       }
     });

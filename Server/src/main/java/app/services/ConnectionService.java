@@ -50,9 +50,9 @@ public class ConnectionService {
       return false;
     }
 
-    userDAO.insertUser(username, confirmPassword, email, "BIDDER");
+    boolean inserted = userDAO.insertUser(username, confirmPassword, email, "BIDDER");
 
     logger.info("INFO: Successfully created new user");
-    return true;
+    return inserted;
   }
 }
