@@ -71,6 +71,8 @@ public class AuctionController {
       String name = auctionName.getText();
       String dur = duration.getText();
 
+      user = user.asSeller();
+
       Auction auction = new Auction(name, dur);
       user.participate(auction);
 

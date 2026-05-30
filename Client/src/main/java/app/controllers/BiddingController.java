@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 
 import app.functions.User;
 import app.functions.Item;
+import app.functions.Seller;
 import app.functions.BidTransaction;
 import app.NetworkClient;
 import app.packets.Message;
@@ -120,6 +121,12 @@ public class BiddingController {
            updateCurrentPrice.setText(String.format("Current highest price: %s", placeBid.getText()));
          }
        });
+
+       if (user instanceof Seller) {
+        submitBidButton.setDisable(true);
+        placeBid.setDisable(true);
+        placeBid.setPromptText("You are the one sell this bro.");
+       }
    }
 
 

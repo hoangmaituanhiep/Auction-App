@@ -13,6 +13,7 @@ import app.dao.BidDAO;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
 import app.functions.Auction;
+import app.functions.Seller;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
@@ -112,6 +113,7 @@ public class ClientHandler implements Runnable {
         switch (packetMessage.getType()) {
           case NEW_AUCTION_REQUEST:
             NewAuctionRequest payload = (NewAuctionRequest) packetMessage.getPayload();
+            client.setUser(client.getUser().asSeller());
             boolean auctionSuccess = auctionService.addAuction(payload.getName(), payload.getDuration());
 
             NewAuctionRespond response;
@@ -242,6 +244,10 @@ public class ClientHandler implements Runnable {
 
           case NEW_PRICE_REQUEST:
             try {
+              if (client.getUser() instanceof Seller) {
+                logger.warn("WARNING: Seller bided???");
+                break;
+              }
               BidItemRequestPayload request = (BidItemRequestPayload) packetMessage.getPayload();
               int Id = request.getId();
               String bidderName = request.getUserName();

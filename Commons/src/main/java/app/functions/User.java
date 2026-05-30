@@ -32,12 +32,16 @@ public abstract class User extends Entity {
 
   public Bidder asBidder() {
     if (this instanceof Bidder) return (Bidder) this;
-    return new Bidder(this);
+    Bidder newRole = new Bidder(this);
+    if (this == instance) instance = newRole;
+    return newRole;
   }
 
   public Seller asSeller() {
     if (this instanceof Seller) return (Seller) this;
-    return new Seller(this);
+    Seller newRole = new Seller(this);
+    if (this == instance) instance = newRole;
+    return newRole;
   }
 
   public static User getInstance() {
@@ -98,80 +102,17 @@ public abstract class User extends Entity {
 
   public void participate(Auction auction) {
     this.auction = auction;
+    this.itemsList.clear();
+    this.itemsMap.clear();
   }
 
   public void existAuction() {
     this.auction = null;
+    this.itemsList.clear();
+    this.itemsMap.clear();
   }
 
   public Auction getCurrentAuction() {
     return auction;
-  }
-}
-
-class Bidder extends User {
-
-  public Bidder() {
-    super();
-  }
-
-  public Bidder(User other) {
-    super(other);
-  }
-
-  public <T extends Item> String getItem_Info(T item) {
-    return item.toString();
-  }
-
-  public void Autioned(int itemId, double newPrice) {
-    Item item = itemsList.get(itemId);
-    if (newPrice > item.getCurrentPrice()) {
-      item.setNewPrice(newPrice);
-      System.out.println("Done!!!");
-    } else {
-      System.out.println("Absolutely failure.");
-    }
-  }
-
-  public String toString() {
-    return "#bidder:" + getUserName();
-  }
-}
-
-class Seller extends User {
-  Map<String, Item> list_item = new HashMap<>();
-
-  public Seller() {
-    super();
-  }
-
-  public Seller(User other) {
-    super(other);
-  }
-
-  public void setStartingPrice(String id, double startingPrice) {
-    if (list_item.containsKey(id)) {
-      list_item.get(id).setStartingPrice(startingPrice);
-    }
-  }
-
-  public void setMaxPrice(String id, double maxPrice) {
-    if (list_item.containsKey(id)) {
-      list_item.get(id).setMaxPrice(maxPrice);
-    }
-  }
-
-  public void addSellingItem(String id, Item item) {
-    list_item.put(id, item);
-  }
-
-  public void deleteSellingItem(String id) {
-    if (list_item.containsKey(id)) {
-      list_item.remove(id);
-    }
-  }
-
-  public String toString() {
-    return "#seller:" + getUserName();
   }
 }
