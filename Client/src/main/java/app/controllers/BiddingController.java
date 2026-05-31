@@ -54,6 +54,8 @@ public class BiddingController {
    private MainWebController mainWebController;
    private NetworkClient networkClient;
    private User user;
+   private final AutoBidThread autoThread = new AutoBidThread();
+   private Thread thread;
 
 
    private int itemId;
@@ -89,6 +91,7 @@ public class BiddingController {
        networkClient = NetworkClient.getInstance();
        user = User.getInstance();
        priceSeries = new XYChart.Series<>();
+       autoThread.setItem(currentItem);
 
 
        networkClient.addUIListener(Message.NEW_PRICE_RESPOND, packet -> {
@@ -97,9 +100,9 @@ public class BiddingController {
                try {
                    updateCurrentPrice.setText(String.format("Current highest price: %s", placeBid.getText()));
                    currentItem.addHistory(new BidTransaction(user.getUserName(), Double.parseDouble(placeBid.getText())));
+                   autoThread.setBiddable(false);
 
                    Stage thisStage = (Stage) submitBidButton.getScene().getWindow();
-                   thisStage.close();
                } catch (Exception e) {
                    logger.error("Error while bidding: ", e);
                }
@@ -120,6 +123,7 @@ public class BiddingController {
 
 
            priceSeries.getData().add(new XYChart.Data<>(timeStamp, newBid));
+           autoThread.setBiddable(true);
 
 
            updateCurrentPrice.setText(String.format("Current highest price: %s", placeBid.getText()));
@@ -152,5 +156,29 @@ public class BiddingController {
        } catch(IOException e){
            logger.error("ERROR: {}", e.getMessage());
        }
+   }
+
+   @FXML
+   public void autoBid() {
+    logger.info("AutoBid button clicked.");
+    boolean start = true;
+
+    if (start) {
+
+        if (autoThread.setAmount(Double.parseDouble(autoBidTextField.getText()))) {
+
+            thread = new Thread(autoThread);
+            thread.start();
+            start = false;
+            logger.info("Start auto bidding succesfully.");
+
+        } else {
+            logger.error("Fail to start auto bidding.");
+        }
+    } else {
+        thread.interrupt();
+        start = true;
+        logger.info("Close auto bid.");
+    }
    }
 }
