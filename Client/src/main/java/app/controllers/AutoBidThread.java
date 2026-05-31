@@ -57,7 +57,8 @@ public class AutoBidThread implements Runnable{
           }
         }
       } catch (InterruptedException e) {
-        logger.error("Something went wrong while auto bidding");
+        Thread.currentThread().interrupt();
+        logger.info("INFO: Stop auto bidding.");
       }
     }
   }
