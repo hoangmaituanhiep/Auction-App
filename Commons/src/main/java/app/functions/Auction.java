@@ -124,4 +124,13 @@ public class Auction {
   public void addClient(Client client) {
     clients.add(client);
   }
+
+  public void removeClient(Client client) {
+    if (clients.contains(client)) {
+      clients.remove(client);
+    }
+    else {
+      logger.error("ERROR: No client in like that in this auction");
+    }
+  }
 }

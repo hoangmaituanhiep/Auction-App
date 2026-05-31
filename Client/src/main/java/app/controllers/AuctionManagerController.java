@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import app.MainApp;
 import app.NetworkClient;
 import app.functions.Item;
+import app.functions.Seller;
 import app.functions.User;
 import app.functions.BidTransaction;
 import app.functions.Bidder;
@@ -16,9 +17,12 @@ import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.BidItemRequestPayload;
+import app.payload.CancelAuctionRequest;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
+import app.payload.QuitAuctionRequest;
 import app.payload.SellItemRequestPayload;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -43,15 +47,20 @@ public class AuctionManagerController {
   @FXML
   private Button addNewItem;
   @FXML
-  private Button backToMainWeb;
+  private Button quit;
 
   private User user;
+  private Stage stage;
 
   @FXML
   public void initialize() {
     user = User.getInstance();
     mainWebController = MainWebController.getInstance();
     networkClient = NetworkClient.getInstance();
+
+    Platform.runLater(() -> {
+      stage = (Stage) quit.getScene().getWindow();
+    });
 
     if (user instanceof Bidder) {
       addNewItem.setDisable(true);
@@ -62,7 +71,7 @@ public class AuctionManagerController {
       boolean isFinished = payload.isFinished();
 
       if (isFinished) {
-        backToMainWeb();
+        stage.close();
       }
     });
 
@@ -208,8 +217,30 @@ public class AuctionManagerController {
   }
 
   @FXML
-  public void backToMainWeb() {
-    Stage stage = (Stage) backToMainWeb.getScene().getWindow();
+  public void quitAuction() {
+    if (user instanceof Seller) {
+      CancelAuctionRequest cancelRequest = new CancelAuctionRequest(user.getCurrentAuction().getAuctionId());
+      PacketMessage cancelMessage = new PacketMessage(Message.CANCEL_AUCTION_REQUEST, cancelRequest);
+
+      try {
+        networkClient.sendPacket(cancelMessage);
+      }
+      catch (IOException e) {
+        logger.error("ERROR: {}", e.getMessage());
+      }
+    }
+    QuitAuctionRequest quitRequest = new QuitAuctionRequest(user.getCurrentAuction().getAuctionId());
+    PacketMessage quitMessage = new PacketMessage(Message.QUIT_ACTION, quitRequest);
+    try {
+      networkClient.sendPacket(quitMessage);
+    }
+    catch(IOException e) {
+      logger.error("ERROR: {}", e.getMessage());
+    }
+
+    mainWebController.toggleQuit();
+
+    Stage stage = (Stage) quit.getScene().getWindow();
     stage.close();
   }
 }

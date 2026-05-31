@@ -23,7 +23,7 @@
                   <Insets right="10.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="backToMainWeb" mnemonicParsing="false" onAction="#backToMainWeb" prefHeight="42.0" prefWidth="160.0" text="BACK TO MAIN">
+            <Button fx:id="quit" mnemonicParsing="false" onAction="#quitAuction" prefHeight="42.0" prefWidth="160.0" text="QUIT AUCTION">
                <HBox.margin>
                   <Insets right="30.0" />
                </HBox.margin>

@@ -98,7 +98,7 @@ public class Server {
     if (clientHandlers.containsKey(clientID)) {
       clientHandlers.get(clientID).stopRunning();
     } else {
-      System.err.println("Cannot find clients");
+      logger.error("ERROR: Cannot find clients");
     }
   }
 
@@ -106,7 +106,13 @@ public class Server {
     if (liveAuctions.containsKey(auctionId)) {
       liveAuctions.get(auctionId).addClient(client);
     } else {
-      System.err.println("Already in the auction.");
+      logger.error("ERROR: Already in the auction.");
+    }
+  }
+
+  public void quitAuction(int auctionId, Client client) {
+    if (liveAuctions.containsKey(auctionId)) {
+      liveAuctions.get(auctionId).removeClient(client);
     }
   }
 

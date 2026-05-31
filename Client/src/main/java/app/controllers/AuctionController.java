@@ -11,12 +11,10 @@ import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.NewAuctionRequest;
-import app.payload.NewAuctionRespond;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 

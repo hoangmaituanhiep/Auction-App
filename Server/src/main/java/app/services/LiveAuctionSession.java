@@ -110,4 +110,8 @@ public class LiveAuctionSession {
   public void addClient(Client client) {
     auction.addClient(client);
   }
+
+  public void removeClient(Client client) {
+    auction.removeClient(client);
+  }
 }

@@ -159,6 +159,11 @@ public class MainWebController {
     logInLabel.setText("Hi " + user.getUserName());
   }
 
+  public void toggleQuit() {
+    join.setText("JOIN");
+    user.existAuction();
+  }
+
   @FXML
   public void initialize() {
     instance = this;

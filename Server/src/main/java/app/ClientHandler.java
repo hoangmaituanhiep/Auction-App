@@ -31,6 +31,7 @@ import app.payload.FetchDataResponsePayload;
 import app.payload.NewAuctionRequest;
 import app.payload.NewAuctionRespond;
 import app.payload.OnlineUserResponse;
+import app.payload.QuitAuctionRequest;
 import app.payload.RegisterClientPayload;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
@@ -125,15 +126,12 @@ public class ClientHandler implements Runnable {
             if (auctionSuccess) {
               int newId = auctionService.getAuctionId();
 
-              // 1. Create the data object
               Auction newAuctionData = new Auction(payload.getName(),
                   payload.getDuration());
               newAuctionData.setAuctionId(newId);
 
-              // 2. Wrap it in a Live Session
               LiveAuctionSession liveSession = new LiveAuctionSession(newAuctionData);
 
-              // 3. Start the timer and add to Server
               liveSession.start();
               server.addLiveAuction(liveSession);
 
@@ -146,6 +144,11 @@ public class ClientHandler implements Runnable {
             sendPacket(message);
             PacketMessage serverMessage = new PacketMessage(Message.NEW_AUCTION_BROADCAST, response);
             server.broadcast(serverMessage);
+            break;
+          
+          case QUIT_ACTION:
+            QuitAuctionRequest quitRequest = (QuitAuctionRequest) packetMessage.getPayload();
+            server.quitAuction(quitRequest.getAuctionId(), client);
             break;
 
           case JOIN_AUCTION:
