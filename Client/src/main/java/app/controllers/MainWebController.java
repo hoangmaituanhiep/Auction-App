@@ -240,6 +240,20 @@ public class MainWebController {
 
       join.setText(user.getCurrentAuction().getName());
     });
+
+    networkClient.addUIListener(Message.NEW_AUCTION_RESPOND, packet -> {
+      NewAuctionRespond respond = (NewAuctionRespond) packet.getPayload();
+      if (respond.isSuccess()) {
+        user = User.getInstance();
+        Auction currentAuction = user.getCurrentAuction();
+
+        if (currentAuction != null && currentAuction.getName().equals(respond.getName())) {
+          user.getCurrentAuction().setAuctionId(respond.getAuctionId());
+          currentAuction.setAuctionId(respond.getAuctionId());
+          join.setText(currentAuction.getName());
+        }
+      }
+    });
   }
 
   @FXML
@@ -303,23 +317,12 @@ public class MainWebController {
   public void joinAuction() {
     if (user.getCurrentAuction() != null) {
       try {
-        FXMLLoader bidLoader = new FXMLLoader(getClass().getResource("/app/bidScreen.fxml"));
-        Parent root = bidLoader.load();
-
-        BiddingController controller = bidLoader.getController();
-
-        if (!user.getItemsList().isEmpty()) {
-          for (Item item : user.getItemsList()) {
-            controller.setItem(item);
-          }
-        } else {
-          logger.warn("WARNING: No item in this auction.");
-        }
-
-        Scene bidScene = new Scene(root);
-        Stage bidStage = new Stage();
-        bidStage.setScene(bidScene);
-        bidStage.show();
+        FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
+        Parent root = auctionLoader.load();
+        Scene auctionScene = new Scene(root);
+        Stage auctionStage = new Stage();
+        auctionStage.setScene(auctionScene);
+        auctionStage.show();
       }
       catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());

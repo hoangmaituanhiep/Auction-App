@@ -41,13 +41,6 @@ public class AuctionController {
     networkClient = NetworkClient.getInstance();
     user = User.getInstance();
     mainWebController = MainWebController.getInstance();
-
-    networkClient.addUIListener(Message.NEW_AUCTION_RESPOND, packet -> {
-      NewAuctionRespond payload = (NewAuctionRespond) packet.getPayload();
-      if (payload.isSuccess()) {
-        user.getCurrentAuction().setAuctionId(payload.getAuctionId());
-      }
-    });
   }
 
 
@@ -76,6 +69,10 @@ public class AuctionController {
       Auction auction = new Auction(name, dur);
       user.participate(auction);
 
+      if (mainWebController != null) {
+        mainWebController.setUser(user);
+      }
+
       NewAuctionRequest request = new NewAuctionRequest(name, dur);
       PacketMessage message = new PacketMessage(Message.NEW_AUCTION_REQUEST, request);
       try {
@@ -89,7 +86,6 @@ public class AuctionController {
       logger.error("ERROR: User is already in an auction bro");
     }
 
-    // Close the create auction stage instead of reloading MainWeb.fxml
     Stage stage = (Stage) New.getScene().getWindow();
     stage.close();
   }

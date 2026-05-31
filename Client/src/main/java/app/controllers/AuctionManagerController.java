@@ -10,6 +10,7 @@ import app.NetworkClient;
 import app.functions.Item;
 import app.functions.User;
 import app.functions.BidTransaction;
+import app.functions.Bidder;
 import app.packets.Message;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.BidItemRequestPayload;
@@ -46,6 +47,10 @@ public class AuctionManagerController {
     user = User.getInstance();
     mainWebController = MainWebController.getInstance();
     networkClient = NetworkClient.getInstance();
+
+    if (user instanceof Bidder) {
+      addNewItem.setDisable(true);
+    }
 
     networkClient.addUIListener(Message.AUCTION_TIMEOUT, packet -> {
       AuctionTimeoutPayload payload = (AuctionTimeoutPayload) packet.getPayload();
