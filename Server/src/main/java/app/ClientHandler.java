@@ -13,6 +13,7 @@ import app.dao.BidDAO;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
 import app.functions.Auction;
+import app.functions.Item;
 import app.functions.Seller;
 import app.functions.User;
 import app.packets.Message;
@@ -24,6 +25,8 @@ import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
+import app.payload.FetchAuctionItemsRequestPayload;
+import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.FetchDataResponsePayload;
 import app.payload.NewAuctionRequest;
 import app.payload.NewAuctionRespond;
@@ -162,12 +165,22 @@ public class ClientHandler implements Runnable {
           case SEND_ITEM_REQUEST:
             try {
               SellItemRequestPayload sellData = (SellItemRequestPayload) packetMessage.getPayload();
+              int targetAuctionId = sellData.getAuctionId();
               boolean addSuccess = itemsService.addItems(sellData.getItem());
 
               SellItemRespondPayload respondPayload;
               if (addSuccess) {
-                respondPayload = new SellItemRespondPayload(addSuccess, itemsService.getLastestItemId());
-                SellItemRequestPayload globalRequest = new SellItemRequestPayload(sellData.getItem());
+                int newItemId = itemsService.getLastestItemId();
+                sellData.getItem().addId(newItemId);
+
+                Auction targetAuction = server.getAuction(targetAuctionId);
+                if (targetAuction != null) {
+                  targetAuction.addNewItem(newItemId);
+                }
+
+                respondPayload = new SellItemRespondPayload(addSuccess, newItemId);
+
+                SellItemRequestPayload globalRequest = new SellItemRequestPayload(sellData.getItem(), targetAuctionId);
                 PacketMessage globalMessage = new PacketMessage(Message.BROADCAST_NEW_ITEM, globalRequest);
 
                 server.broadcast(globalMessage);
@@ -328,6 +341,21 @@ public class ClientHandler implements Runnable {
             catch (IOException exception) {
               logger.error("ERROR: {}", exception);
             }
+            break;
+          
+          case FETCH_AUCTION_ITEMS_REQUEST:
+            FetchAuctionItemsRequestPayload fetchItemsPayload = (FetchAuctionItemsRequestPayload) packetMessage.getPayload();
+            List<Item> items = new ArrayList<>();
+            Auction auction = server.getAuction(fetchItemsPayload.getAuctionId());
+
+            for (int itemId:auction.getItemId()) {
+              items.add(itemsService.getItemById(itemId));
+            }
+
+            FetchAuctionItemsResponsePayload itemsResponse = new FetchAuctionItemsResponsePayload(items);
+            PacketMessage itemsResponsePacket = new PacketMessage(Message.FETCH_AUCTION_ITEMS_RESPONSE, itemsResponse);
+            sendPacket(itemsResponsePacket);
+            
             break;
 
           default:

@@ -6,9 +6,7 @@ import javafx.scene.control.ComboBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+ 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -126,10 +124,13 @@ public class SellingController {
         item.setImagePath(uploadedPath);
       }
 
-      SellItemRequestPayload payload = new SellItemRequestPayload(item);
-      PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
+      int auctionId = -1;
+      if (user.getCurrentAuction() != null) {
+        auctionId = user.getCurrentAuction().getAuctionId();
+      }
 
-      user.addItem(item);
+      SellItemRequestPayload payload = new SellItemRequestPayload(item, auctionId);
+      PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
 
       try {
         networkClient.sendPacket(message);

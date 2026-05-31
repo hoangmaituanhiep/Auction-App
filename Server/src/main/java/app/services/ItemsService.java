@@ -42,6 +42,10 @@ public class ItemsService {
     return itemDAO.setNewPrice(id, newPrice);
   }
 
+  public Item getItemById(int Id) {
+    return itemDAO.getItem(Id);
+  }
+
   public int getLastestItemId() {
     return itemDAO.getLastestItemId();
   }

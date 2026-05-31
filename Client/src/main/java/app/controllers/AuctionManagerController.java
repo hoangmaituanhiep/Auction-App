@@ -1,6 +1,7 @@
 package app.controllers;
 
 import java.io.IOException;
+ 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +15,8 @@ import app.functions.Bidder;
 import app.packets.Message;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.BidItemRequestPayload;
+import app.payload.FetchAuctionItemsResponsePayload;
+import app.payload.SellItemRequestPayload;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -69,6 +72,50 @@ public class AuctionManagerController {
         if (item.getId() == targetId) {
           item.setNewPrice(globalRequest.getPrice());
           item.addHistory(new BidTransaction(globalRequest.getUserName(), globalRequest.getPrice()));
+          itemListView.refresh();
+        }
+      }
+    });
+
+    networkClient.addUIListener(Message.FETCH_AUCTION_ITEMS_RESPONSE, packet -> {
+      FetchAuctionItemsResponsePayload payload = (FetchAuctionItemsResponsePayload) packet.getPayload();
+
+      if (user.getCurrentAuction() != null) {
+        for (Item item : payload.getItems()) {
+          boolean alreadyExists = false;
+          for (Item existingItem : user.getItemsList()) {
+            if (existingItem.getId() == item.getId()) {
+              alreadyExists = true;
+              break;
+            }
+          }
+
+          if (!alreadyExists) {
+            user.addItem(item);
+            user.getCurrentAuction().addNewItem(item.getId());
+          }
+        }
+      }
+      itemListView.refresh();
+    });
+
+    networkClient.addUIListener(Message.BROADCAST_NEW_ITEM, packet -> {
+      SellItemRequestPayload payload = (SellItemRequestPayload) packet.getPayload();
+      Item item = payload.getItem();
+      int auctionId = payload.getAuctionId();
+
+      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == auctionId) {
+        boolean alreadyExists = false;
+        for (Item existingItem : user.getItemsList()) {
+          if (existingItem.getId() == item.getId()) {
+            alreadyExists = true;
+            break;
+          }
+        }
+
+        if (!alreadyExists) {
+          user.addItem(item);
+          user.getCurrentAuction().addNewItem(item.getId());
           itemListView.refresh();
         }
       }
