@@ -344,13 +344,21 @@ public class ClientHandler implements Runnable {
             break;
           
           case FETCH_AUCTION_ITEMS_REQUEST:
+            
             FetchAuctionItemsRequestPayload fetchItemsPayload = (FetchAuctionItemsRequestPayload) packetMessage.getPayload();
             List<Item> items = new ArrayList<>();
             Auction auction = server.getAuction(fetchItemsPayload.getAuctionId());
 
             for (int itemId:auction.getItemId()) {
-              items.add(itemsService.getItemById(itemId));
+              Item itemData = itemsService.getItemById(itemId);
+              if (itemData != null) {
+                items.add(itemData);
+              }
+              else {
+                logger.warn("WARNING: Missing item");
+              }
             }
+            logger.debug("DEBUG: Fetching items for auction {}: ids={}", auction.getAuctionId(), auction.getItemId());
 
             FetchAuctionItemsResponsePayload itemsResponse = new FetchAuctionItemsResponsePayload(items);
             PacketMessage itemsResponsePacket = new PacketMessage(Message.FETCH_AUCTION_ITEMS_RESPONSE, itemsResponse);
