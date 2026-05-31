@@ -42,6 +42,8 @@ public class BidDAO {
           preStatement.setInt(1, itemId);
           preStatement.setDouble(3, price);
 
+          int row = preStatement.executeUpdate();
+
           return true;
     }
     catch (SQLException e) {

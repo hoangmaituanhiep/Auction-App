@@ -1,21 +1,21 @@
 package app.functions;
 
-import javafx.beans.property.*;
+import java.io.Serializable;
 
-public class BidTransaction {
-  private final StringProperty username;
-  private final DoubleProperty price;
+public class BidTransaction implements Serializable{
+  private String username;
+  private double price;
 
   public BidTransaction(String username, double price) {
-    this.username = new SimpleStringProperty(username);
-    this.price = new SimpleDoubleProperty(price);
+    this.username = username;
+    this.price = price;
   }
 
   public String getUserName() {
-    return username.get();
+    return username;
   }
 
   public double getPrice() {
-    return price.get();
+    return price;
   }
 }

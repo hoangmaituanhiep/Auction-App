@@ -240,16 +240,6 @@ public class MainWebController {
       user.participate(joinedAuction);
 
       join.setText(user.getCurrentAuction().getName());
-
-      FetchAuctionItemsRequestPayload fetchItemsRequest = new FetchAuctionItemsRequestPayload(dto.getAuctionId());
-      PacketMessage fetchItemsMessage = new PacketMessage(Message.FETCH_AUCTION_ITEMS_REQUEST, fetchItemsRequest);
-
-      try {
-        networkClient.sendPacket(fetchItemsMessage);
-      }
-      catch (IOException e) {
-        logger.error("ERROR: {}", e.getMessage());
-      }
     });
 
     networkClient.addUIListener(Message.NEW_AUCTION_RESPOND, packet -> {

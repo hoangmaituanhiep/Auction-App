@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import app.config.DatabaseConfig;
+import app.functions.GenericItem;
 import app.functions.Item;
 
 public class ItemDAO{
@@ -25,7 +26,8 @@ public class ItemDAO{
             + "name TEXT NOT NULL, "
             + "details TEXT, "
             + "startingPrice REAL NOT NULL, "
-            + "currentPrice REAL) ";
+            + "currentPrice REAL,"
+            + "imagePath TEXT) ";
     
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         Statement statement = connection.createStatement()) {
@@ -40,21 +42,23 @@ public class ItemDAO{
   public boolean insertItem(Item item) {
     logger.debug("DEBUG: Adding new item...");
 
-    String insert = "INSERT INTO item(name, details, startingPrice, currentPrice) VALUES(?, ?, ?, ?)";
+    String insert = "INSERT INTO item(name, details, startingPrice, currentPrice, imagePath) VALUES(?, ?, ?, ?, ?)";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(insert, Statement.RETURN_GENERATED_KEYS)) {
-          ResultSet key = preStatement.getGeneratedKeys();
 
           preStatement.setString(1, item.getName());
           preStatement.setString(2, item.getDetail());
           preStatement.setDouble(3, item.getStartingPrice());
           preStatement.setDouble(4, item.getCurrentPrice());
+          preStatement.setString(5, item.getImagePath());
 
           preStatement.executeUpdate();
 
-          if (key.next()) {
-            this.lastestItemId = key.getInt(1);
+          try (ResultSet key = preStatement.getGeneratedKeys()) {
+            if (key.next()) {
+              this.lastestItemId = key.getInt(1);
+            }
           }
 
           logger.info("INFO: Inserted SQLite.");
@@ -106,7 +110,7 @@ public class ItemDAO{
   }
 
   public Item getItem(int id) {
-    String query = "SELECT name, details, startingPrice, currentPrice FROM item WHERE id = ?";
+    String query = "SELECT name, details, startingPrice, currentPrice, imagePath FROM item WHERE id = ?";
 
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         PreparedStatement preStatement = connection.prepareStatement(query)) {
@@ -127,15 +131,12 @@ public class ItemDAO{
             }
           }
 
-          Item item = new Item(name, rawDetail, startingPrice) {
-            @Override
-            public String toString() {
-              return getName();
-            }
-          };
+          String imagePath = resultSet.getString("imagePath");
+          Item item = new GenericItem(name, rawDetail, startingPrice);
 
           item.addId(id);
           item.setNewPrice(currentPrice);
+          item.setImagePath(imagePath);
           return item;
         }
       }

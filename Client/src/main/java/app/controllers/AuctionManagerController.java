@@ -13,8 +13,10 @@ import app.functions.User;
 import app.functions.BidTransaction;
 import app.functions.Bidder;
 import app.packets.Message;
+import app.packets.PacketMessage;
 import app.payload.AuctionTimeoutPayload;
 import app.payload.BidItemRequestPayload;
+import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.SellItemRequestPayload;
 import javafx.fxml.FXML;
@@ -82,6 +84,10 @@ public class AuctionManagerController {
 
       if (user.getCurrentAuction() != null) {
         for (Item item : payload.getItems()) {
+          if (item == null) {
+            logger.warn("WARNING: null item.");
+            continue;
+          }
           boolean alreadyExists = false;
           for (Item existingItem : user.getItemsList()) {
             if (existingItem.getId() == item.getId()) {
@@ -122,6 +128,17 @@ public class AuctionManagerController {
     });
 
     itemListView.setItems(user.getItemsList());
+    if (user.getCurrentAuction() != null) {
+      int auctionId = user.getCurrentAuction().getAuctionId();
+      FetchAuctionItemsRequestPayload itemsRequest = new FetchAuctionItemsRequestPayload(auctionId);
+      PacketMessage fetchItemsRequest = new PacketMessage(Message.FETCH_AUCTION_ITEMS_REQUEST, itemsRequest);
+      try {
+        networkClient.sendPacket(fetchItemsRequest);
+      }
+      catch (IOException e) {
+        logger.error("ERROR: {}", e.getMessage());
+      }
+    }
     itemListView.setCellFactory(listView -> new ListCell<>() {
       private final ImageView imageView = new ImageView();
       private final Label text1 = new Label();
