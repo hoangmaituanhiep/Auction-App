@@ -51,7 +51,6 @@ public class BiddingController {
   private User user;
   private final AutoBidThread autoThread = new AutoBidThread();
   private Thread thread;
-  private boolean autoBidding = false;
 
   private int itemId;
 
@@ -124,7 +123,9 @@ public class BiddingController {
         }
 
         priceSeries.getData().add(new XYChart.Data<>(timeStamp, newBid));
-        autoThread.setBiddable(true);
+        if (!newPrice.getUserName().equals(user.getUserName())){
+          autoThread.setBiddable(true);
+        }
 
         if (updateCurrentPrice != null) {
           updateCurrentPrice.setText(String.format("Current highest price: %s", newBid));
@@ -169,6 +170,7 @@ public class BiddingController {
   @FXML
   public void autoBid() {
     logger.info("AutoBid button clicked.");
+    boolean autoBidding = false;
     if (!autoBidding) {
       if (autoThread.setAmount(Double.parseDouble(autoBidTextField.getText()))) {
         thread = new Thread(autoThread);
