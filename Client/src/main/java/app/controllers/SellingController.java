@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.nio.file.Files;
 
@@ -183,11 +184,11 @@ public class SellingController {
     this.selectedImage = null;
   }
 
-  private String uploadImageToServer(byte[] imageBytes) {
+  public String uploadImageToServer(byte[] imageBytes) {
     try {
       int port = MainApp.getPort() + 1;
 
-      URL url = new URL("http://" + MainApp.getHost() + ":" + port + "/upload");
+      URL url = new URI("http://" + MainApp.getHost() + ":" + port + "/upload").toURL();
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
       connection.setDoOutput(true);
       connection.setRequestMethod("POST");
