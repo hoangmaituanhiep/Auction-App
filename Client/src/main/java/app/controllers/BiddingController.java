@@ -17,7 +17,6 @@ import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.BidItemRequestPayload;
 import app.payload.BidItemRespondPayload;
-import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
@@ -97,7 +96,6 @@ public class BiddingController {
         try {
           if (currentItem != null) {
             double bid = Double.parseDouble(placeBid.getText());
-            updateCurrentPrice.setText(String.format("Current highest price: %s", bid));
             currentItem.addHistory(new BidTransaction(user.getUserName(), bid));
           }
           autoThread.setBiddable(false);
