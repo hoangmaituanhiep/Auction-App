@@ -34,6 +34,16 @@ public class AuctionController {
   @FXML
   private Button New;
 
+  private void showAlert(String title, String message) {
+    javafx.application.Platform.runLater(() -> {
+      javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+      alert.setTitle(title);
+      alert.setHeaderText(null);
+      alert.setContentText(message);
+      alert.showAndWait();
+    });
+  }
+
   @FXML
   public void initialize() {
     networkClient = NetworkClient.getInstance();
@@ -53,6 +63,7 @@ public class AuctionController {
     }
     catch(IOException e) {
       logger.error("ERROR: {}", e.getMessage());
+      showAlert("Error", "Failed to add item:\n" + e.getMessage());
     }
   }
 
@@ -78,10 +89,12 @@ public class AuctionController {
       }
       catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Failed to add auction:\n" + e.getMessage());
       }
     }
     else {
       logger.error("ERROR: User is already in an auction bro");
+      showAlert("Error", "User is already in an auction bro");
     }
 
     Stage stage = (Stage) New.getScene().getWindow();

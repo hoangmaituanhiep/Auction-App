@@ -58,6 +58,16 @@ public class BiddingController {
     return (currentItem != null) ? currentItem.getId() : this.itemId;
   }
 
+  private void showAlert(String title, String message) {
+    javafx.application.Platform.runLater(() -> {
+      javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+      alert.setTitle(title);
+      alert.setHeaderText(null);
+      alert.setContentText(message);
+      alert.showAndWait();
+    });
+  }
+
   public void setItem(Item item) {
     this.currentItem = item;
     this.itemId = item.getId();
@@ -101,9 +111,11 @@ public class BiddingController {
 
         } catch (Exception e) {
           logger.error("Error while bidding: ", e);
+          showAlert("Error", "Error while bidding:\n" + e.getMessage());
         }
       } else {
         logger.error("ERROR: Bidding failed. {}", respone.getError());
+        showAlert("Bidding Failed", respone.getError());
       }
     });
 
@@ -124,7 +136,7 @@ public class BiddingController {
 
         priceSeries.getData().add(new XYChart.Data<>(timeStamp, newBid));
         if (!newPrice.getUserName().equals(user.getUserName())){
-          autoThread.setBiddable(true);
+          autoThread.setBiddable(false);
         }
 
         if (updateCurrentPrice != null) {
@@ -164,6 +176,7 @@ public class BiddingController {
       logger.info("New price is sent.");
     } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
+      showAlert("Error", "Failed to send bid:\n" + e.getMessage());
     }
   }
 
@@ -180,10 +193,11 @@ public class BiddingController {
 
       } else {
         logger.error("Fail to start auto bidding.");
+        showAlert("Error", "Fail to start auto bidding.");
       }
     } else {
       thread.interrupt();
-      autoBidding = true;
+      autoBidding = false;
       logger.info("Close auto bid.");
     }
   }

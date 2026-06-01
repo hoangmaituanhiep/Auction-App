@@ -52,6 +52,16 @@ public class AuctionManagerController {
   private User user;
   private Stage stage;
 
+  private void showAlert(String title, String message) {
+    Platform.runLater(() -> {
+      javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+      alert.setTitle(title);
+      alert.setHeaderText(null);
+      alert.setContentText(message);
+      alert.showAndWait();
+    });
+  }
+
   @FXML
   public void initialize() {
     user = User.getInstance();
@@ -144,6 +154,7 @@ public class AuctionManagerController {
       }
       catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Failed to fetch items:\n" + e.getMessage());
       }
     }
     itemListView.setCellFactory(listView -> new ListCell<>() {
@@ -171,6 +182,7 @@ public class AuctionManagerController {
             stage.show();
           } catch(IOException exception) {
             logger.error("Error while open Bidding screen: {}", exception.getMessage());
+            showAlert("Error", "Error while open Bidding screen:\n" + exception.getMessage());
           }
         });
       }
@@ -211,6 +223,7 @@ public class AuctionManagerController {
     }
     catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
+      showAlert("Error", "Failed to add new item:\n" + e.getMessage());
     }
   }
 
@@ -225,6 +238,7 @@ public class AuctionManagerController {
       }
       catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Failed to cancel auction:\n" + e.getMessage());
       }
     }
     QuitAuctionRequest quitRequest = new QuitAuctionRequest(user.getCurrentAuction().getAuctionId());
@@ -234,6 +248,7 @@ public class AuctionManagerController {
     }
     catch(IOException e) {
       logger.error("ERROR: {}", e.getMessage());
+      showAlert("Error", "Failed to quit auction:\n" + e.getMessage());
     }
 
     mainWebController.toggleQuit();

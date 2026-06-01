@@ -75,6 +75,16 @@ public class MainWebController {
     return instance;
   }
 
+  private void showAlert(String title, String message) {
+    Platform.runLater(() -> {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle(title);
+      alert.setHeaderText(null);
+      alert.setContentText(message);
+      alert.showAndWait();
+    });
+  }
+
   public void displayAuctionList(int auctionId, String name, String duration) {
     String dueTime = LocalTime.now().plusMinutes(Integer.parseInt(duration)).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Due: %s", auctionId, name, dueTime);
@@ -111,6 +121,7 @@ public class MainWebController {
           networkClient.sendPacket(message);
         } catch (IOException exception) {
           logger.error("ERROR: {}", exception);
+          showAlert("Error", "Failed to cancel auction:\n" + exception.getMessage());
         }
       });
 
@@ -181,6 +192,7 @@ public class MainWebController {
       logger.info("INFO: Connected to server successfully at: {}:{}", MainApp.getHost(), MainApp.getPort());
     } catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
+      showAlert("Connection Error", "Cannot connect to server:\n" + e.getMessage());
     }
 
     networkClient.addUIListener(Message.WELCOME, packet -> {
@@ -267,6 +279,7 @@ public class MainWebController {
       networkClient.sendPacket(new PacketMessage(Message.FETCH_DATA_REQUEST, null)); 
     } catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
+      showAlert("Connection Error", "Cannot connect to server:\n" + e.getMessage());
     }
   }
 
@@ -281,6 +294,7 @@ public class MainWebController {
       loginStage.show();
     } catch (IOException e) {
       e.printStackTrace();
+      showAlert("Error", "Failed to open login screen:\n" + e.getMessage());
     }
   }
 
@@ -295,6 +309,7 @@ public class MainWebController {
         stage.show();
       } catch (IOException e) {
         logger.error("ERROR: {}", e);
+        showAlert("Error", "Failed to open online clients screen:\n" + e.getMessage());
       }
       return;
     }
@@ -307,6 +322,7 @@ public class MainWebController {
       auctionStage.show();
     } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
+      showAlert("Error", "Failed to open create auction screen:\n" + e.getMessage());
     }
   }
 
@@ -323,6 +339,7 @@ public class MainWebController {
       }
       catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Failed to open auction manager:\n" + e.getMessage());
       }
       return;
     }
@@ -349,9 +366,11 @@ public class MainWebController {
       }
       catch (NumberFormatException e) {
         logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Invalid Auction ID format:\n" + e.getMessage());
       }
       catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Failed to join auction:\n" + e.getMessage());
       }
     });
   }
@@ -366,6 +385,7 @@ public class MainWebController {
       managerStage.show();
     } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
+      showAlert("Error", "Failed to open auction manager:\n" + e.getMessage());
     }
   }
 
