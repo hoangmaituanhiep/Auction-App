@@ -18,33 +18,33 @@ import org.slf4j.LoggerFactory;
 public class MediaServer {
   private static final String IMAGE_DIR = "Server/src/main/resources/images/clients/";
   private static final Logger logger = LoggerFactory.getLogger(MediaServer.class);
+  private static HttpServer httpServer;
 
   public static void start(int port) throws IOException {
     Files.createDirectories(Paths.get(IMAGE_DIR));
-    HttpServer  server = HttpServer.create(new InetSocketAddress(port), 0);
+    httpServer = HttpServer.create(new InetSocketAddress(port), 0);
 
-    server.createContext("/upload", exchange -> {
+    httpServer.createContext("/upload", exchange -> {
       if ("POST".equalsIgnoreCase(exchange.getRequestMethod())) {
-        String filename = UUID.randomUUID().toString() + "png"; //Just get a random name
+        String filename = UUID.randomUUID().toString() + "png"; // Just get a random name
         Path filePath = Paths.get(IMAGE_DIR, filename);
 
         try (InputStream is = exchange.getRequestBody();
-          OutputStream os = Files.newOutputStream(filePath)) {
-            is.transferTo(os);
-          }
+            OutputStream os = Files.newOutputStream(filePath)) {
+          is.transferTo(os);
+        }
 
         String reponsePath = "/images/" + filename;
         exchange.sendResponseHeaders(200, reponsePath.getBytes().length);
         try (OutputStream os = exchange.getResponseBody()) {
           os.write(reponsePath.getBytes());
         }
-      }
-      else {
+      } else {
         exchange.sendResponseHeaders(405, -1);
       }
     });
 
-    server.createContext("/images/", exchange -> {
+    httpServer.createContext("/images/", exchange -> {
       if ("GET".equalsIgnoreCase(exchange.getRequestMethod())) {
         String filename = exchange.getRequestURI().getPath().substring("/images/".length());
         Path filePath = Paths.get(IMAGE_DIR, filename);
@@ -56,15 +56,21 @@ public class MediaServer {
           try (OutputStream os = exchange.getResponseBody()) {
             os.write(bytes);
           }
-        }
-        else {
+        } else {
           exchange.sendResponseHeaders(404, -1);
         }
       }
     });
 
-    server.setExecutor(null);
-    server.start();
+    httpServer.setExecutor(null);
+    httpServer.start();
     logger.info("Media Server started at: {}", port);
+  }
+
+  public static void stop() {
+    if (httpServer != null) {
+      httpServer.stop(0);
+      httpServer = null;
+    }
   }
 }
