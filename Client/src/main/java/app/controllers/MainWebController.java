@@ -17,7 +17,6 @@ import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AntiSnippingRespondPayload;
 import app.payload.AuctionDTO;
-import app.payload.AuctionTimeoutPayload;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.FetchAuctionItemsRequestPayload;
@@ -204,19 +203,13 @@ public class MainWebController {
       }
     });
 
-    networkClient.addUIListener(Message.AUCTION_TIMEOUT, packet -> {
-      AuctionTimeoutPayload response = (AuctionTimeoutPayload) packet.getPayload();
-      boolean isFinished = response.isFinished();
-
-      if (isFinished) {
-        disableAuction(String.valueOf(response.getAuctionId()));
-      }
-    });
-
     networkClient.addUIListener(Message.CANCEL_AUCTION_RESPONSE, packet -> {
       CancelAuctionResponse payload = (CancelAuctionResponse) packet.getPayload();
       if (payload.isSuccess()) {
         disableAuction(String.valueOf(payload.getAuctionId()));
+      }
+      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == payload.getAuctionId()) {
+        user.existAuction();
       }
     });
 

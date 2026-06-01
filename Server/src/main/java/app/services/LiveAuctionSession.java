@@ -4,7 +4,8 @@ import app.functions.Auction;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AntiSnippingRespondPayload;
-import app.payload.AuctionTimeoutPayload;
+import app.payload.CancelAuctionRequest;
+import app.payload.CancelAuctionResponse;
 import app.payload.WinnerPayload;
 import app.Client;
 import app.Server;
@@ -71,8 +72,8 @@ public class LiveAuctionSession {
             server.broadcast(message);
           }
         }
-        AuctionTimeoutPayload payload = new AuctionTimeoutPayload(true, auction.getAuctionId());
-        PacketMessage message = new PacketMessage(Message.AUCTION_TIMEOUT, payload);
+        CancelAuctionResponse response = new CancelAuctionResponse(true, auction.getAuctionId());
+        PacketMessage message = new PacketMessage(Message.CANCEL_AUCTION_RESPONSE, response);
 
         server.broadcast(message);
         server.removeLiveAuction(auction.getAuctionId());

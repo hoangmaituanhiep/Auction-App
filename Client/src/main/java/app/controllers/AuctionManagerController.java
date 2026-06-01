@@ -15,9 +15,9 @@ import app.functions.BidTransaction;
 import app.functions.Bidder;
 import app.packets.Message;
 import app.packets.PacketMessage;
-import app.payload.AuctionTimeoutPayload;
 import app.payload.BidItemRequestPayload;
 import app.payload.CancelAuctionRequest;
+import app.payload.CancelAuctionResponse;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.QuitAuctionRequest;
@@ -65,15 +65,6 @@ public class AuctionManagerController {
     if (user instanceof Bidder) {
       addNewItem.setDisable(true);
     }
-
-    networkClient.addUIListener(Message.AUCTION_TIMEOUT, packet -> {
-      AuctionTimeoutPayload payload = (AuctionTimeoutPayload) packet.getPayload();
-      boolean isFinished = payload.isFinished();
-
-      if (isFinished) {
-        stage.close();
-      }
-    });
 
     networkClient.addUIListener(Message.NEW_PRICE_BROADCAST, packet -> {
       BidItemRequestPayload globalRequest = (BidItemRequestPayload) packet.getPayload();
@@ -133,6 +124,13 @@ public class AuctionManagerController {
           user.getCurrentAuction().addNewItem(item.getId());
           itemListView.refresh();
         }
+      }
+    });
+
+    networkClient.addUIListener(Message.CANCEL_AUCTION_RESPONSE, packet -> {
+      CancelAuctionResponse respond = (CancelAuctionResponse) packet.getPayload();
+      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
+        stage.close();
       }
     });
 

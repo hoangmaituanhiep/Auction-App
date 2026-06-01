@@ -21,6 +21,7 @@ import app.functions.User;
 import app.functions.Vehicle;
 import app.packets.Message;
 import app.packets.PacketMessage;
+import app.payload.CancelAuctionResponse;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
 
@@ -85,6 +86,14 @@ public class SellingController {
         } catch (Exception e) {
           logger.error("Error occurred while closing stage", e);
         }
+      }
+    });
+
+    networkClient.addUIListener(Message.CANCEL_AUCTION_RESPONSE, packet -> {
+      CancelAuctionResponse respond = (CancelAuctionResponse) packet.getPayload();
+      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
+        Stage stage = (Stage) sellItem.getScene().getWindow();
+        stage.close();
       }
     });
   }
