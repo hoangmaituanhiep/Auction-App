@@ -126,8 +126,6 @@ public class MainWebController {
     Scene currentScene = auctionScrollPane.getScene();
     Node node = currentScene.lookup("#auction-" + id);
 
-    user.existAuction();
-
     if (node instanceof VBox) {
       VBox auctionCard = (VBox) node;
       auctionCard.setOnMouseClicked(null);

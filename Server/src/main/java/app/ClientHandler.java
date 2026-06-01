@@ -312,19 +312,21 @@ public class ClientHandler implements Runnable {
           case CANCEL_AUCTION_REQUEST:
             CancelAuctionRequest request = (CancelAuctionRequest) packetMessage.getPayload();
             int id = request.getAuctionId();
-            server.removeLiveAuction(id);
-            boolean cancelSuccess = auctionService.updateStatus(id, "CANCELED");
+            if (server.getLiveAuction().containsKey(id)) {
+              server.removeLiveAuction(id);
+              boolean cancelSuccess = auctionService.updateStatus(id, "CANCELED");
 
-            CancelAuctionResponse cancelResponse;
-            if (cancelSuccess) {
-              cancelResponse = new CancelAuctionResponse(cancelSuccess, id);
-            }
-            else {
-              cancelResponse = new CancelAuctionResponse(cancelSuccess, "ERROR: failed to cancel auction");
-            }
-            PacketMessage cancelMessage = new PacketMessage(Message.CANCEL_AUCTION_RESPONSE, cancelResponse);
+              CancelAuctionResponse cancelResponse;
+              if (cancelSuccess) {
+                cancelResponse = new CancelAuctionResponse(cancelSuccess, id);
+              }
+              else {
+                cancelResponse = new CancelAuctionResponse(cancelSuccess, "ERROR: failed to cancel auction");
+              }
+              PacketMessage cancelMessage = new PacketMessage(Message.CANCEL_AUCTION_RESPONSE, cancelResponse);
 
-            server.broadcast(cancelMessage);
+              server.broadcast(cancelMessage);
+            }
             break;
 
           case FETCH_DATA_REQUEST:

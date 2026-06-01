@@ -78,11 +78,19 @@ public class LiveAuctionSession {
         server.broadcast(message);
         server.removeLiveAuction(auction.getAuctionId());
 
-        countDown.cancel(false);
+        if (countDown != null && !countDown.isCancelled()) {
+          countDown.cancel(false);
+        }
       }
     };
 
     countDown = schedule.scheduleAtFixedRate(tick, 0, 1, TimeUnit.SECONDS);
+  }
+
+  public void stop() {
+    if (countDown != null && !countDown.isCancelled()) {
+      countDown.cancel(false);
+    }
   }
 
   public synchronized boolean placeBid(Client client, int itemId, double bid, String bidderName) {
