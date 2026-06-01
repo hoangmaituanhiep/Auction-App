@@ -28,6 +28,7 @@ import app.payload.ConnectionRespondPayload;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.FetchDataResponsePayload;
+import app.payload.KickUser;
 import app.payload.NewAuctionRequest;
 import app.payload.NewAuctionRespond;
 import app.payload.OnlineUserResponse;
@@ -371,6 +372,15 @@ public class ClientHandler implements Runnable {
             
             break;
 
+          case KICK_USER_REQUEST:
+            KickUser kickRequest = (KickUser) packetMessage.getPayload();
+            Client kickedClient = server.findClientByUsername(kickRequest.getUsername());
+
+            server.removeClient(kickedClient);
+
+            KickUser kickResponse = new KickUser(kickRequest.getUsername());
+            PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
+            server.broadcast(kickMessage);
           default:
             break;
         }

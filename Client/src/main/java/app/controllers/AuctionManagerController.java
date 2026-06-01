@@ -20,6 +20,7 @@ import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
+import app.payload.KickUser;
 import app.payload.QuitAuctionRequest;
 import app.payload.SellItemRequestPayload;
 import javafx.application.Platform;
@@ -141,6 +142,18 @@ public class AuctionManagerController {
       CancelAuctionResponse respond = (CancelAuctionResponse) packet.getPayload();
       if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
         stage.close();
+      }
+    });
+
+    networkClient.addUIListener(Message.KICK_USER_RESPOND, packet -> {
+      KickUser kickRespond = (KickUser) packet.getPayload();
+      String username = kickRespond.getUsername();
+
+      if (user.getUserName().equals(username)) {
+        Platform.runLater(() -> {
+          Stage stage = (Stage) quit.getScene().getWindow();
+          stage.close();
+        });
       }
     });
 

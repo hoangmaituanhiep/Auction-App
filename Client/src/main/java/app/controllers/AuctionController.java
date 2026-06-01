@@ -10,7 +10,9 @@ import app.functions.Auction;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
+import app.payload.KickUser;
 import app.payload.NewAuctionRequest;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -49,6 +51,18 @@ public class AuctionController {
     networkClient = NetworkClient.getInstance();
     user = User.getInstance();
     mainWebController = MainWebController.getInstance();
+
+    networkClient.addUIListener(Message.KICK_USER_RESPOND, packet -> {
+      KickUser kickRespond = (KickUser) packet.getPayload();
+      String username = kickRespond.getUsername();
+
+      if (user.getUserName().equals(username)) {
+        Platform.runLater(() -> {
+          Stage stage = (Stage) New.getScene().getWindow();
+          stage.close();
+        });
+      }
+    });
   }
 
 

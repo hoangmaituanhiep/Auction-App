@@ -18,6 +18,8 @@ import app.packets.PacketMessage;
 import app.payload.BidItemRequestPayload;
 import app.payload.BidItemRespondPayload;
 import app.payload.CancelAuctionResponse;
+import app.payload.KickUser;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -150,6 +152,18 @@ public class BiddingController {
       if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
         Stage stage = (Stage) submitBidButton.getScene().getWindow();
         stage.close();
+      }
+    });
+
+    networkClient.addUIListener(Message.KICK_USER_RESPOND, packet -> {
+      KickUser kickRespond = (KickUser) packet.getPayload();
+      String username = kickRespond.getUsername();
+
+      if (user.getUserName().equals(username)) {
+        Platform.runLater(() -> {
+          Stage stage = (Stage) placeBid.getScene().getWindow();
+          stage.close();
+        });
       }
     });
 

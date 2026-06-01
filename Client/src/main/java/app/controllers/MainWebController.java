@@ -21,6 +21,7 @@ import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchDataResponsePayload;
+import app.payload.KickUser;
 import app.payload.NewAuctionRespond;
 import app.payload.RegisterClientPayload;
 
@@ -261,6 +262,18 @@ public class MainWebController {
           currentAuction.setAuctionId(respond.getAuctionId());
           join.setText(currentAuction.getName());
         }
+      }
+    });
+
+    networkClient.addUIListener(Message.KICK_USER_RESPOND, packet -> {
+      KickUser kickRespond = (KickUser) packet.getPayload();
+      String username = kickRespond.getUsername();
+
+      if (user.getUserName().equals(username)) {
+        Platform.runLater(() -> {
+          Stage stage = (Stage) mainPane.getScene().getWindow();
+          stage.close();
+        });
       }
     });
   }

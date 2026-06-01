@@ -136,4 +136,13 @@ public class Server {
   public Auction getAuction(int id) {
     return liveAuctions.get(id).getAuction();
   }
+
+  public Client findClientByUsername(String username) {
+    for (ClientHandler client : clientHandlers.values()) {
+      if (client.getClient().getUser().getUserName().equals(username)) {
+        return client.getClient();
+      }
+    }
+    return null;
+  }
 }

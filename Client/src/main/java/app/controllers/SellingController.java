@@ -1,5 +1,6 @@
 package app.controllers;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -22,6 +23,7 @@ import app.functions.Vehicle;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.CancelAuctionResponse;
+import app.payload.KickUser;
 import app.payload.SellItemRequestPayload;
 import app.payload.SellItemRespondPayload;
 
@@ -87,6 +89,18 @@ public class SellingController {
         } catch (Exception e) {
           logger.error("Error occurred while closing stage", e);
         }
+      }
+    });
+
+    networkClient.addUIListener(Message.KICK_USER_RESPOND, packet -> {
+      KickUser kickRespond = (KickUser) packet.getPayload();
+      String username = kickRespond.getUsername();
+
+      if (user.getUserName().equals(username)) {
+        Platform.runLater(() -> {
+          Stage stage = (Stage) sellItem.getScene().getWindow();
+          stage.close();
+        });
       }
     });
 
