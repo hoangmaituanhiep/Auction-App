@@ -161,7 +161,7 @@ public class AuctionManagerController {
       KickUser kickRespond = (KickUser) packet.getPayload();
       String username = kickRespond.getUsername();
 
-      if (user.getUserName().equals(username)) {
+      if (user.getUserName() != null && user.getUserName().equals(username)) {
         Platform.runLater(() -> {
           Stage stage = (Stage) quit.getScene().getWindow();
           stage.close();

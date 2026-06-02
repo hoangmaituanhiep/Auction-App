@@ -386,11 +386,14 @@ public class ClientHandler implements Runnable {
             KickUser kickRequest = (KickUser) packetMessage.getPayload();
             Client kickedClient = server.findClientByUsername(kickRequest.getUsername());
 
-            server.removeClient(kickedClient);
+            if (kickedClient != null) {
+              KickUser kickResponse = new KickUser(kickRequest.getUsername());
+              PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
+              server.broadcast(kickMessage);
 
-            KickUser kickResponse = new KickUser(kickRequest.getUsername());
-            PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
-            server.broadcast(kickMessage);
+              server.removeClient(kickedClient);
+            }
+            break;
           default:
             break;
         }

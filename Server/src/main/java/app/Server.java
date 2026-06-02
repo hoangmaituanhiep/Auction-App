@@ -93,6 +93,10 @@ public class Server {
   }
 
   public void removeClient(Client client) throws IOException {
+    if (client == null || client.getSocket() == null) {
+      logger.error("ERROR: Cannot remove null client or client with null socket");
+      return;
+    }
     String clientID = client.getSocket().getRemoteSocketAddress().toString();
 
     if (clientHandlers.containsKey(clientID)) {
@@ -139,7 +143,10 @@ public class Server {
 
   public Client findClientByUsername(String username) {
     for (ClientHandler client : clientHandlers.values()) {
-      if (client.getClient().getUser().getUserName().equals(username)) {
+      if (client.getClient() != null && 
+          client.getClient().getUser() != null && 
+          client.getClient().getUser().getUserName() != null && 
+          client.getClient().getUser().getUserName().equals(username)) {
         return client.getClient();
       }
     }
