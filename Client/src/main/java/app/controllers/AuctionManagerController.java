@@ -153,12 +153,15 @@ public class AuctionManagerController {
 
     networkClient.addUIListener(Message.CHANGE_INFO_BROADCAST, packet -> {
       ChangeItemInfoRequest request = (ChangeItemInfoRequest) packet.getPayload();
-      for (Item item : itemListView.getItems()) {
-        if (item.getId() == request.getItemId()) {
-          item.setName(request.getItemName());
-          item.writeDetail(request.getItemDetail());
-          logger.info("Item {} was changed info.", item.getId());
-          break;
+      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == request.getAuctionId()) {
+        for (Item item : itemListView.getItems()) {
+          if (item.getId() == request.getItemId()) {
+            item.setName(request.getItemName());
+            item.writeDetail(request.getItemDetail());
+            logger.info("Item {} was changed info.", item.getId());
+            itemListView.refresh();
+            break;
+          }
         }
       }
     });

@@ -237,7 +237,7 @@ public class BiddingController {
       editedNameField.setVisible(true);
       isApply = true;
     } else {
-      ChangeItemInfoRequest infoRequest = new ChangeItemInfoRequest(itemId, editedNameField.getText(), editedDetailField.getText());
+      ChangeItemInfoRequest infoRequest = new ChangeItemInfoRequest(itemId, editedNameField.getText(), editedDetailField.getText(), user.getCurrentAuction().getAuctionId());
       PacketMessage packet = new PacketMessage(Message.CHANGE_INFO_REQUEST, infoRequest);
 
       try {

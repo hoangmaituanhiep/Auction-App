@@ -388,13 +388,11 @@ public class ClientHandler implements Runnable {
             Client kickedClient = server.findClientByUsername(kickRequest.getUsername());
 
             if (kickedClient != null) {
+              server.removeClient(kickedClient);
               KickUser kickResponse = new KickUser(kickRequest.getUsername());
               PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
               server.broadcast(kickMessage);
-
-            KickUser kickResponse = new KickUser(kickRequest.getUsername());
-            PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
-            server.broadcast(kickMessage);
+            }
             break;
 
           case CHANGE_INFO_REQUEST:
@@ -404,7 +402,6 @@ public class ClientHandler implements Runnable {
             if (isSuccessed) {
               PacketMessage pMessage = new PacketMessage(Message.CHANGE_INFO_BROADCAST, changeInfoRequest);
               server.broadcast(pMessage);
-              server.removeClient(kickedClient);
             }
             break;
           default:
