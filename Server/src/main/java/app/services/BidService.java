@@ -1,6 +1,9 @@
 package app.services;
 
+import java.util.List;
+
 import app.dao.BidDAO;
+import app.functions.BidTransaction;
 
 public class BidService {
   private BidDAO bidDAO;
@@ -20,5 +23,9 @@ public class BidService {
 
   public String getWinner(int itemId) {
     return bidDAO.getWinner(itemId);
+  }
+
+  public List<BidTransaction> getHistory(int itemId) {
+    return bidDAO.getHistory(itemId);
   }
 }

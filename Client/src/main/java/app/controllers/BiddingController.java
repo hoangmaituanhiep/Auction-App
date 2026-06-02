@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.slf4j.Logger;
 
@@ -20,11 +21,14 @@ import app.payload.BidItemRespondPayload;
 import app.payload.CancelAuctionResponse;
 import app.payload.ChangeItemInfoRequest;
 import app.payload.DeleteItemRequest;
+import app.payload.FetchItemHistoryRequestPayload;
+import app.payload.FetchItemHistoryResponsePayload;
 import app.payload.KickUser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -70,7 +74,7 @@ public class BiddingController {
 
   private void showAlert(String title, String message) {
     javafx.application.Platform.runLater(() -> {
-      javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+      Alert alert = new javafx.scene.control.Alert(Alert.AlertType.ERROR);
       alert.setTitle(title);
       alert.setHeaderText(null);
       alert.setContentText(message);
@@ -89,9 +93,24 @@ public class BiddingController {
     priceSeries.setName("Bidding History");
     priceSeries.getData().clear();
 
-    for (BidTransaction transaction : item.getHistory()) {
-      String timeStamps = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-      priceSeries.getData().add(new XYChart.Data<>(timeStamps, transaction.getPrice()));
+    if (networkClient != null && user.getCurrentAuction() != null) {
+      try {
+        FetchItemHistoryRequestPayload req = new FetchItemHistoryRequestPayload(item.getId());
+        networkClient.sendPacket(new PacketMessage(Message.FETCH_ITEM_HISTORY_REQUEST, req));
+      } catch (IOException e) {
+        int index = 1;
+        for (BidTransaction transaction : item.getHistory()) {
+          String label = (transaction.getTimestamp() != null) ? transaction.getTimestamp()
+              : String.valueOf(index++);
+          priceSeries.getData().add(new XYChart.Data<>(label, transaction.getPrice()));
+        }
+      }
+    } else {
+      int index = 1;
+      for (BidTransaction transaction : item.getHistory()) {
+        String label = (transaction.getTimestamp() != null) ? transaction.getTimestamp() : String.valueOf(index++);
+        priceSeries.getData().add(new XYChart.Data<>(label, transaction.getPrice()));
+      }
     }
 
     if (priceChart != null && !priceChart.getData().contains(priceSeries)) {
@@ -155,11 +174,26 @@ public class BiddingController {
       }
     });
 
+    networkClient.addUIListener(app.packets.Message.FETCH_ITEM_HISTORY_RESPONSE, packet -> {
+      FetchItemHistoryResponsePayload resp = (FetchItemHistoryResponsePayload) packet.getPayload();
+      List<BidTransaction> history = resp.getHistory();
+      priceSeries.getData().clear();
+      for (BidTransaction t : history) {
+        String label = (t.getTimestamp() != null) ? t.getTimestamp() : String.valueOf(t.getPrice());
+        priceSeries.getData().add(new XYChart.Data<>(label, t.getPrice()));
+      }
+      if (priceChart == null || !priceChart.getData().contains(priceSeries)) {
+        priceChart.getData().add(priceSeries);
+      }
+    });
+
     networkClient.addUIListener(Message.CANCEL_AUCTION_RESPONSE, packet -> {
       CancelAuctionResponse respond = (CancelAuctionResponse) packet.getPayload();
       if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
-        Stage stage = (Stage) submitBidButton.getScene().getWindow();
-        stage.close();
+        Platform.runLater(() -> {
+          Stage stage = (Stage) priceChart.getScene().getWindow();
+          stage.close();
+        });
       }
     });
 

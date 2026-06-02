@@ -11,6 +11,7 @@ import app.MainApp;
 import app.NetworkClient;
 import app.functions.Admin;
 import app.functions.Auction;
+import app.functions.Bidder;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
@@ -297,6 +298,9 @@ public class MainWebController {
       if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == winner.getAuctionId()) {
         showNotification("WINNER",
             String.format("The Winner in Auction %d get Item %s", winner.getAuctionId(), winner.getItem().getName()));
+        if (user instanceof Bidder) {
+          user.addWonItem(winner.getItem());
+        }
       }
     });
 

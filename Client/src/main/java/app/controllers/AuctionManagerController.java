@@ -54,7 +54,6 @@ public class AuctionManagerController {
   private Button quit;
 
   private User user;
-  private Stage stage;
 
   private void showAlert(String title, String message) {
     Platform.runLater(() -> {
@@ -168,8 +167,11 @@ public class AuctionManagerController {
 
     networkClient.addUIListener(Message.CANCEL_AUCTION_RESPONSE, packet -> {
       CancelAuctionResponse respond = (CancelAuctionResponse) packet.getPayload();
-      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
-        stage.close();
+      if (user.getCurrentAuction() == null || user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
+        Platform.runLater(() -> {
+          Stage stage = (Stage) quit.getScene().getWindow();
+          stage.close();
+        });
       }
     });
 

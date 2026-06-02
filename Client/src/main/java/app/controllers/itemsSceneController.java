@@ -38,7 +38,6 @@ public class itemsSceneController {
     networkClient.addUIListener(Message.WINNER_RESPOND, packet -> {
       WinnerPayload winner = (WinnerPayload) packet.getPayload();
       if (user.getUserName().equals(winner.getUsername())) {
-          user.addWonItem(winner.getItem());
           itemsView.refresh();
       }
     });

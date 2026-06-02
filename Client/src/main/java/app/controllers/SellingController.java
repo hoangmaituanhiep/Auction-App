@@ -106,9 +106,11 @@ public class SellingController {
 
     networkClient.addUIListener(Message.CANCEL_AUCTION_RESPONSE, packet -> {
       CancelAuctionResponse respond = (CancelAuctionResponse) packet.getPayload();
-      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
-        Stage stage = (Stage) sellItem.getScene().getWindow();
-        stage.close();
+      if (user.getCurrentAuction() == null || user.getCurrentAuction().getAuctionId() == respond.getAuctionId()) {
+        Platform.runLater(() -> {
+          Stage stage = (Stage) sellItem.getScene().getWindow();
+          stage.close();
+        });
       }
     });
   }

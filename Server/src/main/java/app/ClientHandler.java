@@ -1,7 +1,6 @@
 package app;
 
 import java.io.*;
-import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +12,7 @@ import app.dao.BidDAO;
 import app.dao.ItemDAO;
 import app.dao.UserDAO;
 import app.functions.Auction;
+import app.functions.BidTransaction;
 import app.functions.Item;
 import app.functions.Seller;
 import app.functions.User;
@@ -29,6 +29,8 @@ import app.payload.ConnectionRespondPayload;
 import app.payload.DeleteItemRequest;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
+import app.payload.FetchItemHistoryRequestPayload;
+import app.payload.FetchItemHistoryResponsePayload;
 import app.payload.FetchDataResponsePayload;
 import app.payload.FetchOwnItemsResponse;
 import app.payload.KickUser;
@@ -318,7 +320,6 @@ public class ClientHandler implements Runnable {
             CancelAuctionRequest request = (CancelAuctionRequest) packetMessage.getPayload();
             int id = request.getAuctionId();
             if (server.getLiveAuction().containsKey(id)) {
-              server.removeLiveAuction(id);
               boolean cancelSuccess = auctionService.updateStatus(id, "CANCELED");
 
               CancelAuctionResponse cancelResponse;
@@ -331,6 +332,7 @@ public class ClientHandler implements Runnable {
               PacketMessage cancelMessage = new PacketMessage(Message.CANCEL_AUCTION_RESPONSE, cancelResponse);
 
               server.broadcast(cancelMessage);
+              server.removeLiveAuction(id);
             }
             break;
 
@@ -375,6 +377,15 @@ public class ClientHandler implements Runnable {
             sendPacket(itemsResponsePacket);
             
             break;
+
+          case FETCH_ITEM_HISTORY_REQUEST:
+            FetchItemHistoryRequestPayload historyReq = (FetchItemHistoryRequestPayload) packetMessage.getPayload();
+            int targetItemId = historyReq.getItemId();
+            List<BidTransaction> history = bidService.getHistory(targetItemId);
+            FetchItemHistoryResponsePayload historyResp = new FetchItemHistoryResponsePayload(history);
+            PacketMessage historyPacket = new PacketMessage(Message.FETCH_ITEM_HISTORY_RESPONSE, historyResp);
+            sendPacket(historyPacket);
+            break;
           
           case FETCH_OWN_ITEMS_REQUEST:
             String username = client.getUser().getUserName();
@@ -390,10 +401,10 @@ public class ClientHandler implements Runnable {
             Client kickedClient = server.findClientByUsername(kickRequest.getUsername());
 
             if (kickedClient != null) {
-              server.removeClient(kickedClient);
               KickUser kickResponse = new KickUser(kickRequest.getUsername());
               PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
               server.broadcast(kickMessage);
+              server.removeClient(kickedClient);
             }
             break;
 
