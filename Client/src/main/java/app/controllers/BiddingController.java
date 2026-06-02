@@ -176,8 +176,11 @@ public class BiddingController {
     });
 
     networkClient.addUIListener(Message.DELETE_ITEM_BROADCAST, packet -> {
-      Stage stage = (Stage) placeBid.getScene().getWindow();
-      stage.close();
+      DeleteItemRequest request = (DeleteItemRequest) packet.getPayload();
+      if (itemId == request.getItemID()) {
+        Stage stage = (Stage) placeBid.getScene().getWindow();
+        stage.close();
+      }
     });
 
     if (user instanceof Seller) {
