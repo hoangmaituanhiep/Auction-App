@@ -19,6 +19,7 @@ import app.payload.BidItemRequestPayload;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.ChangeItemInfoRequest;
+import app.payload.DeleteItemRequest;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.KickUser;
@@ -149,6 +150,20 @@ public class AuctionManagerController {
             item.setName(request.getItemName());
             item.writeDetail(request.getItemDetail());
             logger.info("Item {} was changed info.", item.getId());
+            itemListView.refresh();
+            break;
+          }
+        }
+      }
+    });
+
+    networkClient.addUIListener(Message.DELETE_ITEM_BROADCAST, packet -> {
+      DeleteItemRequest request = (DeleteItemRequest) packet.getPayload();
+      if (user.getCurrentAuction().getAuctionId() == request.getAucID()) {
+        for (Item item: itemListView.getItems()) {
+          if (item.getId() == request.getItemID()) {
+            logger.info("Delete item {}", request.getItemID());
+            itemListView.getItems().remove(item);
             itemListView.refresh();
             break;
           }

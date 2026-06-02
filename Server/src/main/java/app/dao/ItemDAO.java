@@ -204,7 +204,20 @@ public class ItemDAO{
       logger.error("Error while update item: {}", e.getMessage());
       return false;
     }
+  }
 
+  public boolean deleteItem(int itemID) {
+    String query = "DELETE FROM item WHERE id = ?";
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
+    PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+      preparedStatement.setInt(1, itemID);
+
+      preparedStatement.executeUpdate();
+      return true;
+    } catch(SQLException e) {
+      logger.error("ERREO: {}", e.getMessage());
+      return false;
+    }
   }
 
   public int getLastestItemId() {

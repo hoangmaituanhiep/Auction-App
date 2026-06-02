@@ -19,6 +19,7 @@ import app.payload.BidItemRequestPayload;
 import app.payload.BidItemRespondPayload;
 import app.payload.CancelAuctionResponse;
 import app.payload.ChangeItemInfoRequest;
+import app.payload.DeleteItemRequest;
 import app.payload.KickUser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -174,6 +175,14 @@ public class BiddingController {
       }
     });
 
+    networkClient.addUIListener(Message.DELETE_ITEM_BROADCAST, packet -> {
+      DeleteItemRequest request = (DeleteItemRequest) packet.getPayload();
+      if (itemId == request.getItemID()) {
+        Stage stage = (Stage) placeBid.getScene().getWindow();
+        stage.close();
+      }
+    });
+
     if (user instanceof Seller) {
       submitBidButton.setDisable(true);
       placeBid.setDisable(true);
@@ -242,12 +251,23 @@ public class BiddingController {
 
       try {
         networkClient.sendPacket(packet);
+        editItemButton.setText("EDIT");
+        isApply = false;
       } catch (IOException e) {
         logger.error("Error to send ChangeInfo packet: {}", e.getMessage());
       }
-
     }
+  }
 
+  @FXML
+  public void delete() {
+    DeleteItemRequest request = new DeleteItemRequest(user.getCurrentAuction().getAuctionId(), itemId);
+    PacketMessage packetMessage = new PacketMessage(Message.DELETE_ITEM_REQUEST, request);
 
+    try {
+      networkClient.sendPacket(packetMessage);
+    } catch (IOException e) {
+      logger.error("ERROE: {}", e.getMessage());
+    }
   }
 }

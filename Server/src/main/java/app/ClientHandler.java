@@ -26,6 +26,7 @@ import app.payload.CancelAuctionResponse;
 import app.payload.ChangeItemInfoRequest;
 import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
+import app.payload.DeleteItemRequest;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.FetchDataResponsePayload;
@@ -404,6 +405,18 @@ public class ClientHandler implements Runnable {
               server.broadcast(pMessage);
             }
             break;
+          
+          case DELETE_ITEM_REQUEST:
+            DeleteItemRequest deleteRequest = (DeleteItemRequest) packetMessage.getPayload();
+            int itemID = deleteRequest.getItemID();
+            boolean isDeletedSuccess = itemsService.deleteItem(itemID);
+
+            if (isDeletedSuccess) {
+              PacketMessage packetMessage2 = new PacketMessage(Message.DELETE_ITEM_BROADCAST, deleteRequest);
+              server.broadcast(packetMessage2);
+            }
+            break;
+            
           default:
             break;
         }
