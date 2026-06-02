@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.slf4j.Logger;
 
 import app.NetworkClient;
-import app.controllers.MainWebController;
 import app.functions.Item;
 import app.functions.User;
 import app.packets.Message;

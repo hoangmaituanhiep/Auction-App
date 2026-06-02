@@ -11,7 +11,6 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import app.NetworkClient;
-import app.functions.Bidder;
 import app.functions.Item;
 import app.functions.User;
 import app.functions.Vehicle;

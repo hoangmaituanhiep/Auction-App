@@ -10,13 +10,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.ServerSocket;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
 
-import org.junit.jupiter.api.AfterEach;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -52,7 +52,7 @@ public class MediaServerIntegrationTest {
         MediaServer.start(port);
 
         byte[] content = "test-image-bytes".getBytes(StandardCharsets.UTF_8);
-        URL uploadUrl = new URL("http://localhost:" + port + "/upload");
+        URL uploadUrl = new URI("http://localhost:" + port + "/upload").toURL();
         HttpURLConnection connection = (HttpURLConnection) uploadUrl.openConnection();
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");
@@ -72,7 +72,7 @@ public class MediaServerIntegrationTest {
         assertNotNull(responsePath);
         assertTrue(responsePath.startsWith("/images/"));
 
-        URL imageUrl = new URL("http://localhost:" + port + responsePath);
+        URL imageUrl = new URI("http://localhost:" + port + responsePath).toURL();
         HttpURLConnection imageConnection = (HttpURLConnection) imageUrl.openConnection();
         assertEquals(200, imageConnection.getResponseCode());
 

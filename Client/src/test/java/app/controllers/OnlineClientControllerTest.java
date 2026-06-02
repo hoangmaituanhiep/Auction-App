@@ -69,6 +69,7 @@ class OnlineClientControllerTest {
         });
         latch.await();
 
+        @SuppressWarnings("unchecked")
         ListView<String> listView = (ListView<String>) getField(controller, "clientsListView");
         ObservableList<String> items = listView.getItems();
         assertEquals(2, items.size());

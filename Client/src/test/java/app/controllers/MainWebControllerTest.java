@@ -9,7 +9,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import app.functions.Admin;
 import app.functions.User;
 import javafx.application.Platform;
 import javafx.scene.Scene;

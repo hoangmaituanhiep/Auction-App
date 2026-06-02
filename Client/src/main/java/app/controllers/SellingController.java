@@ -63,7 +63,6 @@ public class SellingController {
   @FXML
   private ImageView imageView;
 
-  private MainWebController mainWebController;
   private NetworkClient networkClient;
   private User user;
 
@@ -74,7 +73,6 @@ public class SellingController {
   @FXML
   public void initialize() {
     instance = this;
-    mainWebController = MainWebController.getInstance();
     networkClient = NetworkClient.getInstance();
     user = User.getInstance();
 

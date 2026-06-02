@@ -2,7 +2,6 @@ package app.payload;
 
 import java.io.Serializable;
 
-import app.functions.User;
 
 public class ConnectionRespondPayload implements Serializable{
   private boolean isSuccess;

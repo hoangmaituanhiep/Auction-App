@@ -11,7 +11,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import app.NetworkClient;
-import app.functions.Auction;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;

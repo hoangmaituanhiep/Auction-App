@@ -5,7 +5,6 @@ import app.functions.Item;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AntiSnippingRespondPayload;
-import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
 import app.payload.WinnerPayload;
 import app.Client;
@@ -14,7 +13,6 @@ import app.dao.AuctionDAO;
 import app.dao.BidDAO;
 import app.dao.ItemDAO;
 
-import java.util.Timer;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;

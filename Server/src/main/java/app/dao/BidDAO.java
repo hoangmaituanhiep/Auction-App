@@ -1,6 +1,5 @@
 package app.dao;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -44,9 +43,7 @@ public class BidDAO {
           preStatement.setString(4, timestamp);
           preStatement.setInt(1, itemId);
           preStatement.setDouble(3, price);
-
-          int row = preStatement.executeUpdate();
-
+          
           return true;
     }
     catch (SQLException e) {

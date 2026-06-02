@@ -11,6 +11,7 @@ import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -53,7 +54,7 @@ public class ServerMainIntegrationTest {
             assertTrue(socket.isConnected());
         }
 
-        URL uploadUrl = new URL("http://localhost:" + (port + 1) + "/upload");
+        URL uploadUrl = new URI("http://localhost:" + (port + 1) + "/upload").toURL();
         HttpURLConnection connection = (HttpURLConnection) uploadUrl.openConnection();
         connection.setDoOutput(true);
         connection.setRequestMethod("POST");
@@ -68,6 +69,7 @@ public class ServerMainIntegrationTest {
         long deadline = System.currentTimeMillis() + timeoutMillis;
         while (System.currentTimeMillis() < deadline) {
             try (Socket ignored = new Socket("localhost", port)) {
+              ignored.getClass();
                 return true;
             } catch (IOException ignored) {
                 try {

@@ -3,7 +3,6 @@ package app.payload;
 import java.io.Serializable;
 import java.util.List;
 
-import app.functions.Auction;
 
 public class AuctionDTO implements Serializable {
     private static final long serialVersionUID = 1L;

@@ -1,8 +1,5 @@
 package app.controllers;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import app.MainApp;
 import app.NetworkClient;
 import app.functions.Item;
@@ -19,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
 public class itemsSceneController {
-  private static Logger logger = LoggerFactory.getLogger(MainWebController.class);
 
   private MainWebController mainWebController;
   private NetworkClient networkClient;

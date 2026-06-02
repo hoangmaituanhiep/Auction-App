@@ -16,7 +16,6 @@ import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.SellItemRequestPayload;
 import javafx.application.Platform;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 
@@ -53,6 +52,7 @@ class SellingControllerTest {
 
     @Test
     void addSellingItemShouldSendSellItemRequestForVehicle() throws Exception {
+        @SuppressWarnings("unchecked")
         ComboBox<String> categoryComboBox = (ComboBox<String>) getField(controller, "categoryComboBox");
         TextField itemName = (TextField) getField(controller, "getItemName");
         TextField details = (TextField) getField(controller, "getDetails");
