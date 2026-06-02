@@ -71,7 +71,6 @@ public class MainWebController {
   @FXML
   private Button myItems;
 
-
   private static MainWebController instance;
 
   public static MainWebController getInstance() {
@@ -98,10 +97,11 @@ public class MainWebController {
   }
 
   public void displayAuctionList(int auctionId, String name, String duration) {
-    String dueTime = LocalTime.now().plusMinutes(Integer.parseInt(duration)).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    String dueTime = LocalTime.now().plusMinutes(Integer.parseInt(duration))
+        .format(DateTimeFormatter.ofPattern("HH:mm:ss"));
     String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Due: %s", auctionId, name, dueTime);
     Label auctionLabel = new Label(auctionInfo);
-    auctionLabel.setId("auctionLabel-"+auctionId);
+    auctionLabel.setId("auctionLabel-" + auctionId);
     auctionLabel.setWrapText(true);
     auctionLabel.setStyle("-fx-text-fill: white; -fx-font-size: 12px; -fx-font-weight: bold;");
 
@@ -180,8 +180,7 @@ public class MainWebController {
 
     try {
       networkClient.sendPacket(new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, null));
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
     }
   }
@@ -240,13 +239,14 @@ public class MainWebController {
       String dueTime = LocalTime.now().plusSeconds(60).format(DateTimeFormatter.ofPattern("HH:mm:ss"));
       AntiSnippingRespondPayload snippingPayload = (AntiSnippingRespondPayload) packet.getPayload();
       int id = snippingPayload.getAuctionId();
-      String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Due: %s", id, snippingPayload.getName(), dueTime);
+      String auctionInfo = String.format("-Auction ID: %d\n-Name: %s\n-Due: %s", id, snippingPayload.getName(),
+          dueTime);
       Scene currentScene = auctionScrollPane.getScene();
-      Node node = currentScene.lookup("#auction-"+id);
+      Node node = currentScene.lookup("#auction-" + id);
 
       if (node instanceof VBox) {
         VBox auctionCard = (VBox) node;
-        Label label = (Label) auctionCard.lookup("#auctionLabel-"+id);
+        Label label = (Label) auctionCard.lookup("#auctionLabel-" + id);
         label.setText(auctionInfo);
       }
     });
@@ -292,7 +292,8 @@ public class MainWebController {
     networkClient.addUIListener(Message.WINNER_RESPOND, packet -> {
       WinnerPayload winner = (WinnerPayload) packet.getPayload();
       if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == winner.getAuctionId()) {
-        showNotification("WINNER", String.format("The Winner in Auction %d get Item %s", winner.getAuctionId(), winner.getItem().getName()));
+        showNotification("WINNER",
+            String.format("The Winner in Auction %d get Item %s", winner.getAuctionId(), winner.getItem().getName()));
       }
     });
 
@@ -312,7 +313,7 @@ public class MainWebController {
       enter.setVisible(false);
       Ip.setManaged(false);
       enter.setManaged(false);
-      
+
       networkClient.sendPacket(new PacketMessage(Message.FETCH_DATA_REQUEST, null));
     } catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
@@ -351,7 +352,7 @@ public class MainWebController {
       return;
     }
     try {
-      
+
       FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/createAuction.fxml"));
       Scene auctionScene = new Scene(auctionLoader.load());
       Stage auctionStage = new Stage();
@@ -366,7 +367,16 @@ public class MainWebController {
   @FXML
   public void joinAuction() {
     if (user.getCurrentAuction() != null) {
-      openAuctionManager();
+      try {
+        FXMLLoader managerLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
+        Scene managerScene = new Scene(managerLoader.load(), 1280, 720);
+        Stage managerStage = new Stage();
+        managerStage.setScene(managerScene);
+        managerStage.show();
+      } catch (IOException e) {
+        logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Failed to open auction manager:\n" + e.getMessage());
+      }
       return;
     }
     TextInputDialog getAuctionId = new TextInputDialog();
@@ -389,30 +399,14 @@ public class MainWebController {
         networkClient.sendPacket(message);
         getAuctionId.close();
         logger.info("INFO: Sent join request");
-      }
-      catch (NumberFormatException e) {
+      } catch (NumberFormatException e) {
         logger.error("ERROR: {}", e.getMessage());
         showAlert("Error", "Invalid Auction ID format:\n" + e.getMessage());
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
         showAlert("Error", "Failed to join auction:\n" + e.getMessage());
       }
     });
-  }
-
-  @FXML
-  public void openAuctionManager() {
-    try {
-      FXMLLoader managerLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
-      Scene managerScene = new Scene(managerLoader.load(), 1280, 720);
-      Stage managerStage = new Stage();
-      managerStage.setScene(managerScene);
-      managerStage.show();
-    } catch (IOException e) {
-      logger.error("ERROR: {}", e.getMessage());
-      showAlert("Error", "Failed to open auction manager:\n" + e.getMessage());
-    }
   }
 
   @FXML
@@ -423,13 +417,13 @@ public class MainWebController {
       Stage itemsStage = new Stage();
       itemsStage.setScene(itemsScene);
       itemsStage.show();
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
     }
   }
+
   public String getHost() {
     return host;
   }
-//
+  //
 }

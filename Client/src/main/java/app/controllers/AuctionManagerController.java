@@ -1,7 +1,6 @@
 package app.controllers;
 
 import java.io.IOException;
- 
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -156,7 +155,7 @@ public class AuctionManagerController {
     networkClient.addUIListener(Message.DELETE_ITEM_BROADCAST, packet -> {
       DeleteItemRequest request = (DeleteItemRequest) packet.getPayload();
       if (user.getCurrentAuction().getAuctionId() == request.getAucID()) {
-        for (Item item: itemListView.getItems()) {
+        for (Item item : itemListView.getItems()) {
           if (item.getId() == request.getItemID()) {
             logger.info("Delete item {}", request.getItemID());
             itemListView.getItems().remove(item);
@@ -186,7 +185,6 @@ public class AuctionManagerController {
       }
     });
 
-    itemListView.setFixedCellSize(100);
     itemListView.setItems(user.getItemsList());
     if (user.getCurrentAuction() != null) {
       int auctionId = user.getCurrentAuction().getAuctionId();
@@ -194,8 +192,7 @@ public class AuctionManagerController {
       PacketMessage fetchItemsRequest = new PacketMessage(Message.FETCH_AUCTION_ITEMS_REQUEST, itemsRequest);
       try {
         networkClient.sendPacket(fetchItemsRequest);
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
         showAlert("Error", "Failed to fetch items:\n" + e.getMessage());
       }
@@ -223,12 +220,13 @@ public class AuctionManagerController {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.show();
-          } catch(IOException exception) {
+          } catch (IOException exception) {
             logger.error("Error while open Bidding screen: {}", exception.getMessage());
             showAlert("Error", "Error while open Bidding screen:\n" + exception.getMessage());
           }
         });
       }
+
       @Override
       protected void updateItem(Item item, boolean empty) {
         super.updateItem(item, empty);
@@ -237,7 +235,7 @@ public class AuctionManagerController {
           setGraphic(null);
           return;
         }
-        
+
         Image img = item.getImage();
         if (img == null && item.getImagePath() != null) {
           String path = item.getImagePath();
@@ -263,8 +261,7 @@ public class AuctionManagerController {
       Stage itemStage = new Stage();
       itemStage.setScene(itemScene);
       itemStage.show();
-    }
-    catch (IOException e) {
+    } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
       showAlert("Error", "Failed to add new item:\n" + e.getMessage());
     }
@@ -278,8 +275,7 @@ public class AuctionManagerController {
 
       try {
         networkClient.sendPacket(cancelMessage);
-      }
-      catch (IOException e) {
+      } catch (IOException e) {
         logger.error("ERROR: {}", e.getMessage());
         showAlert("Error", "Failed to cancel auction:\n" + e.getMessage());
       }
@@ -288,8 +284,7 @@ public class AuctionManagerController {
     PacketMessage quitMessage = new PacketMessage(Message.QUIT_ACTION, quitRequest);
     try {
       networkClient.sendPacket(quitMessage);
-    }
-    catch(IOException e) {
+    } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
       showAlert("Error", "Failed to quit auction:\n" + e.getMessage());
     }
