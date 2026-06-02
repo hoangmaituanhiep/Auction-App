@@ -277,6 +277,7 @@ public class ClientHandler implements Runnable {
               BidItemRequestPayload request = (BidItemRequestPayload) packetMessage.getPayload();
               int Id = request.getId();
               String bidderName = request.getUserName();
+              double newPrice = request.getPrice();
 
               LiveAuctionSession session = null;
               for (LiveAuctionSession s : server.getLiveAuction().values()) {
@@ -297,7 +298,7 @@ public class ClientHandler implements Runnable {
               BidItemRespondPayload respond;
 
               if (bidSuccess) {
-                respond = new BidItemRespondPayload(Id, bidSuccess);
+                respond = new BidItemRespondPayload(Id, newPrice, bidSuccess);
                 BidItemRequestPayload broadcastRespond = new BidItemRequestPayload(Id, bidderName,  request.getPrice());
                 PacketMessage globalMess = new PacketMessage(Message.NEW_PRICE_BROADCAST, broadcastRespond);
 
