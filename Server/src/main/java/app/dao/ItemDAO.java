@@ -189,6 +189,24 @@ public class ItemDAO{
     }
   }
 
+  public boolean updateItemInfo(int id, String name, String detail) {
+    String query = "UPDATE item SET name = ? details = ? WHERE id = ?";
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
+    PreparedStatement statement = connection.prepareStatement(query);) {
+      statement.setString(1, name);
+      statement.setString(2, detail);
+      statement.setInt(3, id);
+
+      int isUpdated = statement.executeUpdate();
+
+      return isUpdated > 0;
+    } catch (SQLException e) {
+      logger.error("Error while update item: {}", e.getMessage());
+      return false;
+    }
+
+  }
+
   public int getLastestItemId() {
     return lastestItemId;
   }

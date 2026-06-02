@@ -23,6 +23,7 @@ import app.payload.BidItemRequestPayload;
 import app.payload.BidItemRespondPayload;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
+import app.payload.ChangeItemInfoRequest;
 import app.payload.ConnectionRequestPayload;
 import app.payload.ConnectionRespondPayload;
 import app.payload.FetchAuctionItemsRequestPayload;
@@ -391,6 +392,18 @@ public class ClientHandler implements Runnable {
               PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
               server.broadcast(kickMessage);
 
+            KickUser kickResponse = new KickUser(kickRequest.getUsername());
+            PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
+            server.broadcast(kickMessage);
+            break;
+
+          case CHANGE_INFO_REQUEST:
+            ChangeItemInfoRequest changeInfoRequest = (ChangeItemInfoRequest) packetMessage.getPayload();
+            boolean isSuccessed = itemsService.updateItemInfo(changeInfoRequest.getItemId(), changeInfoRequest.getItemName(), changeInfoRequest.getItemDetail());
+
+            if (isSuccessed) {
+              PacketMessage pMessage = new PacketMessage(Message.CHANGE_INFO_BROADCAST, changeInfoRequest);
+              server.broadcast(pMessage);
               server.removeClient(kickedClient);
             }
             break;

@@ -29,6 +29,10 @@ public abstract class Item extends Entity {
     return id;
   }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
   public void addId(int id) {
     this.id = id;
   }
