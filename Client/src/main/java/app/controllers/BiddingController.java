@@ -114,10 +114,9 @@ public class BiddingController {
       if (respone.isSuccess()) {
         try {
           if (currentItem != null) {
-            double bid = Double.parseDouble(placeBid.getText());
+            double bid = respone.getNewPrice();
             currentItem.addHistory(new BidTransaction(user.getUserName(), bid));
           }
-          autoThread.setBiddable(false);
 
         } catch (Exception e) {
           logger.error("Error while bidding: ", e);
@@ -146,7 +145,8 @@ public class BiddingController {
 
         priceSeries.getData().add(new XYChart.Data<>(timeStamp, newBid));
         if (!newPrice.getUserName().equals(user.getUserName())){
-          autoThread.setBiddable(false);
+          autoThread.setBiddable(true);
+          submitBidButton.setDisable(false);
         }
 
         if (updateCurrentPrice != null) {
@@ -198,6 +198,7 @@ public class BiddingController {
   @FXML
   public void bidAction() {
     logger.info("New price is bidded");
+    submitBidButton.setDisable(true);
 
     BidItemRequestPayload payload = new BidItemRequestPayload(this.getItemId(), user.getUserName(),
         Double.parseDouble(placeBid.getText()));
@@ -220,7 +221,7 @@ public class BiddingController {
       if (autoThread.setAmount(Double.parseDouble(autoBidTextField.getText()))) {
         thread = new Thread(autoThread);
         thread.start();
-        currentItem.setAutoBid(true);;
+        currentItem.setAutoBid(true);
         logger.info("Start auto bidding succesfully.");
 
       } else {
@@ -229,7 +230,7 @@ public class BiddingController {
       }
     } else {
       thread.interrupt();
-      currentItem.setAutoBid(false);;
+      currentItem.setAutoBid(false);
       logger.info("Close auto bid.");
     }
   }

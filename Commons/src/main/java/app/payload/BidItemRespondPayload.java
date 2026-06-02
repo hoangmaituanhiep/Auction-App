@@ -4,11 +4,13 @@ import java.io.Serializable;
 
 public class BidItemRespondPayload implements Serializable{
   private boolean isSuccess;
+  private double newPrice;
   private String error;
   private int Id;
 
-  public BidItemRespondPayload(int Id, boolean isSuccess) {
+  public BidItemRespondPayload(int Id, double newPrice, boolean isSuccess) {
     this.Id = Id;
+    this.newPrice = newPrice;
     this.isSuccess = isSuccess;
   }
 
@@ -26,6 +28,12 @@ public class BidItemRespondPayload implements Serializable{
   }
   public String getError() {
     return error;
+  }
+  public void setNewPrice(double price) {
+    this.newPrice = price;
+  }
+  public double getNewPrice() {
+    return newPrice;
   }
   public void setError(String error) {
     this.error = error;
