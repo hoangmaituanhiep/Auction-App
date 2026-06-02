@@ -18,12 +18,12 @@
         <children>
            <VBox prefHeight="361.0" prefWidth="298.0">
                <children>
-                  <TextField disable="true" prefHeight="70.0" prefWidth="538.0" promptText="Cannot save null name" scaleX="0.6" translateY="100.0" visible="false">
+                  <TextField fx:id="editedNameField" disable="true" prefHeight="70.0" prefWidth="538.0" promptText="Cannot save null name" scaleX="0.6" translateY="100.0" visible="false">
                      <font>
                         <Font size="29.0" />
                      </font>
                   </TextField>
-                  <TextField disable="true" layoutY="15.0" prefHeight="66.0" prefWidth="595.0" promptText="Details" scaleX="0.6" text="Details" translateY="150.0" visible="false">
+                  <TextField fx:id="editedDetailField" disable="true" layoutY="15.0" prefHeight="66.0" prefWidth="595.0" promptText="Details" scaleX="0.6" text="Details" translateY="150.0" visible="false">
                      <font>
                         <Font size="32.0" />
                      </font>
@@ -31,12 +31,12 @@
                </children></VBox>
            <HBox prefHeight="100.0" prefWidth="200.0">
               <children>
-                 <Button fx:id="editItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="EDIT">
+                 <Button fx:id="editItemButton" mnemonicParsing="false" onAction="#edit" prefHeight="42.0" prefWidth="140.0" text="EDIT" disable="true" visible="false">
                     <HBox.margin>
                        <Insets left="137.75" />
                     </HBox.margin>
                  </Button>
-                 <Button fx:id="deleteItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="DELETE">
+                 <Button fx:id="deleteItemButton" mnemonicParsing="false" onAction="#delete" prefHeight="42.0" prefWidth="140.0" text="DELETE" disable="true" visible="false">
                     <HBox.margin>
                        <Insets left="40.0" />
                     </HBox.margin>

@@ -48,6 +48,12 @@ public class BiddingController {
   private TextField autoBidTextField;
   @FXML
   private Button autoBidButton;
+  @FXML
+  private Button editItemButton;
+  @FXML
+  private TextField editedNameField;
+  @FXML
+  private TextField editedDetailField;
 
   private NetworkClient networkClient;
   private User user;
@@ -174,6 +180,8 @@ public class BiddingController {
       autoBidButton.setDisable(true);
       autoBidTextField.setDisable(true);
       autoBidTextField.setPromptText("You are the one sell this bro.");
+      editItemButton.setVisible(true);
+      editItemButton.setDisable(false);
     }
   }
 
@@ -214,5 +222,23 @@ public class BiddingController {
       currentItem.setAutoBid(false);;
       logger.info("Close auto bid.");
     }
+  }
+
+  @FXML
+  public void edit() {
+    boolean isApply = false;
+
+    editItemButton.setText("APPLY");
+    if (!isApply) {
+      editedDetailField.setDisable(false);
+      editedDetailField.setVisible(true);
+      editedNameField.setDisable(false);
+      editedNameField.setVisible(true);
+      isApply = true;
+    } else {
+
+    }
+
+
   }
 }
