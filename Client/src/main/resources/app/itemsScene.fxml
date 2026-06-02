@@ -6,13 +6,13 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.itemsSceneController">
    <children>
       <Label prefHeight="64.0" prefWidth="126.0" text="  My Item" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="21.0" />
          </font>
       </Label>
-      <ListView prefHeight="343.0" prefWidth="600.0" />
+      <ListView fx:id="itemsView" prefHeight="343.0" prefWidth="600.0" />
    </children>
 </VBox>

@@ -28,6 +28,7 @@ import app.payload.ConnectionRespondPayload;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.FetchDataResponsePayload;
+import app.payload.FetchOwnItemsResponse;
 import app.payload.KickUser;
 import app.payload.NewAuctionRequest;
 import app.payload.NewAuctionRespond;
@@ -370,6 +371,15 @@ public class ClientHandler implements Runnable {
             PacketMessage itemsResponsePacket = new PacketMessage(Message.FETCH_AUCTION_ITEMS_RESPONSE, itemsResponse);
             sendPacket(itemsResponsePacket);
             
+            break;
+          
+          case FETCH_OWN_ITEMS_REQUEST:
+            String username = client.getUser().getUserName();
+            List<Item> userItems = itemsService.getItemByUserName(username);
+
+            FetchOwnItemsResponse ownItemsResponse = new FetchOwnItemsResponse(userItems);
+            PacketMessage itemsMessage = new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, ownItemsResponse);
+            sendPacket(itemsMessage);
             break;
 
           case KICK_USER_REQUEST:

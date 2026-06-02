@@ -1,6 +1,7 @@
 package app.services;
 
 import app.functions.Auction;
+import app.functions.Item;
 import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.AntiSnippingRespondPayload;
@@ -32,6 +33,7 @@ public class LiveAuctionSession {
   private long remainingTimeS;
   private AuctionService auctionService;
   private BidService bidService;
+  private ItemsService itemsService;
 
   public LiveAuctionSession(Auction auction) {
     server = Server.getInstance();
@@ -40,8 +42,10 @@ public class LiveAuctionSession {
 
     AuctionDAO auctionDAO = new AuctionDAO();
     BidDAO bidDAO = new BidDAO();
+    ItemDAO itemDAO = new ItemDAO();
     auctionService = new AuctionService(auctionDAO);
     bidService = new BidService(bidDAO);
+    itemsService = new ItemsService(itemDAO);
   }
 
   private long parseDuration(String duration) {
@@ -65,11 +69,16 @@ public class LiveAuctionSession {
 
         for (int itemId : auction.getItemId()) {
           String winner = bidService.getWinner(itemId);
+          Item winItem = itemsService.getItemById(itemId);
           if (winner != null) {
-            WinnerPayload winnerPayload = new WinnerPayload(winner);
-            PacketMessage message = new PacketMessage(Message.WINNER_RESPOND, winnerPayload);
+            boolean hasWinner = itemsService.addWinnerToItem(itemId, winner);
 
-            server.broadcast(message);
+            if (hasWinner) {
+              WinnerPayload winnerPayload = new WinnerPayload(winner, auction.getAuctionId(), winItem);
+              PacketMessage message = new PacketMessage(Message.WINNER_RESPOND, winnerPayload);
+
+              server.broadcast(message);
+            }
           }
         }
         CancelAuctionResponse response = new CancelAuctionResponse(true, auction.getAuctionId());
@@ -96,7 +105,6 @@ public class LiveAuctionSession {
   public synchronized boolean placeBid(Client client, int itemId, double bid, String bidderName) {
     if (remainingTimeS <= 0)
       return false;
-    ItemsService itemsService = new ItemsService(new ItemDAO());
     boolean bidSuccess = itemsService.setNewPrice(itemId, bid);
 
     if (bidSuccess) {

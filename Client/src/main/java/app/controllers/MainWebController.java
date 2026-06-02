@@ -11,7 +11,6 @@ import app.MainApp;
 import app.NetworkClient;
 import app.functions.Admin;
 import app.functions.Auction;
-import app.functions.Item;
 import app.functions.User;
 import app.packets.Message;
 import app.packets.PacketMessage;
@@ -19,11 +18,12 @@ import app.payload.AntiSnippingRespondPayload;
 import app.payload.AuctionDTO;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
-import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchDataResponsePayload;
+import app.payload.FetchOwnItemsResponse;
 import app.payload.KickUser;
 import app.payload.NewAuctionRespond;
 import app.payload.RegisterClientPayload;
+import app.payload.WinnerPayload;
 
 import org.slf4j.Logger;
 
@@ -34,6 +34,7 @@ import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.scene.layout.VBox;
@@ -49,8 +50,6 @@ public class MainWebController {
 
   @FXML
   private BorderPane mainPane;
-  @FXML
-  private TextField searchItems;
   @FXML
   private Button logIn;
   @FXML
@@ -69,6 +68,9 @@ public class MainWebController {
   private TextField Ip;
   @FXML
   private Button enter;
+  @FXML
+  private Button myItems;
+
 
   private static MainWebController instance;
 
@@ -78,10 +80,19 @@ public class MainWebController {
 
   private void showAlert(String title, String message) {
     Platform.runLater(() -> {
-      Alert alert = new Alert(Alert.AlertType.ERROR);
+      Alert alert = new Alert(AlertType.ERROR);
       alert.setTitle(title);
       alert.setHeaderText(null);
       alert.setContentText(message);
+      alert.showAndWait();
+    });
+  }
+
+  private void showNotification(String title, String header) {
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setTitle(title);
+      alert.setHeaderText(header);
       alert.showAndWait();
     });
   }
@@ -160,7 +171,7 @@ public class MainWebController {
     logIn.setManaged(false);
     join.setDisable(false);
     New.setDisable(false);
-    searchItems.setDisable(false);
+    myItems.setDisable(false);
     auctionScrollPane.setDisable(false);
     auctionScrollPane.setVisible(true);
     auctionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
@@ -178,7 +189,7 @@ public class MainWebController {
     instance = this;
 
     logIn.setDisable(true);
-    searchItems.setDisable(true);
+    myItems.setDisable(true);
     join.setDisable(true);
     New.setDisable(true);
 
@@ -276,6 +287,18 @@ public class MainWebController {
         });
       }
     });
+
+    networkClient.addUIListener(Message.WINNER_RESPOND, packet -> {
+      WinnerPayload winner = (WinnerPayload) packet.getPayload();
+      if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == winner.getAuctionId()) {
+        showNotification("WINNER", String.format("The Winner in Auction %d get Item %s", winner.getAuctionId(), winner.getItem().getName()));
+      }
+    });
+
+    networkClient.addUIListener(Message.FETCH_AUCTION_ITEMS_RESPONSE, packet -> {
+      FetchOwnItemsResponse itemsRespond = (FetchOwnItemsResponse) packet.getPayload();
+      user.setWonList(itemsRespond.getItems());
+    });
   }
 
   @FXML
@@ -289,7 +312,8 @@ public class MainWebController {
       Ip.setManaged(false);
       enter.setManaged(false);
       
-      networkClient.sendPacket(new PacketMessage(Message.FETCH_DATA_REQUEST, null)); 
+      networkClient.sendPacket(new PacketMessage(Message.FETCH_DATA_REQUEST, null));
+      networkClient.sendPacket(new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, null));
     } catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
       showAlert("Connection Error", "Cannot connect to server:\n" + e.getMessage());
@@ -402,48 +426,12 @@ public class MainWebController {
     }
   }
 
+  @FXML
+  public void openItemsScene() {
+
+  }
   public String getHost() {
     return host;
   }
-  // @FXML
-  // public void addAuctionItem(Item item) {
-  // VBox card = new VBox(10);
-  // card.setStyle("-fx-border-color: #ccc; -fx-padding: 10; -fx-background-color:
-  // #f9f9f9;");
-
-  // ImageView imageView = new ImageView(item.getImage());
-  // imageView.setFitWidth(150);
-  // imageView.setFitHeight(150);
-  // imageView.setPreserveRatio(true);
-
-  // Label nameLabel = new Label(item.getName());
-  // Label priceLabel = new Label("Giá khởi điểm: " + item.getStartingPrice());
-
-  // Button chooseImageBtn = new Button("Chọn ảnh");
-  // chooseImageBtn.setOnAction(e -> {
-  // FileChooser fileChooser = new FileChooser();
-  // fileChooser.setTitle("Chọn ảnh sản phẩm");
-  // fileChooser.getExtensionFilters().add(
-  // new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-  // File file = fileChooser.showOpenDialog(null);
-  // if (file != null) {
-  // Image image = new Image(file.toURI().toString());
-  // item.setImage(image);
-  // imageView.setImage(image);
-  // }
-  // });
-
-  // card.getChildren().addAll(imageView, nameLabel, priceLabel);
-  // auctionPane.getChildren().add(card);
-
-  // // Timeline kiểm tra hết hạn
-  // Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> {
-  // if (LocalDateTime.now().isAfter(item.getEndTime())) {
-  // auctionPane.getChildren().remove(card);
-  // }
-  // }));
-  // timeline.setCycleCount(Animation.INDEFINITE);
-  // timeline.play();
-  // }
 
 }

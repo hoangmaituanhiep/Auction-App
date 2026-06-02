@@ -23,10 +23,13 @@ import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.KickUser;
 import app.payload.QuitAuctionRequest;
 import app.payload.SellItemRequestPayload;
+import app.payload.WinnerPayload;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
@@ -55,10 +58,19 @@ public class AuctionManagerController {
 
   private void showAlert(String title, String message) {
     Platform.runLater(() -> {
-      javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
+      Alert alert = new Alert(AlertType.ERROR);
       alert.setTitle(title);
       alert.setHeaderText(null);
       alert.setContentText(message);
+      alert.showAndWait();
+    });
+  }
+
+  private void showNotification(String title, String header) {
+    Platform.runLater(() -> {
+      Alert alert = new Alert(AlertType.INFORMATION);
+      alert.setTitle(title);
+      alert.setHeaderText(header);
       alert.showAndWait();
     });
   }

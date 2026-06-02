@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,7 +29,8 @@ public class ItemDAO{
             + "details TEXT, "
             + "startingPrice REAL NOT NULL, "
             + "currentPrice REAL,"
-            + "imagePath TEXT) ";
+            + "imagePath TEXT,"
+            + "username TEXT) ";
     
     try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
         Statement statement = connection.createStatement()) {
@@ -145,6 +148,44 @@ public class ItemDAO{
     }
 
     return null;
+  }
+
+  public boolean addWinnerToItem(int id, String username) {
+    String query = "UPDATE item SET username = ? WHERE id = ?";
+
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
+        PreparedStatement preStatement = connection.prepareStatement(query)) {
+          preStatement.setString(1, username);
+          preStatement.setInt(2, id);
+
+          int updatedRows = preStatement.executeUpdate();
+
+          return updatedRows > 0;
+        }
+    catch (SQLException e) {
+      logger.error("ERROR: {}", e.getMessage());
+      return false;
+    }
+  }
+
+  public List<Item> getUserItems(String username) {
+    String query = "SELECT * FROM item WHERE username = ?";
+    try (Connection connection = DriverManager.getConnection(DatabaseConfig.getItemsUrl());
+        PreparedStatement preStatement = connection.prepareStatement(query)) {
+          List<Item> items = new ArrayList<>();
+          preStatement.setString(1, username);
+
+          try (ResultSet result = preStatement.executeQuery()) {
+            int id = result.getInt("id");
+
+            items.add(getItem(id));
+          }
+
+          return items;
+    }catch (Exception e) {
+      logger.error("ERROR: {}", e.getMessage());
+      return new ArrayList<>();
+    }
   }
 
   public int getLastestItemId() {

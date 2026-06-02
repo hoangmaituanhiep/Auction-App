@@ -1,6 +1,7 @@
 package app.functions;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -13,10 +14,13 @@ public abstract class User extends Entity {
   protected Auction auction;
   protected String email;
 
+  protected ObservableList<Item> wonItems;
+
   protected ObservableList<Item> itemsList;
   protected Map<Integer, Item> itemsMap;
 
   public User() {
+    wonItems = FXCollections.observableArrayList();
     itemsList = FXCollections.observableArrayList();
     itemsMap = new HashMap<>();
   }
@@ -114,5 +118,17 @@ public abstract class User extends Entity {
 
   public Auction getCurrentAuction() {
     return auction;
+  }
+
+  public void addWonItem(Item item) {
+    wonItems.add(item);
+  }
+
+  public ObservableList<Item> getWonLists() {
+    return wonItems;
+  }
+
+  public void setWonList(List<Item> items) {
+    wonItems = FXCollections.observableArrayList(items);
   }
 }

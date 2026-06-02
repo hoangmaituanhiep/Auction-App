@@ -1,5 +1,7 @@
 package app.services;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,6 +42,17 @@ public class ItemsService {
     }
 
     return itemDAO.setNewPrice(id, newPrice);
+  }
+
+  public boolean addWinnerToItem(int id, String username) {
+    if (id >= 0 && !username.isEmpty() && !username.equals(null)) {
+      return itemDAO.addWinnerToItem(id, username);
+    }
+    return false;
+  }
+
+  public List<Item> getItemByUserName(String username) {
+    return itemDAO.getUserItems(username);
   }
 
   public Item getItemById(int Id) {
