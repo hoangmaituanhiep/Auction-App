@@ -72,8 +72,8 @@ public abstract class Item extends Entity {
 
   public String getDetail() {
     return detail +
-        "\nStarting price: " + startingPrice +
-        "\nCurrent price: " + current_Price;
+        "\tStarting price: " + startingPrice +
+        "\tCurrent price: " + current_Price;
   }
 
   public Image getImage() {

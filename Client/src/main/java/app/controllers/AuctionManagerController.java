@@ -24,7 +24,6 @@ import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.KickUser;
 import app.payload.QuitAuctionRequest;
 import app.payload.SellItemRequestPayload;
-import app.payload.WinnerPayload;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -63,15 +62,6 @@ public class AuctionManagerController {
       alert.setTitle(title);
       alert.setHeaderText(null);
       alert.setContentText(message);
-      alert.showAndWait();
-    });
-  }
-
-  private void showNotification(String title, String header) {
-    Platform.runLater(() -> {
-      Alert alert = new Alert(AlertType.INFORMATION);
-      alert.setTitle(title);
-      alert.setHeaderText(header);
       alert.showAndWait();
     });
   }
@@ -185,6 +175,7 @@ public class AuctionManagerController {
       }
     });
 
+    itemListView.setFixedCellSize(100);
     itemListView.setItems(user.getItemsList());
     if (user.getCurrentAuction() != null) {
       int auctionId = user.getCurrentAuction().getAuctionId();
@@ -245,7 +236,7 @@ public class AuctionManagerController {
           img = new Image(url, true);
         }
         imageView.setImage(img);
-        text1.setText(item.getName() + "\n" + item.getDetail());
+        text1.setText(item.getName() + "\t" + item.getDetail());
 
         setGraphic(content);
         setText(null);
