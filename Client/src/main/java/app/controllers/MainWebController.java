@@ -232,6 +232,7 @@ public class MainWebController {
       }
       if (user.getCurrentAuction() != null && user.getCurrentAuction().getAuctionId() == payload.getAuctionId()) {
         user.existAuction();
+        join.setText("JOIN");
       }
     });
 
