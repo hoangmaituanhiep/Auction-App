@@ -55,6 +55,7 @@ class MainWebControllerTest {
         setField(controller, "New", new Button());
         setField(controller, "auctionScrollPane", new ScrollPane());
         setField(controller, "logIn", new Button());
+        setField(controller, "myItems", new Button());
 
         controller.toggleLogedin();
 
