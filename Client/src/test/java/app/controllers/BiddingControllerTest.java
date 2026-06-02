@@ -19,6 +19,7 @@ import app.packets.Message;
 import app.packets.PacketMessage;
 import app.payload.BidItemRequestPayload;
 import javafx.application.Platform;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 
 class BiddingControllerTest {
@@ -58,6 +59,7 @@ class BiddingControllerTest {
         setField(controller, "itemId", item.getId());
         TextField placeBid = (TextField) getField(controller, "placeBid");
         placeBid.setText("50.0");
+        setField(controller, "submitBidButton", new Button());
 
         User user = User.getInstance();
         user.setUserName("bidder1");

@@ -7,7 +7,7 @@ public class BidItemRespondPayloadTest {
 
     @Test
     void constructorsAndGetters() {
-        BidItemRespondPayload p1 = new BidItemRespondPayload(5, true);
+        BidItemRespondPayload p1 = new BidItemRespondPayload(5, 15, true);
         assertEquals(5, p1.getId());
         assertTrue(p1.isSuccess());
 

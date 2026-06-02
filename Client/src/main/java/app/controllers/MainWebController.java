@@ -178,10 +178,13 @@ public class MainWebController {
     auctionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     logInLabel.setText("Hi " + user.getUserName());
 
-    try {
-      networkClient.sendPacket(new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, null));
-    } catch (IOException e) {
-      logger.error("ERROR: {}", e.getMessage());
+    boolean isAmin = user instanceof Admin;
+    if (!isAmin) {
+      try {
+        networkClient.sendPacket(new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, null));
+      } catch (IOException e) {
+        logger.error("ERROR: {}", e.getMessage());
+      }
     }
   }
 
@@ -307,6 +310,7 @@ public class MainWebController {
   public void enter() {
     try {
       host = Ip.getText();
+      MainApp.setHost(host);
       networkClient.connect(host, MainApp.getPort());
       logIn.setDisable(false);
       Ip.setVisible(false);

@@ -13,8 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class MainApp extends Application {
-  private static final Logger logger = LoggerFactory.getLogger(MainApp.class);
-
   private static int port = 8080;// default port
   private static String host = "127.0.0.1"; // default host
 
@@ -24,6 +22,10 @@ public class MainApp extends Application {
   
   public static String getHost() {
     return host;
+  }
+
+  public static void setHost(String newhost) {
+    host = newhost;
   }
 
 
