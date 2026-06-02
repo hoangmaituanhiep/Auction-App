@@ -206,13 +206,6 @@ public class MainWebController {
     }
 
     networkClient = NetworkClient.getInstance();
-    try {
-      networkClient.connect(MainApp.getHost(), MainApp.getPort());
-      logger.info("INFO: Connected to server successfully at: {}:{}", MainApp.getHost(), MainApp.getPort());
-    } catch (IOException e) {
-      logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
-      showAlert("Connection Error", "Cannot connect to server:\n" + e.getMessage());
-    }
 
     networkClient.addUIListener(Message.WELCOME, packet -> {
       logger.info("INFO: Welcome bro.");
