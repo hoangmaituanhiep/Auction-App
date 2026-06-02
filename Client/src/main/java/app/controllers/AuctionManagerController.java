@@ -73,10 +73,6 @@ public class AuctionManagerController {
     mainWebController = MainWebController.getInstance();
     networkClient = NetworkClient.getInstance();
 
-    Platform.runLater(() -> {
-      stage = (Stage) quit.getScene().getWindow();
-    });
-
     if (user instanceof Bidder) {
       addNewItem.setDisable(true);
     }
