@@ -11,6 +11,7 @@ public abstract class Item extends Entity {
   private double current_Price;
   private double maxPrice;
   private List<BidTransaction> bidHistory;
+  private boolean isAutoBidding = false;
 
   private String detail = "Seller is too lazy to write anything here.";
   private transient Image image;
@@ -95,5 +96,12 @@ public abstract class Item extends Entity {
     return bidHistory;
   }
   
+  public void setAutoBid(boolean is) {
+    this.isAutoBidding = is;
+  }
+
+  public boolean isAutoBidding() {
+    return isAutoBidding;
+  }
   public abstract String toString();
 }

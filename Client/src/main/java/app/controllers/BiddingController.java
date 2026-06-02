@@ -197,12 +197,12 @@ public class BiddingController {
   @FXML
   public void autoBid() {
     logger.info("AutoBid button clicked.");
-    boolean autoBidding = false;
+    boolean autoBidding = currentItem.isAutoBidding();
     if (!autoBidding) {
       if (autoThread.setAmount(Double.parseDouble(autoBidTextField.getText()))) {
         thread = new Thread(autoThread);
         thread.start();
-        autoBidding = true;
+        currentItem.setAutoBid(true);;
         logger.info("Start auto bidding succesfully.");
 
       } else {
@@ -211,7 +211,7 @@ public class BiddingController {
       }
     } else {
       thread.interrupt();
-      autoBidding = false;
+      currentItem.setAutoBid(false);;
       logger.info("Close auto bid.");
     }
   }
