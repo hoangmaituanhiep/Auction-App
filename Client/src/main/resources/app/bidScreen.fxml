@@ -8,7 +8,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.TitledPane?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -17,11 +16,19 @@
   <children>
      <VBox prefHeight="720.0" prefWidth="596.0">
         <children>
-           <VBox prefHeight="361.0" prefWidth="596.0">
-              <children>
-                 <ImageView fx:id="itemImage" fitHeight="148.0" fitWidth="595.0" pickOnBounds="true" preserveRatio="true" />
-              </children>
-           </VBox>
+           <VBox prefHeight="361.0" prefWidth="298.0">
+               <children>
+                  <TextField disable="true" prefHeight="70.0" prefWidth="538.0" promptText="Cannot save null name" scaleX="0.6" translateY="100.0" visible="false">
+                     <font>
+                        <Font size="29.0" />
+                     </font>
+                  </TextField>
+                  <TextField disable="true" layoutY="15.0" prefHeight="66.0" prefWidth="595.0" promptText="Details" scaleX="0.6" text="Details" translateY="150.0" visible="false">
+                     <font>
+                        <Font size="32.0" />
+                     </font>
+                  </TextField>
+               </children></VBox>
            <HBox prefHeight="100.0" prefWidth="200.0">
               <children>
                  <Button fx:id="editItemButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="140.0" text="EDIT">
@@ -48,7 +55,7 @@
      </VBox>
      <VBox prefHeight="720.0" prefWidth="685.0">
         <children>
-           <TitledPane animated="false" prefHeight="376.0" prefWidth="686.0" text="Bid History">
+           <TitledPane animated="false" prefHeight="376.0" prefWidth="531.0" text="Bid History">
               <content>
                  <LineChart fx:id="priceChart" animated="false" createSymbols="true">
                    <xAxis>
@@ -105,7 +112,7 @@
                         <Insets left="106.0" top="30.0" />
                      </VBox.margin>
                   </TextField>
-                  <Button fx:id="autoBidButton" mnemonicParsing="false" prefHeight="26.0" prefWidth="154.0" text="AUTO BID" onAction="#autoBid">
+                  <Button fx:id="autoBidButton" mnemonicParsing="false" onAction="#autoBid" prefHeight="26.0" prefWidth="154.0" text="AUTO BID">
                      <VBox.margin>
                         <Insets left="266.0" top="20.0" />
                      </VBox.margin>
