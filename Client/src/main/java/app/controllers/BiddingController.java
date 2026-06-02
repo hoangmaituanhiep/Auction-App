@@ -18,6 +18,7 @@ import app.packets.PacketMessage;
 import app.payload.BidItemRequestPayload;
 import app.payload.BidItemRespondPayload;
 import app.payload.CancelAuctionResponse;
+import app.payload.ChangeItemInfoRequest;
 import app.payload.KickUser;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -236,6 +237,14 @@ public class BiddingController {
       editedNameField.setVisible(true);
       isApply = true;
     } else {
+      ChangeItemInfoRequest infoRequest = new ChangeItemInfoRequest(itemId, editedNameField.getText(), editedDetailField.getText());
+      PacketMessage packet = new PacketMessage(Message.CHANGE_INFO_REQUEST, infoRequest);
+
+      try {
+        networkClient.sendPacket(packet);
+      } catch (IOException e) {
+        logger.error("Error to send ChangeInfo packet.");
+      }
 
     }
 
