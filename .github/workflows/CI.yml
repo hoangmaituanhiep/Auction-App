@@ -1,31 +1,138 @@
-name: Strict Java CI
+name: Auction-App CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "develop" ]
   pull_request:
     branches: [ "main" ]
 
 jobs:
-  quality-gate:
+  build-and-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        java-version: ['21']
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK ${{ matrix.java-version }}
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ matrix.java-version }}
+        distribution: 'temurin'
+        cache: maven
+
+    # 1. Package all modules
+    - name: Package all modules
+      run: mvn clean package
+
+    # 2. Run unit tests
+    - name: Run unit tests
+      run: mvn test -DskipITs
+
+    # 3. Build with maven-shade-plugin (create fat jars)
+    - name: Package with fat jars
+      run: mvn package -DskipTests
+
+    # 4. Code quality analysis with SpotBugs
+    - name: SpotBugs analysis
+      run: mvn spotbugs:check || true
+      continue-on-error: true
+
+    # 5. Generate test reports
+    - name: Publish test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-${{ matrix.os }}
+        path: |
+          **/target/surefire-reports/
+          **/target/failsafe-reports/
+
+    # 6. Upload build artifacts (fat jars)
+    - name: Upload build artifacts
+      if: success()
+      uses: actions/upload-artifact@v4
+      with:
+        name: auction-app-jars-${{ matrix.os }}
+        path: |
+          Server/target/server-1.0-SNAPSHOT-fat.jar
+          Client/target/client-1.0-SNAPSHOT-fat.jar
+          Commons/target/commons-1.0-SNAPSHOT.jar
+
+  code-coverage:
+    runs-on: ubuntu-latest
+    needs: build-and-test
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    # Generate code coverage report
+    - name: Generate JaCoCo coverage report
+      run: mvn clean test jacoco:report
+
+    # Upload coverage to Codecov
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./target/site/jacoco/jacoco.xml
+        fail_ci_if_error: false
+        verbose: true
+
+  security-check:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Set up JDK 25
+    - name: Set up JDK 21
       uses: actions/setup-java@v4
       with:
-        java-version: '25'
-        distribution: 'oracle'
+        java-version: '21'
+        distribution: 'temurin'
         cache: maven
 
-    # 1. Kiểm tra lỗi biên dịch (Compile)
-    - name: Compile Code
-      run: mvn clean install
+    # Dependency vulnerability check
+    - name: Check for vulnerable dependencies
+      run: mvn dependency-check:check || true
+      continue-on-error: true
 
+  integration-tests:
+    runs-on: ubuntu-latest
+    needs: build-and-test
 
-    # 4. Kiểm tra lỗi tiềm ẩn bằng SpotBugs (Tùy chọn thêm)
-    # Giúp tìm lỗi như NullPointerException, lỗi đóng resource Database...
-    - name: SpotBugs Analysis
-      run: mvn spotbugs:check || echo "SpotBugs found issues"
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    # Run integration tests
+    - name: Run integration tests
+      run: mvn verify
+
+    - name: Upload integration test results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: integration-test-results
+        path: |
+          **/target/failsafe-reports/
+          **/target/surefire-reports/
