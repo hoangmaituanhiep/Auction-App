@@ -366,18 +366,7 @@ public class MainWebController {
   @FXML
   public void joinAuction() {
     if (user.getCurrentAuction() != null) {
-      try {
-        FXMLLoader auctionLoader = new FXMLLoader(getClass().getResource("/app/AuctionManager.fxml"));
-        Parent root = auctionLoader.load();
-        Scene auctionScene = new Scene(root);
-        Stage auctionStage = new Stage();
-        auctionStage.setScene(auctionScene);
-        auctionStage.show();
-      }
-      catch (IOException e) {
-        logger.error("ERROR: {}", e.getMessage());
-        showAlert("Error", "Failed to open auction manager:\n" + e.getMessage());
-      }
+      openAuctionManager();
       return;
     }
     TextInputDialog getAuctionId = new TextInputDialog();
