@@ -110,7 +110,7 @@ public class LiveAuctionSession {
     if (bidSuccess) {
       bidService.updatePrice(itemId, bidderName, bid, String.valueOf(System.currentTimeMillis()));
 
-      if (this.remainingTimeS < 10) {
+      if (this.remainingTimeS < 30) {
         this.remainingTimeS += 60;
         AntiSnippingRespondPayload snippingRespond = new AntiSnippingRespondPayload(auction.getAuctionId(), auction.getName());
         server.broadcast(new PacketMessage(Message.ANTI_SNIPPING_RESPOND, snippingRespond));

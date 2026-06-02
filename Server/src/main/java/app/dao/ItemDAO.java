@@ -176,9 +176,10 @@ public class ItemDAO{
           preStatement.setString(1, username);
 
           try (ResultSet result = preStatement.executeQuery()) {
-            int id = result.getInt("id");
-
-            items.add(getItem(id));
+            while (result.next()) {
+              int id = result.getInt("id");
+              items.add(getItem(id));
+            }
           }
 
           return items;

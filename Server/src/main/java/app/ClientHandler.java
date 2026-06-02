@@ -379,7 +379,7 @@ public class ClientHandler implements Runnable {
             List<Item> userItems = itemsService.getItemByUserName(username);
 
             FetchOwnItemsResponse ownItemsResponse = new FetchOwnItemsResponse(userItems);
-            PacketMessage itemsMessage = new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, ownItemsResponse);
+            PacketMessage itemsMessage = new PacketMessage(Message.FETCH_OWN_ITEMS_RESPOND, ownItemsResponse);
             sendPacket(itemsMessage);
             break;
 
@@ -387,7 +387,10 @@ public class ClientHandler implements Runnable {
             KickUser kickRequest = (KickUser) packetMessage.getPayload();
             Client kickedClient = server.findClientByUsername(kickRequest.getUsername());
 
-            server.removeClient(kickedClient);
+            if (kickedClient != null) {
+              KickUser kickResponse = new KickUser(kickRequest.getUsername());
+              PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
+              server.broadcast(kickMessage);
 
             KickUser kickResponse = new KickUser(kickRequest.getUsername());
             PacketMessage kickMessage = new PacketMessage(Message.KICK_USER_RESPOND, kickResponse);
@@ -401,6 +404,7 @@ public class ClientHandler implements Runnable {
             if (isSuccessed) {
               PacketMessage pMessage = new PacketMessage(Message.CHANGE_INFO_BROADCAST, changeInfoRequest);
               server.broadcast(pMessage);
+              server.removeClient(kickedClient);
             }
             break;
           default:
