@@ -18,6 +18,7 @@ import app.packets.PacketMessage;
 import app.payload.BidItemRequestPayload;
 import app.payload.CancelAuctionRequest;
 import app.payload.CancelAuctionResponse;
+import app.payload.ChangeItemInfoRequest;
 import app.payload.FetchAuctionItemsRequestPayload;
 import app.payload.FetchAuctionItemsResponsePayload;
 import app.payload.KickUser;
@@ -146,6 +147,18 @@ public class AuctionManagerController {
           user.addItem(item);
           user.getCurrentAuction().addNewItem(item.getId());
           itemListView.refresh();
+        }
+      }
+    });
+
+    networkClient.addUIListener(Message.CHANGE_INFO_BROADCAST, packet -> {
+      ChangeItemInfoRequest request = (ChangeItemInfoRequest) packet.getPayload();
+      for (Item item : itemListView.getItems()) {
+        if (item.getId() == request.getItemId()) {
+          item.setName(request.getItemName());
+          item.writeDetail(request.getItemDetail());
+          logger.info("Item {} was changed info.", item.getId());
+          break;
         }
       }
     });

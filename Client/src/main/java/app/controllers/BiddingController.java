@@ -243,7 +243,7 @@ public class BiddingController {
       try {
         networkClient.sendPacket(packet);
       } catch (IOException e) {
-        logger.error("Error to send ChangeInfo packet.");
+        logger.error("Error to send ChangeInfo packet: {}", e.getMessage());
       }
 
     }

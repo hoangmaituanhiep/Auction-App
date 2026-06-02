@@ -51,6 +51,10 @@ public class ItemsService {
     return false;
   }
 
+  public boolean updateItemInfo(int id, String name, String detail) {
+    return itemDAO.updateItemInfo(id, name, detail);
+  }
+
   public List<Item> getItemByUserName(String username) {
     return itemDAO.getUserItems(username);
   }
