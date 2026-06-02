@@ -302,7 +302,7 @@ public class MainWebController {
       }
     });
 
-    networkClient.addUIListener(Message.FETCH_AUCTION_ITEMS_RESPONSE, packet -> {
+    networkClient.addUIListener(Message.FETCH_OWN_ITEMS_RESPOND, packet -> {
       FetchOwnItemsResponse itemsRespond = (FetchOwnItemsResponse) packet.getPayload();
       user.setWonList(itemsRespond.getItems());
     });
