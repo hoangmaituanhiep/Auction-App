@@ -378,7 +378,7 @@ public class ClientHandler implements Runnable {
             List<Item> userItems = itemsService.getItemByUserName(username);
 
             FetchOwnItemsResponse ownItemsResponse = new FetchOwnItemsResponse(userItems);
-            PacketMessage itemsMessage = new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, ownItemsResponse);
+            PacketMessage itemsMessage = new PacketMessage(Message.FETCH_OWN_ITEMS_RESPOND, ownItemsResponse);
             sendPacket(itemsMessage);
             break;
 

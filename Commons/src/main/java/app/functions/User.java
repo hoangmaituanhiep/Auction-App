@@ -32,6 +32,7 @@ public abstract class User extends Entity {
     this.email = other.email;
     this.itemsList = other.itemsList;
     this.itemsMap = other.itemsMap;
+    this.wonItems = other.wonItems;
   }
 
   public Bidder asBidder() {
@@ -129,6 +130,6 @@ public abstract class User extends Entity {
   }
 
   public void setWonList(List<Item> items) {
-    wonItems = FXCollections.observableArrayList(items);
+    wonItems.setAll(items);
   }
 }

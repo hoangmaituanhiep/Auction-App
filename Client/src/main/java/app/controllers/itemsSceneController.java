@@ -43,6 +43,7 @@ public class itemsSceneController {
       }
     });
 
+    ownItems = user.getWonLists();
     itemsView.setItems(ownItems);
     itemsView.setCellFactory(listView -> new ListCell<>() {
       private final ImageView imageView = new ImageView();
