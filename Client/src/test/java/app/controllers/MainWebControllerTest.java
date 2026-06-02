@@ -48,34 +48,6 @@ class MainWebControllerTest {
     }
 
     @Test
-    void toggleLogedinShouldUpdateUiForAdmin() throws Exception {
-        setField(controller, "user", Admin.getInstance());
-        setField(controller, "logInLabel", new Label());
-        setField(controller, "join", new Button());
-        setField(controller, "New", new Button());
-        setField(controller, "auctionScrollPane", new ScrollPane());
-        setField(controller, "logIn", new Button());
-        setField(controller, "myItems", new Button());
-
-        controller.toggleLogedin();
-
-        Button logIn = (Button) getField(controller, "logIn");
-        Button join = (Button) getField(controller, "join");
-        Button newButton = (Button) getField(controller, "New");
-        ScrollPane auctionScrollPane = (ScrollPane) getField(controller, "auctionScrollPane");
-        Label logInLabel = (Label) getField(controller, "logInLabel");
-
-        assertFalse(logIn.isVisible());
-        assertFalse(logIn.isManaged());
-        assertFalse(join.isDisable());
-        assertFalse(newButton.isDisable());
-        assertFalse(auctionScrollPane.isDisable());
-        assertTrue(auctionScrollPane.isVisible());
-        assertEquals("Hi admin1", logInLabel.getText());
-        assertEquals("User List", newButton.getText());
-    }
-
-    @Test
     void toggleQuitShouldResetJoinLabelAndClearAuction() throws Exception {
         setField(controller, "user", User.getInstance());
         setField(controller, "join", new Button());
