@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.controllers.MainWebController">
    <top>
@@ -26,22 +27,10 @@
                   <Insets left="15.0" right="50.0" />
                </HBox.margin>
             </ImageView>
-            <TextField fx:id="searchItems" alignment="CENTER" prefHeight="42.0" prefWidth="666.0" promptText="Search items...">
-               <HBox.margin>
-                  <Insets top="30.0" />
-               </HBox.margin>
-            </TextField>
-            <Button disable="true" minWidth="50.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="62.0" style="-fx-background-color: #FFFFFF;">
-               <graphic>
-                  <ImageView fitHeight="39.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../images/search-icon-png-5.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-               <HBox.margin>
-                  <Insets top="30.0" />
-               </HBox.margin>
+            <Button fx:id="myItems" mnemonicParsing="false" onAction="#openItemsScene" prefHeight="54.0" prefWidth="750.0" text="MY ITEMS">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
             </Button>
             <StackPane prefHeight="42.0" prefWidth="69.0">
                <children>
@@ -52,7 +41,7 @@
                   <Insets left="30.0" top="30.0" />
                </HBox.margin>
             </StackPane>
-            <Button fx:id="join" onAction="#joinAuction" mnemonicParsing="false" prefHeight="42.0" prefWidth="68.0" text="JOIN">
+            <Button fx:id="join" mnemonicParsing="false" onAction="#joinAuction" prefHeight="42.0" prefWidth="68.0" text="JOIN">
                <HBox.margin>
                   <Insets left="20.0" top="30.0" />
                </HBox.margin>
