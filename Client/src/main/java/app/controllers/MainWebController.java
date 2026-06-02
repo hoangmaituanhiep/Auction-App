@@ -177,6 +177,13 @@ public class MainWebController {
     auctionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     auctionScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
     logInLabel.setText("Hi " + user.getUserName());
+
+    try {
+      networkClient.sendPacket(new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, null));
+    }
+    catch (IOException e) {
+      logger.error("ERROR: {}", e.getMessage());
+    }
   }
 
   public void toggleQuit() {
@@ -313,7 +320,6 @@ public class MainWebController {
       enter.setManaged(false);
       
       networkClient.sendPacket(new PacketMessage(Message.FETCH_DATA_REQUEST, null));
-      networkClient.sendPacket(new PacketMessage(Message.FETCH_OWN_ITEMS_REQUEST, null));
     } catch (IOException e) {
       logger.error("ERROR: Cannot connect to server. {}", e.getMessage());
       showAlert("Connection Error", "Cannot connect to server:\n" + e.getMessage());
@@ -428,7 +434,16 @@ public class MainWebController {
 
   @FXML
   public void openItemsScene() {
-
+    try {
+      FXMLLoader itemLoader = new FXMLLoader(getClass().getResource("/app/itemsScene.fxml"));
+      Scene itemsScene = new Scene(itemLoader.load());
+      Stage itemsStage = new Stage();
+      itemsStage.setScene(itemsScene);
+      itemsStage.show();
+    }
+    catch (IOException e) {
+      logger.error("ERROR: {}", e.getMessage());
+    }
   }
   public String getHost() {
     return host;
