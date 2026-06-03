@@ -22,7 +22,7 @@ public class Server {
   private static Map<String, ClientHandler> clientHandlers;
   private static Map<Integer, LiveAuctionSession> liveAuctions;
   private static boolean isListening;
-  private static ExecutorService executors = Executors.newFixedThreadPool(10);
+  private static ExecutorService executors = Executors.newFixedThreadPool(20);
   private static ServerSocket serverSocket;
   private static Server server;
 
