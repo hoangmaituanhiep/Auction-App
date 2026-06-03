@@ -25,13 +25,13 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Build, Test, and Package Fat JARs
+    - name: Build, Test, and Package Fat JARs (Linux)
       if: runner.os == 'Linux'
       run: xvfb-run mvn clean package -DskipITs
 
-    - name: Build, Test, and Package Fat JARs
+    - name: Build, Test, and Package Fat JARs (Windows/macOS)
       if: runner.os != 'Linux'
-      run: xvfb-run mvn clean package -DskipITs
+      run: mvn clean package -DskipITs
 
     - name: SpotBugs analysis
       run: mvn spotbugs:check || true
@@ -71,13 +71,13 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Generate JaCoCo coverage report
+    - name: Generate JaCoCo coverage report (Linux)
       if: runner.os == 'Linux'
       run: xvfb-run mvn clean test jacoco:report
-    
-    - name: Generate JaCoCo coverage report
+
+    - name: Generate JaCoCo coverage report (Windows/macOS)
       if: runner.os != 'Linux'
-      run: xvfb-run mvn clean test jacoco:report
+      run: mvn clean test jacoco:report
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
@@ -119,14 +119,14 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Run integration tests
+    - name: Run integration tests (Linux)
       if: runner.os == 'Linux'
       run: xvfb-run mvn verify
-    
-    - name: Run integration tests
+
+    - name: Run integration tests (Windows/macOS)
       if: runner.os != 'Linux'
       run: mvn verify
-
+      
     - name: Upload integration test results
       if: always()
       uses: actions/upload-artifact@v4
