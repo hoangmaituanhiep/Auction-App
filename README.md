@@ -90,6 +90,19 @@ Kết quả:
    - `java -jar Client/target/client-1.0-SNAPSHOT-fat.jar`
 
 > Nếu bạn chạy client bằng jar không fat, vẫn hãy khởi tạo `PATH_TO_FX` và thêm `--module-path` / `--add-modules` như trên.
+   - Có thể chạy nhiều client trên Windows theo cách sau: Tạo 1 file đuôi bat và thêm khối lệnh dưới đây:
+    @echo off
+    echo Dang mo 3 Client...
+    start "" java -jar Client/target/client-1.0-SNAPSHOT-fat.jar
+    start "" java -jar Client/target/client-1.0-SNAPSHOT-fat.jar
+    start "" java -jar Client/target/client-1.0-SNAPSHOT-fat.jar
+  
+   - Đối với người dùng linux hay macos:
+    #!/bin/bash
+    echo "Đang mở 3 Client..."
+    java -jar Client/target/client-1.0-SNAPSHOT-fat.jar &
+    java -jar Client/target/client-1.0-SNAPSHOT-fat.jar &
+    java -jar Client/target/client-1.0-SNAPSHOT-fat.jar &
 
 ## 6. Hướng dẫn chạy Server/Client theo thứ tự
 1. Chạy `Server` trước để mở máy chủ đấu giá và lắng nghe kết nối.
