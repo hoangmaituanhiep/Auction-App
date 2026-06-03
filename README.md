@@ -107,5 +107,5 @@ Kết quả:
 
 ## 8. Link báo cáo PDF và video demo
 - Báo cáo PDF: https://docs.google.com/document/d/1quT46TC4YDHrs6e-gsFyrI98bD6_vWwmcaxR7VNfjHw/edit?usp=sharing
-- Video demo: 
+- Video demo: https://drive.google.com/drive/folders/1aj-zKJSzEGVjd7oSFARmDDByI8gN0OeL?usp=sharing
 
