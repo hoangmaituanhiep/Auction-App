@@ -65,7 +65,6 @@ public class AuctionController {
     });
   }
 
-
   @FXML
   public void addItem() {
     try {
@@ -74,8 +73,7 @@ public class AuctionController {
       Stage itemStage = new Stage();
       itemStage.setScene(itemScene);
       itemStage.show();
-    }
-    catch(IOException e) {
+    } catch (IOException e) {
       logger.error("ERROR: {}", e.getMessage());
       showAlert("Error", "Failed to add item:\n" + e.getMessage());
     }
@@ -83,30 +81,34 @@ public class AuctionController {
 
   @FXML
   public void addAuction() {
-    if (user.getCurrentAuction()==null) {
-      String name = auctionName.getText();
-      String dur = duration.getText();
-
-      user = user.asSeller();
-
-      Auction auction = new Auction(name, dur);
-      user.participate(auction);
-
-      if (mainWebController != null) {
-        mainWebController.setUser(user);
-      }
-
-      NewAuctionRequest request = new NewAuctionRequest(name, dur);
-      PacketMessage message = new PacketMessage(Message.NEW_AUCTION_REQUEST, request);
+    if (user.getCurrentAuction() == null) {
       try {
-        networkClient.sendPacket(message);
+        String name = auctionName.getText();
+        String dur = duration.getText();
+
+        Double.parseDouble(dur);
+
+        user = user.asSeller();
+
+        Auction auction = new Auction(name, dur);
+        user.participate(auction);
+
+        if (mainWebController != null) {
+          mainWebController.setUser(user);
+        }
+
+        NewAuctionRequest request = new NewAuctionRequest(name, dur);
+        PacketMessage message = new PacketMessage(Message.NEW_AUCTION_REQUEST, request);
+        try {
+          networkClient.sendPacket(message);
+        } catch (IOException e) {
+          logger.error("ERROR: {}", e.getMessage());
+          showAlert("Error", "Failed to add auction:\n" + e.getMessage());
+        }
+      } catch (NumberFormatException e) {
+        showAlert("INVALID DURATION", e.getMessage());
       }
-      catch (IOException e) {
-        logger.error("ERROR: {}", e.getMessage());
-        showAlert("Error", "Failed to add auction:\n" + e.getMessage());
-      }
-    }
-    else {
+    } else {
       logger.error("ERROR: User is already in an auction bro");
       showAlert("Error", "User is already in an auction bro");
     }

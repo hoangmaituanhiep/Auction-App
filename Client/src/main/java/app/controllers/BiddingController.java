@@ -234,16 +234,22 @@ public class BiddingController {
     logger.info("New price is bidded");
     submitBidButton.setDisable(true);
 
-    BidItemRequestPayload payload = new BidItemRequestPayload(this.getItemId(), user.getUserName(),
-        Double.parseDouble(placeBid.getText()));
-    PacketMessage mesage = new PacketMessage(Message.NEW_PRICE_REQUEST, payload);
-
     try {
-      networkClient.sendPacket(mesage);
-      logger.info("New price is sent.");
-    } catch (IOException e) {
-      logger.error("ERROR: {}", e.getMessage());
-      showAlert("Error", "Failed to send bid:\n" + e.getMessage());
+      Double.parseDouble(placeBid.getText());
+      BidItemRequestPayload payload = new BidItemRequestPayload(this.getItemId(), user.getUserName(),
+          Double.parseDouble(placeBid.getText()));
+      PacketMessage mesage = new PacketMessage(Message.NEW_PRICE_REQUEST, payload);
+
+      try {
+        networkClient.sendPacket(mesage);
+        logger.info("New price is sent.");
+      } catch (IOException e) {
+        logger.error("ERROR: {}", e.getMessage());
+        showAlert("Error", "Failed to send bid:\n" + e.getMessage());
+      }
+    } catch (NumberFormatException e) {
+      showAlert("INVALID BID AMOUNT", e.getMessage());
+      submitBidButton.setDisable(false);
     }
   }
 
@@ -252,15 +258,20 @@ public class BiddingController {
     logger.info("AutoBid button clicked.");
     boolean autoBidding = currentItem.isAutoBidding();
     if (!autoBidding) {
-      if (autoThread.setAmount(Double.parseDouble(autoBidTextField.getText()))) {
-        thread = new Thread(autoThread);
-        thread.start();
-        currentItem.setAutoBid(true);
-        logger.info("Start auto bidding succesfully.");
+      try {
+        Double.parseDouble(autoBidTextField.getText());
+        if (autoThread.setAmount(Double.parseDouble(autoBidTextField.getText()))) {
+          thread = new Thread(autoThread);
+          thread.start();
+          currentItem.setAutoBid(true);
+          logger.info("Start auto bidding succesfully.");
 
-      } else {
-        logger.error("Fail to start auto bidding.");
-        showAlert("Error", "Fail to start auto bidding.");
+        } else {
+          logger.error("Fail to start auto bidding.");
+          showAlert("Error", "Fail to start auto bidding.");
+        }
+      } catch (NumberFormatException e) {
+        showAlert("INVALID AUTO BID AMOUNT", e.getMessage());
       }
     } else {
       thread.interrupt();

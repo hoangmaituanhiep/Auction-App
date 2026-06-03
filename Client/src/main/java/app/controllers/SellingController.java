@@ -2,12 +2,13 @@ package app.controllers;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
- 
+
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -70,6 +71,16 @@ public class SellingController {
     return instance;
   }
 
+  private void showAlert(String title, String message) {
+    javafx.application.Platform.runLater(() -> {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle(title);
+      alert.setHeaderText(null);
+      alert.setContentText(message);
+      alert.showAndWait();
+    });
+  }
+
   @FXML
   public void initialize() {
     instance = this;
@@ -124,44 +135,50 @@ public class SellingController {
       return;
     }
 
-    switch (categoryComboBox.getValue()) {
-      case "Vehicle":
-        item = new Vehicle(getItemName.getText(), getDetails.getText(), Double.parseDouble(getStartingPrice.getText()));
-        break;
+    try {
+      Double.parseDouble(getStartingPrice.getText());
+      switch (categoryComboBox.getValue()) {
+        case "Vehicle":
+          item = new Vehicle(getItemName.getText(), getDetails.getText(),
+              Double.parseDouble(getStartingPrice.getText()));
+          break;
 
-      case "Art":
-        item = new Art(getItemName.getText(), getDetails.getText(), Double.parseDouble(getStartingPrice.getText()));
-        break;
+        case "Art":
+          item = new Art(getItemName.getText(), getDetails.getText(), Double.parseDouble(getStartingPrice.getText()));
+          break;
 
-      case "Electronics":
-        item = new Electronics(getItemName.getText(), getDetails.getText(),
-            Double.parseDouble(getStartingPrice.getText()));
-        break;
-      default:
-        logger.warn("WARN: Invalid category");
-        return;
-    }
-
-    if (item != null) {
-      if (selectedImageBytes != null) {
-        String uploadedPath = uploadImageToServer(selectedImageBytes);
-        item.setImagePath(uploadedPath);
+        case "Electronics":
+          item = new Electronics(getItemName.getText(), getDetails.getText(),
+              Double.parseDouble(getStartingPrice.getText()));
+          break;
+        default:
+          logger.warn("WARN: Invalid category");
+          return;
       }
 
-      int auctionId = -1;
-      if (user.getCurrentAuction() != null) {
-        auctionId = user.getCurrentAuction().getAuctionId();
-      }
+      if (item != null) {
+        if (selectedImageBytes != null) {
+          String uploadedPath = uploadImageToServer(selectedImageBytes);
+          item.setImagePath(uploadedPath);
+        }
 
-      SellItemRequestPayload payload = new SellItemRequestPayload(item, auctionId);
-      PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
+        int auctionId = -1;
+        if (user.getCurrentAuction() != null) {
+          auctionId = user.getCurrentAuction().getAuctionId();
+        }
 
-      try {
-        networkClient.sendPacket(message);
-        logger.info("INFO: Item info sent");
-      } catch (IOException e) {
-        logger.error("ERROR: {}", e.getMessage());
+        SellItemRequestPayload payload = new SellItemRequestPayload(item, auctionId);
+        PacketMessage message = new PacketMessage(Message.SEND_ITEM_REQUEST, payload);
+
+        try {
+          networkClient.sendPacket(message);
+          logger.info("INFO: Item info sent");
+        } catch (IOException e) {
+          logger.error("ERROR: {}", e.getMessage());
+        }
       }
+    } catch (NumberFormatException e) {
+      showAlert("INVALID STARTING PRICE", e.getMessage());
     }
 
   }
