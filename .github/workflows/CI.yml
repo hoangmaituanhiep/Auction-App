@@ -26,7 +26,7 @@ jobs:
         cache: maven
 
     - name: Build, Test, and Package Fat JARs
-      run: mvn clean package -DskipITs
+      run: xvfb-run mvn clean package -DskipITs
 
     - name: SpotBugs analysis
       run: mvn spotbugs:check || true
@@ -67,7 +67,7 @@ jobs:
         cache: maven
 
     - name: Generate JaCoCo coverage report
-      run: mvn clean test jacoco:report
+      run: xvfb-run mvn clean test jacoco:report
 
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v4
@@ -110,7 +110,7 @@ jobs:
         cache: maven
 
     - name: Run integration tests
-      run: mvn verify
+      run: xvfb-run mvn verify
 
     - name: Upload integration test results
       if: always()
