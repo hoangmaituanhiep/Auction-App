@@ -26,6 +26,11 @@ jobs:
         cache: maven
 
     - name: Build, Test, and Package Fat JARs
+      if: runner.os == 'Linux'
+      run: xvfb-run mvn clean package -DskipITs
+
+    - name: Build, Test, and Package Fat JARs
+      if: runner.os != 'Linux'
       run: xvfb-run mvn clean package -DskipITs
 
     - name: SpotBugs analysis
@@ -67,6 +72,11 @@ jobs:
         cache: maven
 
     - name: Generate JaCoCo coverage report
+      if: runner.os == 'Linux'
+      run: xvfb-run mvn clean test jacoco:report
+    
+    - name: Generate JaCoCo coverage report
+      if: runner.os != 'Linux'
       run: xvfb-run mvn clean test jacoco:report
 
     - name: Upload coverage to Codecov
@@ -110,7 +120,12 @@ jobs:
         cache: maven
 
     - name: Run integration tests
+      if: runner.os == 'Linux'
       run: xvfb-run mvn verify
+    
+    - name: Run integration tests
+      if: runner.os != 'Linux'
+      run: mvn verify
 
     - name: Upload integration test results
       if: always()
