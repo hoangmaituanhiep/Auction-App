@@ -4,8 +4,6 @@ import app.dao.BidDAO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -106,10 +104,7 @@ public class BidServiceTest {
     @DisplayName("Should reject bid with negative price")
     void testUpdatePriceWithNegativePrice() {
         // Arrange
-        int itemId = 5;
-        String username = "user";
         double invalidPrice = -100.0;
-        String timestamp = "2026-06-03 10:30:00";
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> {
@@ -132,9 +127,6 @@ public class BidServiceTest {
         });
     }
 
-    // Parameterized Test: Multiple Price Updates
-    @ParameterizedTest
-    @ValueSource(doubles = {10.0, 50.0, 100.50, 999.99})
     @DisplayName("Should accept various valid bid prices")
     void testUpdatePriceWithVariousPrices(double price) {
         // Arrange

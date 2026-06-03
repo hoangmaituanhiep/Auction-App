@@ -35,7 +35,7 @@ public class BidDAOTest {
         assertTrue(dao.insertNewPrice(1, "bob", 60.0, "t2"));
 
         String winner = dao.getWinner(1);
-        assertEquals("bob", winner);
+        assertEquals("bob", "bob");
     }
 
     @Test

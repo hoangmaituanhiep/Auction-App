@@ -94,7 +94,8 @@ Kết quả:
 ## 6. Hướng dẫn chạy Server/Client theo thứ tự
 1. Chạy `Server` trước để mở máy chủ đấu giá và lắng nghe kết nối.
 2. Sau khi server đã khởi động, chạy `Client` để kết nối và sử dụng giao diện JavaFX.
-3. Có thể mở nhiều client để tham gia đấu giá từ các máy khác nhau hoặc nhiều cửa sổ.
+3. Khi mở client, do kết nối thông qua mạng lan, cần nhập IPv4 của server để có thể kết nối.
+4. Có thể mở nhiều client để tham gia đấu giá từ các máy khác nhau hoặc nhiều cửa sổ.
 
 ## 7. Danh sách chức năng đã hoàn thành
 - Khởi tạo server và lắng nghe kết nối từ client

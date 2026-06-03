@@ -356,7 +356,6 @@ public class ClientHandler implements Runnable {
             break;
           
           case FETCH_AUCTION_ITEMS_REQUEST:
-            
             FetchAuctionItemsRequestPayload fetchItemsPayload = (FetchAuctionItemsRequestPayload) packetMessage.getPayload();
             List<Item> items = new ArrayList<>();
             Auction auction = server.getAuction(fetchItemsPayload.getAuctionId());
